@@ -175,6 +175,38 @@ if (document.readyState === 'loading') {
 </script>
 
 
+<main class="container">
+
+  <!-- 🔎 Barra de búsqueda -->
+  <section class="toolbar" id="searchBar" role="search" aria-label="Buscar plantas">
+    <div class="toolbar-row">
+      <div class="field grow">
+        <input id="q" type="search" placeholder="Buscar por nombre o científico…" aria-label="Buscar" />
+      </div>
+
+      <div class="field">
+        <select id="filterType" aria-label="Filtrar por tipo">
+          <option value="">Tipo: todos</option>
+          <!-- JS añadirá opciones reales -->
+        </select>
+      </div>
+
+      <div class="field">
+        <select id="filterState" aria-label="Filtrar por estado">
+          <option value="">Estado: todos</option>
+          <!-- JS añadirá opciones reales -->
+        </select>
+      </div>
+
+      <button id="clearFilters" class="btn-clear" aria-label="Limpiar filtros">Limpiar</button>
+    </div>
+
+    <div class="toolbar-meta">
+      <span id="resultCount">Mostrando todas</span>
+    </div>
+  </section>
+
+
 
   <!-- ===== P001 ===== -->
   <section class="card" id="P001">
@@ -1479,6 +1511,8 @@ if (document.readyState === 'loading') {
   onScroll();
 })();
 </script>
+
+<script src="script.js"></script>
 
 </body>
 </html>

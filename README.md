@@ -7,6 +7,8 @@
 Creado con cariño por **Belén** 🌸 y **Alon** 🌿  
 <sub>Proyecto personal y colaborativo · Iniciado en 2025</sub>
 
+Url: https://alonsovine.github.io/jardin-digital/
+
 </div>
 
 ---
