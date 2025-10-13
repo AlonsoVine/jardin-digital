@@ -1,0 +1,65 @@
+🌿 Prompt para añadir nuevas plantas a tu jardín HTML
+
+Prompt:
+
+Quiero añadir una nueva planta a mi archivo jardinDeAlon.html.
+Aquí tienes la foto 📸 (adjunta la imagen).
+
+⚙️ Instrucciones:
+
+Analiza la imagen y determina (con la mayor precisión posible) la especie o tipo de planta.
+
+Asigna el siguiente número de ficha (continuando la numeración anterior, formato P0XX).
+
+Genera una section HTML completa con el mismo formato que las anteriores:
+
+<!-- ===== P0XX ===== -->
+<section class="card" id="P0XX">
+  <img class="thumb" loading="lazy" src="img/NOMBRE_DE_LA_IMAGEN.jpg" alt="P0XX NOMBRE DE LA PLANTA" />
+  <div>
+    <div class="id">Planta P0XX — Nombre común / <span class="latin">Nombre científico</span></div>
+
+    <div class="row">
+      <div class="block">
+        <h4>Ficha</h4>
+        <p class="kv"><b>Apodo:</b> —</p>
+        <p class="kv"><b>Fecha de registro:</b> FECHA ACTUAL</p>
+        <p class="kv"><b>Tipo:</b> (tipo de planta: suculenta, tropical, etc.)</p>
+        <p class="kv"><b>Nombre científico:</b> <span class="latin">Nombre científico</span></p>
+        <p class="kv"><b>Origen:</b> (región de origen)</p>
+        <p class="kv"><b>Ubicación:</b> (lugar donde la tienes, interior/exterior, luz disponible)</p>
+      </div>
+      <div class="block">
+        <h4>Cuidados</h4>
+        <p class="kv"><b>Luz:</b> …</p>
+        <p class="kv"><b>Riego:</b> …</p>
+        <p class="kv"><b>Temperatura:</b> …</p>
+        <p class="kv"><b>Humedad:</b> …</p>
+        <p class="kv"><b>Sustrato:</b> …</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="block">
+        <h4>Estado</h4>
+        <p class="kv"><b>Última revisión:</b> FECHA ACTUAL</p>
+        <p class="kv"><b>Estado actual:</b> (descripción del estado visible en la foto)</p>
+      </div>
+      <div class="block">
+        <h4>Observaciones</h4>
+        <p class="kv">• (recomendaciones o particularidades sobre su cuidado)</p>
+      </div>
+    </div>
+
+    <div class="hist">FECHA ACTUAL — Registro inicial.</div>
+  </div>
+</section>
+
+
+Usa la ruta de la imagen en formato: img/NOMBRE_DE_LA_IMAGEN.jpg (sin punto inicial).
+
+Mantén el estilo visual y las clases CSS actuales del archivo.
+
+No modifiques el resto del HTML.
+
+Si no estás 100 % seguro de la identificación, indícalo como “(identificación negativa)”.
