@@ -1,0 +1,23 @@
+# ─── Carpetas y archivos temporales ─────────────────────────────
+trash/
+trash/*
+
+# ─── Archivos de trabajo personal ───────────────────────────────
+Prompt_añadir registro.txt
+
+# ─── Archivos del sistema o del editor ──────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ─── Archivos de entorno o caché ────────────────────────────────
+*.log
+*.tmp
+*.bak
+*.swp
+
+# ─── Node / Python / Otros entornos (por si se usa en futuro) ──
+node_modules/
+__pycache__/
+.env
