@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-<header class="container">
+<header class="container" id="top">
   <h1>🌿 Jardín de Belén & Alonso</h1>
   <div style="color:var(--muted);margin-top:6px;font-size:13px">
     Registro digital de plantas y cuidados.
@@ -521,7 +521,7 @@ if (document.readyState === 'loading') {
       <div class="row">
         <div class="block">
           <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
+          <p class="kv"><b>Apodo:</b> Kolog</p>
           <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
           <p class="kv"><b>Tipo:</b> Arbusto suculento</p>
           <p class="kv"><b>Nombre científico:</b> <span class="latin">Adenium obesum</span></p>
@@ -773,7 +773,7 @@ if (document.readyState === 'loading') {
       <div class="row">
         <div class="block">
           <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
+          <p class="kv"><b>Apodo:</b> Alegría</p>
           <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
           <p class="kv"><b>Tipo:</b> Composición tropical de interior</p>
           <p class="kv"><b>Nombre científico:</b> <span class="latin">Fittonia albivenis</span> y <span class="latin">Hypoestes phyllostachya</span></p>
@@ -1424,6 +1424,61 @@ if (document.readyState === 'loading') {
     </p>
   </div>
 </footer>
+
+<!-- Botón flotante Volver arriba -->
+<button id="backToTop" class="back-to-top" aria-label="Volver arriba" title="Volver arriba">
+  <!-- ícono flecha (SVG) -->
+  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 5l-7 7h4v7h6v-7h4z" fill="currentColor"/>
+  </svg>
+</button>
+
+<!-- 🔽 Aquí pegas el script justo antes del cierre del body -->
+<script>
+(function(){
+  const btn = document.getElementById('backToTop');
+  if(!btn) return;
+
+  const SHOW_AFTER = 400;
+  let ticking = false;
+
+  function onScroll(){
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if(y > SHOW_AFTER){
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  function scrollTopSmooth(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){
+      window.scrollTo(0, 0);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  btn.addEventListener('click', scrollTopSmooth);
+  btn.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      scrollTopSmooth();
+    }
+  });
+
+  onScroll();
+})();
+</script>
 
 </body>
 </html>
