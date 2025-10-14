@@ -415,7 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 (function () {
   // Utilidades
-  const $txt = (el) => (el?.innerText || "").toLowerCase();
+  const $txt = (el) => (el?.textContent || "").toLowerCase();
 
   function classify(card) {
     const t = $txt(card);
@@ -509,7 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateLastUpdate() {
     const dates = Array.from(document.querySelectorAll(".block .kv"))
-      .map((p) => p.innerText)
+      .map((p) => p.textContent)
       .filter((t) => /última revisión:\s*\d{1,2}\/\d{1,2}\/\d{4}/i.test(t))
       .map((t) =>
         t
@@ -815,6 +815,75 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     initDashboard();
   }
+})();
+
+/* ============================================================
+   Vista compacta/expandible de tarjetas de plantas
+   - Muestra nombre, científico, apodo e imagen
+   - Al pulsar, expande para ver la ficha completa
+   ============================================================ */
+(function(){
+  const cards = Array.from(document.querySelectorAll('section.card[id^="P"]'));
+  if(!cards.length) return;
+
+  function getKV(section, label){
+    const kvs = section.querySelectorAll('p.kv');
+    for(const p of kvs){
+      const raw = (p.textContent||'').trim();
+      if(raw.toLowerCase().startsWith(label.toLowerCase())){
+        return raw.slice(label.length).replace(/^:\s*/,'').trim();
+      }
+    }
+    return '';
+  }
+
+  cards.forEach(card=>{
+    // Crear línea de resumen si no existe
+    let summary = card.querySelector('.summary-line');
+    if(!summary){
+      summary = document.createElement('div');
+      summary.className = 'summary-line';
+      const apodo = getKV(card, 'Apodo:');
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = apodo ? `Apodo: ${apodo}` : 'Apodo: —';
+      summary.appendChild(tag);
+
+      const toggle = document.createElement('button');
+      toggle.className = 'card-toggle';
+      toggle.setAttribute('aria-label','Mostrar/ocultar detalles');
+      toggle.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>';
+      summary.appendChild(toggle);
+
+      const title = card.querySelector('.id');
+      if(title){ title.insertAdjacentElement('afterend', summary); }
+
+      function setState(expanded){
+        card.classList.toggle('is-collapsed', !expanded);
+        card.classList.toggle('is-expanded', !!expanded);
+        toggle.setAttribute('aria-expanded', String(!!expanded));
+
+        // Mostrar solo la última imagen cuando está colapsada
+        const thumbs = Array.from(card.querySelectorAll('img.thumb'));
+        if(thumbs.length > 1){
+          if(!expanded){
+            // En vista compacta mostrar SOLO la primera imagen
+            thumbs.forEach((img, i)=>{ img.style.display = (i === 0) ? '' : 'none'; });
+          } else {
+            thumbs.forEach(img=>{ img.style.display = ''; });
+          }
+        }
+      }
+
+      // Estado inicial: compacto
+      setState(false);
+
+      // Click toggle
+      toggle.addEventListener('click', (e)=>{ e.stopPropagation(); setState(!card.classList.contains('is-expanded')); });
+      // También permitir click en el título
+      title?.addEventListener('click', ()=> setState(!card.classList.contains('is-expanded')));
+    }
+  });
 })();
 
 /* ===== Exportar datos del jardín ===== */

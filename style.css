@@ -131,6 +131,35 @@ h1 {
   }
 }
 
+/* ===== Vista compacta de tarjetas ===== */
+.card .summary-line{
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card .summary-line .tag{ padding: 2px 8px; border:1px solid var(--line); border-radius: 999px; font-size:12px; color: var(--text); background: rgba(0,0,0,.12); }
+html.light .card .summary-line .tag{ background:#ffffff; border-color:#dcded8; color:#2a2a2a; }
+
+.card .card-toggle{
+  margin-left: auto;
+  height: 28px; min-width: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  display: inline-grid; place-items:center;
+  cursor: pointer;
+}
+.card .card-toggle svg{ transition: transform .2s ease; }
+.card.is-expanded .card-toggle svg{ transform: rotate(180deg); }
+
+.card.is-collapsed .row,
+.card.is-collapsed .hist{ display:none; }
+.card.is-collapsed .thumb{ height: 90px; object-fit: cover; }
+
 footer {
   background: rgba(16, 18, 19, 0.9); /* mismo tono que --panel */
   border-top: 1px solid var(--line);
