@@ -754,3 +754,80 @@ Historial: ${p.historial}
   // Log si la ruta del audio es inválida
   audio.addEventListener('error', ()=> console.warn('No se pudo cargar:', AMBIENCE_SRC));
 })();
+
+/* ============================================================
+   Lightbox (visor) para imágenes de plantas
+   - Click en .thumb abre overlay
+   - Esc cierra, ←/→ navegan
+   - Tema coherente y transiciones suaves
+   ============================================================ */
+(function(){
+  const overlay = document.getElementById('lightbox');
+  if(!overlay) return;
+
+  const imgEl = overlay.querySelector('.lb-img');
+  const captionEl = overlay.querySelector('.lb-caption');
+  const btnClose = overlay.querySelector('.lb-close');
+  const btnPrev = overlay.querySelector('.lb-prev');
+  const btnNext = overlay.querySelector('.lb-next');
+
+  // Listado lineal de todas las miniaturas
+  const thumbs = Array.from(document.querySelectorAll('img.thumb'));
+  if(!thumbs.length) return;
+
+  // Habilitar transiciones: quitar hidden y usar clase is-open
+  overlay.removeAttribute('hidden');
+
+  let idx = -1;
+
+  function setImage(i){
+    idx = (i + thumbs.length) % thumbs.length;
+    const t = thumbs[idx];
+    const src = t.getAttribute('src');
+    const alt = t.getAttribute('alt') || '';
+    imgEl.src = src;
+    imgEl.alt = alt;
+    captionEl.textContent = alt;
+    // Preload vecinos
+    const nextIdx = (idx+1)%thumbs.length;
+    const prevIdx = (idx-1+thumbs.length)%thumbs.length;
+    [nextIdx, prevIdx].forEach(j=>{ const im=new Image(); im.src = thumbs[j].getAttribute('src'); });
+  }
+
+  function openAt(i){
+    setImage(i);
+    overlay.classList.add('is-open');
+    document.documentElement.classList.add('no-scroll');
+    btnClose?.focus({ preventScroll: true });
+  }
+
+  function close(){
+    overlay.classList.remove('is-open');
+    document.documentElement.classList.remove('no-scroll');
+  }
+
+  function next(){ setImage(idx+1); }
+  function prev(){ setImage(idx-1); }
+
+  // Enlazar thumbs
+  thumbs.forEach((t,i)=>{
+    t.style.cursor = 'zoom-in';
+    t.addEventListener('click', (e)=>{ e.preventDefault(); openAt(i); });
+  });
+
+  // Controles
+  btnClose?.addEventListener('click', close);
+  btnNext?.addEventListener('click', next);
+  btnPrev?.addEventListener('click', prev);
+
+  // Cerrar al pulsar fondo
+  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) close(); });
+
+  // Teclado global
+  document.addEventListener('keydown', (e)=>{
+    if(!overlay.classList.contains('is-open')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowRight') next();
+    if(e.key === 'ArrowLeft') prev();
+  });
+})();
