@@ -624,6 +624,110 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---------- Barras: Luz y Riego ----------
+  function getKVForBars(section, labels){
+    const kvs = section.querySelectorAll('p.kv');
+    for(const p of kvs){
+      const raw = (p.textContent||'').trim();
+      for(const l of labels){
+        if(raw.toLowerCase().startsWith(l.toLowerCase())){
+          return raw.slice(l.length).replace(/^:\s*/,'').trim();
+        }
+      }
+    }
+    return '';
+  }
+
+  function normalizeLight(str){
+    const s = (str||'').toLowerCase();
+    const isAlta = /(muy\s*alta|alta|brillante|mucha|intensa)/.test(s);
+    const isBaja = /(muy\s*baja|baja|sombra|poca)/.test(s);
+    const isMedia = /(media|filtrada|parcial|luminosa)/.test(s);
+    if(isAlta) return 'alta';
+    if(isMedia) return 'media';
+    if(isBaja) return 'baja';
+    if(/indirecta/.test(s)) return 'media';
+    return 'media';
+  }
+
+  function normalizeWater(str){
+    const s = (str||'').toLowerCase();
+    const alto = /(frecuent|abundant|mantener\s+h[úu]med|cada\s*(1|dos|2) d[íi]as)/.test(s);
+    const bajo = /(escaso|poco|dejar\s+secar\s+complet|espaciado|espor[aá]dico)/.test(s);
+    const moderado = /(moderad|regular)/.test(s);
+    if(alto) return 'alto';
+    if(bajo) return 'bajo';
+    if(moderado) return 'moderado';
+    if(/dejar\s+secar/.test(s)) return 'moderado';
+    return 'moderado';
+  }
+
+  function countLightWater(cards){
+    const light = { alta:0, media:0, baja:0 };
+    const water = { alto:0, moderado:0, bajo:0 };
+    cards.forEach(card=>{
+      const l = getKVForBars(card, ['Luz:', 'Condiciones de luz recomendadas:']);
+      const w = getKVForBars(card, ['Riego:']);
+      light[normalizeLight(l)]++;
+      water[normalizeWater(w)]++;
+    });
+    return { light, water };
+  }
+
+  function renderBars(containerId, legendId, entries){
+    const cont = document.getElementById(containerId);
+    const legend = document.getElementById(legendId);
+    if(!cont) return;
+    const total = entries.reduce((a,b)=>a+b.val,0) || 0;
+    cont.innerHTML = '';
+    if(legend) legend.innerHTML = '';
+    entries.forEach(e=>{
+      if(e.val<=0) return;
+      const pct = total ? Math.round((e.val/total)*100) : 0;
+
+      const item = document.createElement('div');
+      item.className = 'baritem';
+
+      const row = document.createElement('div');
+      row.className = 'barrow';
+      const fill = document.createElement('span');
+      fill.className = 'fill';
+      fill.style.background = e.color;
+      fill.style.width = '0%';
+      row.appendChild(fill);
+
+      const label = document.createElement('span');
+      label.className = 'barlabel';
+      const sw = document.createElement('span');
+      sw.className = 'swatch';
+      sw.style.background = e.color;
+      label.appendChild(sw);
+      label.appendChild(document.createTextNode(`${e.label}: ${e.val} · ${pct}%`));
+
+      item.appendChild(row);
+      item.appendChild(label);
+      cont.appendChild(item);
+
+      requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
+    });
+  }
+
+  function renderLightWater(cards){
+    const { light, water } = countLightWater(cards);
+    const lightData = [
+      { key:'alta',  label:'Alta',  val: light.alta,  color:'#9AD08B' },
+      { key:'media', label:'Media', val: light.media, color:'#B7E3B0' },
+      { key:'baja',  label:'Baja',  val: light.baja,  color:'#D2F0CD' },
+    ];
+    const waterData = [
+      { key:'alto',      label:'Alto',      val: water.alto,      color:'#7AB7E6' },
+      { key:'moderado',  label:'Moderado',  val: water.moderado,  color:'#9CCAF0' },
+      { key:'bajo',      label:'Bajo',      val: water.bajo,      color:'#C2E0F7' },
+    ];
+    renderBars('chart-light', 'legend-light', lightData);
+    renderBars('chart-water', 'legend-water', waterData);
+  }
+
   // ---------- Init ----------
   function initDashboard() {
     const cards = Array.from(
@@ -636,6 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLastUpdate();
     bindChips(cards);
     renderDonut(counters);
+    renderLightWater(cards);
   }
 
   // Arranque

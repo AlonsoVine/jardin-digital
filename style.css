@@ -793,6 +793,10 @@ html.light footer a:hover {
 /* ── Mini gráfico donut ─────────────────────────────── */
 .mini-charts {
   margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: stretch;
 }
 .donut-card {
   display: grid;
@@ -838,6 +842,29 @@ html.light .donut-card {
   background: #ffffff;
   border-color: #dcded8;
 }
+
+/* Barras para Luz y Riego (tarjeta a la derecha) */
+.bars-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+}
+.bars-wrap { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.bars-title { margin: 2px 0 6px 0; font-size: 13px; color: var(--muted); }
+.bars { display: grid; gap: 8px; width: 100%; }
+.baritem { display: grid; grid-template-columns: minmax(140px, 1fr) auto; gap: 10px; align-items: center; }
+.barrow { position: relative; height: 10px; background: #131617; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.barrow .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--accent); transition: width .6s ease; }
+.barlabel { font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; white-space: normal; }
+.barlabel .swatch { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line); display: inline-block; }
+.bars-legend { display: none; }
+
+html.light .bars-card { background: #ffffff; border-color: #dcded8; }
+
+@media (max-width: 860px) { .mini-charts { grid-template-columns: 1fr; } }
 
 /* ── Descarga del resumen ─────────────────────────────── */
 .dash-actions {
