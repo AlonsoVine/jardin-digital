@@ -359,6 +359,12 @@ footer a:hover {
   border-color: #2d3a34;
 }
 
+/* Mejoras de contraste en tema claro */
+html.light .filters { background: #ffffff; border-color: #dcded8; }
+html.light .chip { background: #ffffff; border-color: #dcded8; color: #2a2a2a; }
+html.light .chip:hover { border-color: color-mix(in oklab, var(--accent), #2a6b36 25%); color: #2a6b36; }
+html.light .chip.is-active { background: rgba(106,191,123,.18); border-color: #bcd8c0; color: #2a6b36; }
+
 .filter-hint {
   margin: 10px 0 0 0;
   font-size: 12px;
