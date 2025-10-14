@@ -20,7 +20,7 @@
 </header>
 
 <main class="container">
-
+  
   <!-- ===== RESUMEN DEL JARDÍN ===== -->
   <section id="dashboard" class="dash card">
     <div class="dash-left">
@@ -54,6 +54,16 @@
         </div>
       </div>
 
+      <!-- Mini–gráfico: distribución por tipo -->
+      <div class="mini-charts">
+        <figure class="donut-card">
+          <div id="chart-types" class="donut" aria-hidden="true"></div>
+          <figcaption class="donut-caption">Distribución por tipo</figcaption>
+          <ul id="chart-legend" class="donut-legend" aria-label="Leyenda"></ul>
+        </figure>
+      </div>
+
+
       <div class="health">
         <div class="health-top">
           <span>Salud general</span>
@@ -85,101 +95,6 @@
       </div>
     </div>
   </section>
-
-<script>
-function initGardenDashboard() {
-  const cards = Array.from(document.querySelectorAll('section.card[id^="P"]'));
-  const getTxt = el => (el?.innerText || '').toLowerCase();
-
-  const classify = (card) => {
-    const txt = getTxt(card);
-    return {
-      suculenta: /suculent/.test(txt),
-      trepadora: /trepador|colgant/.test(txt),
-      palmera: /palmera/.test(txt),
-      arbusto: /arbusto|árbol/.test(txt),
-      herbacea: /herbácea|ornamental/.test(txt),
-    };
-  };
-
-  const healthScore = (card) => {
-    const txt = getTxt(card);
-    const positive = /(muy saludable|sano|vigoros|hojas firmes|floración|excelente)/;
-    const attention = /(estrés|puntas secas|decaíd|amarill|dañad|falta de|recuperación)/;
-    const isOk = positive.test(txt);
-    const needs = attention.test(txt) && !isOk;
-    return { ok: !!isOk || (!needs && /estable|bien/.test(txt)), needs: !!needs };
-  };
-
-  const counters = { total: cards.length, sucu:0, trepa:0, palma:0, arb:0, herb:0, ok:0, needs:0 };
-  cards.forEach(c => {
-    const cfy = classify(c);
-    counters.sucu += cfy.suculenta?1:0;
-    counters.trepa += cfy.trepadora?1:0;
-    counters.palma += cfy.palmera?1:0;
-    counters.arb   += cfy.arbusto?1:0;
-    counters.herb  += cfy.herbacea?1:0;
-
-    const hs = healthScore(c);
-    counters.ok   += hs.ok?1:0;
-    counters.needs+= hs.needs?1:0;
-  });
-
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  set('kpi-total', counters.total);
-  set('kpi-sucus', counters.sucu);
-  set('kpi-trepas', counters.trepa);
-  set('kpi-palmas', counters.palma);
-  set('kpi-arbustos', counters.arb);
-  set('kpi-herb', counters.herb);
-
-  const percentOk = counters.total ? Math.round((counters.ok / counters.total) * 100) : 0;
-  set('health-percent', percentOk + '% sanas');
-  const bar = document.getElementById('health-bar');
-  if (bar) bar.style.width = percentOk + '%';
-  const legend = document.getElementById('health-legend');
-  if (legend) legend.textContent = `${counters.ok} sanas · ${counters.needs} con atención`;
-
-  const dates = Array.from(document.querySelectorAll('.block .kv'))
-    .map(p => p.innerText)
-    .filter(t => /última revisión:\s*\d{1,2}\/\d{1,2}\/\d{4}/i.test(t))
-    .map(t => t.match(/\d{1,2}\/\d{1,2}\/\d{4}/)[0].split('/').reverse().join('-'))
-    .sort();
-  const last = dates.length ? dates[dates.length - 1] : null;
-  if (last) {
-    const [y,m,d] = last.split('-');
-    const lu = document.getElementById('last-update');
-    if (lu) lu.textContent = `Última actualización: ${d}/${m}/${y}`;
-  }
-
-  const chips = document.querySelectorAll('.chip');
-  const showAll = () => cards.forEach(c => c.style.display = '');
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      chips.forEach(c => c.classList.remove('is-active'));
-      chip.classList.add('is-active');
-      const rule = chip.dataset.filter;
-      if (rule === 'all') { showAll(); return; }
-      const re = new RegExp(rule, 'i');
-      cards.forEach(card => {
-        const txt = getTxt(card);
-        card.style.display = re.test(txt) ? '' : 'none';
-      });
-      document.querySelector('#dashboard')?.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-  });
-}
-
-// Ejecutar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initGardenDashboard);
-} else {
-  initGardenDashboard();
-}
-</script>
-
-
-<main class="container">
 
   <!-- 🔎 Barra de búsqueda -->
   <section class="toolbar" id="searchBar" role="search" aria-label="Buscar plantas">

@@ -619,3 +619,27 @@ html.light footer a:hover{
   color: color-mix(in oklab, var(--accent), #2a6b36 40%);
 }
 
+/* ── Mini gráfico donut ─────────────────────────────── */
+.mini-charts{ margin-top: 10px; }
+.donut-card{
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+}
+.donut{ width: 140px; height: 140px; }
+.donut-caption{ margin: 0; font-size: 13px; color: var(--muted); }
+.donut-legend{
+  list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; font-size: 13px;
+}
+.donut-legend li{ display: flex; align-items: center; gap: 8px; }
+.donut-legend .swatch{
+  width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line);
+}
+
+/* Tema claro: toques más suaves */
+html.light .donut-card{ background: #ffffff; border-color: #dcded8; }
