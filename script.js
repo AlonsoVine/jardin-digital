@@ -471,18 +471,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.textContent = val;
   }
 
+  // Animaciones numéricas y easing
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+  function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
+
+  function animateNumber(elOrId, to, { duration = 1500, prefix = '', suffix = '' } = {}) {
+    const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+    if (!el) return;
+    const from = 0;
+    const start = performance.now();
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const v = Math.round(from + (to - from) * easeOutQuint(t));
+      el.textContent = `${prefix}${v}${suffix}`;
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
   function updateKPIs(c) {
-    setText("kpi-total", c.total);
-    setText("kpi-sucus", c.sucu);
-    setText("kpi-trepas", c.trepa);
-    setText("kpi-palmas", c.palma);
-    setText("kpi-arbustos", c.arb);
-    setText("kpi-herb", c.herb);
+    animateNumber('kpi-total', c.total);
+    animateNumber('kpi-sucus', c.sucu);
+    animateNumber('kpi-trepas', c.trepa);
+    animateNumber('kpi-palmas', c.palma);
+    animateNumber('kpi-arbustos', c.arb);
+    animateNumber('kpi-herb', c.herb);
   }
 
   function updateHealth(c) {
     const percentOk = c.total ? Math.round((c.ok / c.total) * 100) : 0;
-    setText("health-percent", percentOk + "% sanas");
+    animateNumber('health-percent', percentOk, { suffix: '% sanas' });
     const bar = document.getElementById("health-bar");
     if (bar) bar.style.width = percentOk + "%";
     const legend = document.getElementById("health-legend");
@@ -571,6 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // slices
     let offset = 0;
+    let segIndex = 0;
     data.forEach((d) => {
       const len = circumference * (d.val / total);
       const arc = document.createElementNS(ns, "circle");
@@ -580,12 +599,28 @@ document.addEventListener("DOMContentLoaded", () => {
       arc.setAttribute("fill", "none");
       arc.setAttribute("stroke", d.color);
       arc.setAttribute("stroke-width", "18");
-      arc.setAttribute("stroke-dasharray", `${len} ${circumference - len}`);
+      // iniciar desde 0 y animar hasta su longitud final
+      arc.setAttribute("stroke-dasharray", `0 ${circumference}`);
       arc.setAttribute("stroke-dashoffset", `${-offset}`);
       arc.setAttribute("transform", `rotate(-90 ${cx} ${cy})`);
       arc.setAttribute("opacity", "0.95");
       svg.appendChild(arc);
+      // animación del stroke
+      const DURATION = 1600;
+      const delay = segIndex * 180; // pequeño escalonado
+      function animateArc(startTime){
+        function step(now){
+          const t = Math.min(1, (now - startTime) / DURATION);
+          const eased = easeOutQuint(t);
+          const val = len * eased;
+          arc.setAttribute("stroke-dasharray", `${val} ${circumference - val}`);
+          if(t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      setTimeout(()=>animateArc(performance.now()), delay);
       offset += len;
+      segIndex++;
     });
 
     // donut hole
@@ -726,6 +761,37 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
     renderBars('chart-light', 'legend-light', lightData);
     renderBars('chart-water', 'legend-water', waterData);
+
+    // Indicadores promedio
+    renderAverages('avg-light', lightData, { baja:1, media:2, alta:3 });
+    renderAverages('avg-water', waterData, { bajo:1, moderado:2, alto:3 });
+  }
+
+  function renderAverages(containerId, entries, weights){
+    const cont = document.getElementById(containerId);
+    if(!cont) return;
+    const total = entries.reduce((a,b)=>a + (b.val||0), 0) || 0;
+    if(!total){ cont.innerHTML=''; return; }
+    // weighted average 1..3
+    let sum = 0; entries.forEach(e=>{ const w = weights[e.key]||0; sum += w * (e.val||0); });
+    const avg = sum / total; // 1..3
+    const pct = Math.round(((avg - 1) / 2) * 100); // 0..100
+    // closest label
+    const nearest = entries.slice().sort((a,b)=>Math.abs(weights[a.key]-avg)-Math.abs(weights[b.key]-avg))[0];
+
+    // build UI
+    cont.innerHTML = '';
+    const head = document.createElement('div'); head.className='avg-head';
+    const lspan = document.createElement('span'); lspan.innerHTML = `Promedio: <b>${nearest.label}</b>`;
+    const rspan = document.createElement('span'); rspan.textContent = pct + '%';
+    head.appendChild(lspan); head.appendChild(rspan); cont.appendChild(head);
+
+    const row = document.createElement('div'); row.className='barrow';
+    const fill = document.createElement('span'); fill.className='fill';
+    // color cercano a la categoría dominante
+    fill.style.background = nearest.color;
+    fill.style.width = '0%'; row.appendChild(fill); cont.appendChild(row);
+    requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
   }
 
   // ---------- Init ----------
