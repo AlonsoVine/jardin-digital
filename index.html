@@ -1,1693 +1,2568 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <title>Jardín de Belén & Alonso</title>
-  <link rel="icon" type="image/svg+xml" href="img/monstera-leaf-verde-borde-13px.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css"> 
-</head>
-<body>
-<header class="container header-grid" id="top">
-  <div class="header-main">
-    <h1>
-      <img src="img/monstera-leaf-verde-borde-8px.svg" alt="Logo Monstera" class="logo-leaf" />
-      Jardín de Belén & Alonso
-    </h1>
-    <div class="header-sub">
-      Registro digital de plantas y cuidados. Imágenes de nuestro proyecto personal y su constante crecimiento.
-    </div>
-  </div>
-
-  <!-- 👇 Ambos botones DENTRO del MISMO contenedor -->
-  <div class="header-actions" role="group" aria-label="Acciones del encabezado">
-    <button id="themeToggle" class="bubble-btn theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
-    <button id="ambienceBtn" class="bubble-btn sound-btn" aria-label="Sonido ambiente (pájaros)" aria-pressed="false" title="Sonido ambiente">
-      <span class="icon-bird" aria-hidden="true"></span>
-    </button>
-  </div>
-</header>
-
-
-<main class="container">
-  
-  <!-- ===== RESUMEN DEL JARDÍN ===== -->
-  <section id="dashboard" class="dash card">
-    <div class="dash-left">
-      <h2 class="dash-title">Resumen del jardín</h2>
-      <p class="dash-sub">Estadísticas automáticas a partir de las fichas.</p>
-
-      <div class="kpis">
-        <div class="kpi">
-          <div class="kpi-label">Plantas</div>
-          <div class="kpi-value" id="kpi-total">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Suculentas</div>
-          <div class="kpi-value" id="kpi-sucus">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Trep./Colg.</div>
-          <div class="kpi-value" id="kpi-trepas">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Palmeras</div>
-          <div class="kpi-value" id="kpi-palmas">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Arb./Árboles</div>
-          <div class="kpi-value" id="kpi-arbustos">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Herb./Ornam.</div>
-          <div class="kpi-value" id="kpi-herb">—</div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jardín de Belén & Alonso</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="img/monstera-leaf-verde-borde-13px.svg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="container header-grid" id="top">
+      <div class="header-main">
+        <h1>
+          <img
+            src="img/monstera-leaf-verde-borde-8px.svg"
+            alt="Logo Monstera"
+            class="logo-leaf"
+          />
+          Jardín de Belén & Alonso
+        </h1>
+        <div class="header-sub">
+          Registro digital de plantas y cuidados. Imágenes de nuestro proyecto
+          personal y su constante crecimiento.
         </div>
       </div>
 
-      <!-- Mini–gráfico: distribución por tipo -->
-      <div class="mini-charts">
-        <figure class="donut-card">
-          <div id="chart-types" class="donut" aria-hidden="true"></div>
-          <figcaption class="donut-caption">Distribución por tipo</figcaption>
-          <ul id="chart-legend" class="donut-legend" aria-label="Leyenda"></ul>
-        </figure>
+      <!-- 👇 Ambos botones DENTRO del MISMO contenedor -->
+      <div
+        class="header-actions"
+        role="group"
+        aria-label="Acciones del encabezado"
+      >
+        <button
+          id="themeToggle"
+          class="bubble-btn theme-toggle"
+          aria-label="Cambiar tema"
+          title="Cambiar tema"
+        >
+          🌙
+        </button>
+        <button
+          id="ambienceBtn"
+          class="bubble-btn sound-btn"
+          aria-label="Sonido ambiente (pájaros)"
+          aria-pressed="false"
+          title="Sonido ambiente"
+        >
+          <span class="icon-bird" aria-hidden="true"></span>
+        </button>
       </div>
+    </header>
 
-      <!-- SAlud general-->
-      <div class="health">
-        <div class="health-top">
-          <span>Salud general</span>
-          <span id="health-percent">—</span>
-        </div>
-        <div class="bar">
-          <span class="bar-fill" id="health-bar" style="width:0%"></span>
-        </div>
-        <div class="health-legend" id="health-legend">— sanas · — con atención</div>
-      </div>
+    <main class="container">
+      <!-- ===== RESUMEN DEL JARDÍN ===== -->
+      <section id="dashboard" class="dash card">
+        <div class="dash-left">
+          <h2 class="dash-title">Resumen del jardín</h2>
+          <p class="dash-sub">
+            Estadísticas automáticas a partir de las fichas.
+          </p>
 
-      <div class="meta-line">
-        <span id="last-update">Última actualización: —</span>
-      </div>
-
-      <!-- Acciones: Descargar -->
-      <div class="dash-actions">
-        <div class="download">
-          <button class="btn dl-toggle" id="dlToggle" aria-haspopup="true" aria-expanded="false">
-            ⬇️ Descargar
-            <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" class="caret">
-              <path d="M7 10l5 5 5-5z" fill="currentColor"/>
-            </svg>
-          </button>
-          <div class="dl-menu" id="dlMenu" role="menu" hidden>
-            <button class="dl-item" data-format="json" role="menuitem">JSON</button>
-            <button class="dl-item" data-format="txt"  role="menuitem">TXT</button>
-            <button class="dl-item" data-format="csv"  role="menuitem">Excel (CSV)</button>
+          <div class="kpis">
+            <div class="kpi">
+              <div class="kpi-label">Plantas</div>
+              <div class="kpi-value" id="kpi-total">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Suculentas</div>
+              <div class="kpi-value" id="kpi-sucus">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Trep./Colg.</div>
+              <div class="kpi-value" id="kpi-trepas">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Palmeras</div>
+              <div class="kpi-value" id="kpi-palmas">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Arb./Árboles</div>
+              <div class="kpi-value" id="kpi-arbustos">—</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Herb./Ornam.</div>
+              <div class="kpi-value" id="kpi-herb">—</div>
+            </div>
           </div>
-        </div>
-      </div>
 
-    </div>
-
-    <div class="dash-right">
-      <div class="filters">
-        <div class="filter-title">Filtrar por tipo</div>
-        <div class="chips">
-          <button class="chip is-active" data-filter="all">Todas</button>
-          <button class="chip" data-filter="suculenta">Suculentas</button>
-          <button class="chip" data-filter="trepadora">Trepadoras/Colgantes</button>
-          <button class="chip" data-filter="palmera">Palmeras</button>
-          <button class="chip" data-filter="arbusto|árbol">Arbustos/Árboles</button>
-          <button class="chip" data-filter="herbácea|ornamental">Herbáceas/Ornamentales</button>
-        </div>
-        <p class="filter-hint">Click en un chip para mostrar/ocultar. “Todas” restablece.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 🔎 Barra de búsqueda -->
-  <section class="toolbar" id="searchBar" role="search" aria-label="Buscar plantas">
-    <div class="toolbar-row">
-      <div class="field grow">
-        <input id="q" type="search" placeholder="Buscar por nombre, científico o apodo" aria-label="Buscar" />
-      </div>
-
-      <div class="field">
-        <select id="filterType" aria-label="Filtrar por tipo">
-          <option value="">Tipo: todos</option>
-          <!-- JS añadirá opciones reales -->
-        </select>
-      </div>
-
-      <div class="field">
-        <select id="filterState" aria-label="Filtrar por estado">
-          <option value="">Estado: todos</option>
-          <!-- JS añadirá opciones reales -->
-        </select>
-      </div>
-
-      <!-- Filtros adicionales -->
-      <div class="field">
-        <select id="filterLight" aria-label="Filtrar por luz">
-          <option value="">Luz: todas</option>
-          <!-- JS añadirá opciones reales -->
-        </select>
-      </div>
-
-      <div class="field">
-        <select id="filterWater" aria-label="Filtrar por riego">
-          <option value="">Riego: todos</option>
-          <!-- JS añadirá opciones reales -->
-        </select>
-      </div>
-
-      <div class="field">
-        <select id="filterHealth" aria-label="Filtrar por salud">
-          <option value="">Salud: todas</option>
-          <option value="sanas">Sanas</option>
-          <option value="atencion">Con atención</option>
-        </select>
-      </div>
-
-      <button id="clearFilters" class="btn-clear" aria-label="Limpiar filtros">Limpiar</button>
-    </div>
-
-    <div class="toolbar-meta">
-      <span id="resultCount">Mostrando todas</span>
-    </div>
-  </section>
-
-
-
-  <!-- ===== P001 ===== -->
-  <section class="card" id="P001">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0030.jpg" alt="P001 Singonio" />
-    <div>
-      <div class="id">Planta P001 — Singonio / <span class="latin">Syngonium podophyllum</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta de interior tropical, trepadora</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Syngonium podophyllum</span></p>
-          <p class="kv"><b>Origen o procedencia:</b> Selvas tropicales de América Central y del Sur</p>
-          <p class="kv"><b>Ubicación actual:</b> Interior, junto a ventana con luz filtrada</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Condiciones de luz recomendadas:</b> Luz brillante indirecta; tolera sombra parcial. Evitar sol directo.</p>
-          <p class="kv"><b>Riego:</b> Moderado; mantener el sustrato ligeramente húmedo, sin encharcar. Dejar secar la capa superior.</p>
-          <p class="kv"><b>Temperatura ideal:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad recomendada:</b> Media–alta (60–80 %)</p>
-          <p class="kv"><b>Sustrato usado:</b> Mezcla aireada con turba, perlita y corteza</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Sano y vigoroso. Hojas grandes, bien coloreadas, sin signos de plagas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• El tutor con fibra de coco proporciona buen soporte.<br/>• Próxima revisión en 3–4 semanas para observar brotes nuevos.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial. Planta sana, hojas en expansión.</div>
-    </div>
-  </section>
-
-  <!-- ===== P002 ===== -->
-  <section class="card" id="P002">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0040.jpg" alt="P002 Palmera de salón" />
-    <div>
-      <div class="id">Planta P002 — Palmera de salón / <span class="latin">Chamaedorea elegans</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta de interior tropical, palmera pequeña</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Chamaedorea elegans</span></p>
-          <p class="kv"><b>Origen o procedencia:</b> México y Guatemala</p>
-          <p class="kv"><b>Ubicación actual:</b> Interior, zona luminosa sin sol directo</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Luz brillante filtrada o sombra parcial</p>
-          <p class="kv"><b>Riego:</b> Moderado; mantener el sustrato ligeramente húmedo, evitar encharcar</p>
-          <p class="kv"><b>Temperatura ideal:</b> 18–26 °C</p>
-          <p class="kv"><b>Humedad recomendada:</b> Media–alta; pulverizar en ambientes secos</p>
-          <p class="kv"><b>Sustrato usado:</b> Turba + perlita + compost vegetal</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Sano, con puntas marrones leves (falta de humedad o exceso de sales).</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Retirar hojas secas o puntas dañadas.<br/>• Regar con agua filtrada o reposada.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Buen crecimiento; puntas secas leves.</div>
-    </div>
-  </section>
-
-  <!-- ===== P003 ===== -->
-  <section class="card" id="P003">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0041.jpg" alt="P003 Tradescantia zebrina" />
-    <div>
-      <div class="id">Planta P003 — Tradescantia morada / <span class="latin">Tradescantia zebrina</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> Purpurina</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta colgante o rastrera</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Tradescantia zebrina</span></p>
-          <p class="kv"><b>Origen o procedencia:</b> México y América Central</p>
-          <p class="kv"><b>Ubicación actual:</b> Interior, luz brillante indirecta</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Abundante, sin sol directo prolongado</p>
-          <p class="kv"><b>Riego:</b> Regular; sustrato húmedo pero no empapado</p>
-          <p class="kv"><b>Temperatura ideal:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Ligero y aireado con perlita</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Muy saludable, follaje denso y color intenso.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Poda ligera cada 2 meses para mantener forma.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Excelente vigor.</div>
-    </div>
-  </section>
-
-  <!-- ===== P004 ===== -->
-  <section class="card" id="P004">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0042.jpg" alt="P004 Cinta" />
-    <div>
-      <div class="id">Planta P004 — Cinta / <span class="latin">Chlorophytum comosum</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Herbácea perenne de interior</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Chlorophytum comosum</span></p>
-          <p class="kv"><b>Origen:</b> Sudáfrica</p>
-          <p class="kv"><b>Ubicación:</b> Interior, estante luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado; regar cuando se seca la capa superior</p>
-          <p class="kv"><b>Temperatura:</b> 16–27 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal con buen drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Follaje largo y saludable, algunas puntas secas leves.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• El exceso de sales o cloro causa puntas marrones.<br/>• Genera hijuelos con facilidad.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Crecimiento activo.</div>
-    </div>
-  </section>
-
-  <!-- ===== P005 ===== -->
-  <section class="card" id="P005">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0043.jpg" alt="P005 Begonia maculata" />
-    <div>
-      <div class="id">Planta P005 — Begonia maculata / <span class="latin">Begonia maculata</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta ornamental de interior</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Begonia maculata</span></p>
-          <p class="kv"><b>Origen:</b> Brasil</p>
-          <p class="kv"><b>Ubicación:</b> Interior con buena luz difusa</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado; no dejar secar por completo ni encharcar</p>
-          <p class="kv"><b>Temperatura:</b> 20–26 °C</p>
-          <p class="kv"><b>Humedad:</b> Alta (70–80 %)</p>
-          <p class="kv"><b>Sustrato:</b> Turba + perlita + corteza</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas sanas, con algunos daños mecánicos leves.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar mojar hojas al regar.<br/>• Añadir humidificador cercano.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Planta estable y adaptada.</div>
-    </div>
-  </section>
-
-  <!-- ===== P006 ===== -->
-  <section class="card" id="P006">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0044.jpg" alt="P006 Ficus elastica 'Tineke'" />
-    <div>
-      <div class="id">Planta P006 — Ficus elástica variegata / <span class="latin">Ficus elastica ‘Tineke’</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta arbustiva tropical</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Ficus elastica</span> ‘Tineke’</p>
-          <p class="kv"><b>Origen:</b> India y Malasia</p>
-          <p class="kv"><b>Ubicación:</b> Interior, junto a ventana con luz filtrada</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta</p>
-          <p class="kv"><b>Riego:</b> Espaciado; dejar secar la capa superior</p>
-          <p class="kv"><b>Temperatura:</b> 18–30 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal + perlita + fibra de coco</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Leve estrés por sequedad o exceso de sol (bordes amarillos).</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar sol directo fuerte.<br/>• Controlar humedad ambiental.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — En recuperación; hojas firmes.</div>
-    </div>
-  </section>
-
-  <!-- ===== P007 ===== -->
-  <section class="card" id="P007">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0045.jpg" alt="P007 Haworthia fasciata" />
-    <div>
-      <div class="id">Planta P007 — Haworthia / <span class="latin">Haworthia fasciata</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta de interior</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Haworthia fasciata</span></p>
-          <p class="kv"><b>Origen:</b> Sudáfrica</p>
-          <p class="kv"><b>Ubicación:</b> Interior, estante luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta o sol suave</p>
-          <p class="kv"><b>Riego:</b> Escaso; solo cuando el sustrato esté completamente seco</p>
-          <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Mineral con arena y perlita</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Sano, compacto y bien formado.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar exceso de agua.<br/>• Buen candidato para reproducción por hijuelos.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Planta saludable.</div>
-    </div>
-  </section>
-
-  <!-- ===== P008 ===== -->
-  <section class="card" id="P008">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0046.jpg" alt="P008 Cinta joven" />
-    <div>
-      <div class="id">Planta P008 — Cinta joven / <span class="latin">Chlorophytum comosum</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Hijuelo de cinta adulta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Chlorophytum comosum</span></p>
-          <p class="kv"><b>Origen:</b> Propagación doméstica</p>
-          <p class="kv"><b>Ubicación:</b> Interior, maceta amarilla</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado</p>
-          <p class="kv"><b>Temperatura:</b> 16–27 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal aireado</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Muy saludable, hojas vigorosas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Mantener riego regular hasta afianzarse.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Enraizando bien.</div>
-    </div>
-  </section>
-
-  <!-- ===== P009 ===== -->
-  <section class="card" id="P009">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0047.jpg" alt="P009 Adenium obesum" />
-    <div>
-      <div class="id">Planta P009 — Adenio o rosa del desierto / <span class="latin">Adenium obesum</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> Kolog</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Arbusto suculento</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Adenium obesum</span></p>
-          <p class="kv"><b>Origen:</b> África y Arabia</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Mucha luz; tolera sol directo</p>
-          <p class="kv"><b>Riego:</b> Escaso; dejar secar completamente entre riegos</p>
-          <p class="kv"><b>Temperatura:</b> 20–30 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Arenoso con excelente drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Sano, con brotes nuevos visibles.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• En invierno reducir riego al mínimo.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Brotes activos.</div>
-    </div>
-  </section>
-
-  <!-- ===== P010 ===== -->
-  <section class="card" id="P010">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0048.jpg" alt="P010 Poto dorado" />
-    <div>
-      <div class="id">Planta P010 — Poto dorado / <span class="latin">Epipremnum aureum</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta trepadora tropical</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Epipremnum aureum</span></p>
-          <p class="kv"><b>Origen:</b> Islas Salomón</p>
-          <p class="kv"><b>Ubicación:</b> Interior, estante luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta o semisombra</p>
-          <p class="kv"><b>Riego:</b> Moderado; dejar secar capa superior entre riegos</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal aireado con perlita</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas sanas, algunas puntas secas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Recortar tallos largos para estimular ramificación.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Planta en expansión.</div>
-    </div>
-  </section>
-
-  <!-- ===== P011 ===== -->
-  <section class="card" id="P011">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0049.jpg" alt="P011 Kalanchoe tomentosa" />
-    <div>
-      <div class="id">Planta P011 — Kalanchoe tomentosa / <span class="latin">Kalanchoe tomentosa</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Kalanchoe tomentosa</span></p>
-          <p class="kv"><b>Origen:</b> Madagascar</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Intensa o sol directo suave</p>
-          <p class="kv"><b>Riego:</b> Escaso; solo cuando el sustrato esté seco</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Arenoso con perlita</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Leve estrés hídrico, tallo alargado.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Requiere más luz directa para compactarse.<br/>• Evitar exceso de agua.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — En recuperación.</div>
-    </div>
-  </section>
-
-    <!-- ===== P012 ===== -->
-  <section class="card" id="P012">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0034.jpg" alt="P012 Chlorophytum comosum" />
-    <div>
-      <div class="id">Planta P012 — Cinta / <span class="latin">Chlorophytum comosum</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta de interior colgante</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Chlorophytum comosum</span></p>
-          <p class="kv"><b>Origen:</b> Sudáfrica</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso o sombra parcial</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado; dejar secar la capa superior</p>
-          <p class="kv"><b>Temperatura:</b> 18–27 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal aireado con buen drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Plántula joven, hojas sanas y erguidas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Enraíza fácilmente por esquejes.<br/>• Evitar exceso de agua en invierno.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial de plántula.</div>
-    </div>
-  </section>
-
-  <!-- ===== P013 ===== -->
-  <section class="card" id="P013">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0035.jpg" alt="P013 Monstera deliciosa" />
-    <div>
-      <div class="id">Planta P013 — Monstera / <span class="latin">Monstera deliciosa</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Trepadora tropical</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Monstera deliciosa</span></p>
-          <p class="kv"><b>Origen:</b> Centroamérica</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso sin sol directo</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Alta indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado; mantener sustrato ligeramente húmedo</p>
-          <p class="kv"><b>Temperatura:</b> 18–30 °C</p>
-          <p class="kv"><b>Humedad:</b> Alta</p>
-          <p class="kv"><b>Sustrato:</b> Fibroso con perlita o corteza</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas grandes con fenestraciones.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Puede guiarse con tutor.<br/>• Limpiar hojas con paño húmedo.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P014 ===== -->
-  <section class="card" id="P014">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0036.jpg" alt="P014 Crassula ovata" />
-    <div>
-      <div class="id">Planta P014 — Árbol de Jade / <span class="latin">Crassula ovata</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Crassula ovata</span></p>
-          <p class="kv"><b>Origen:</b> Sudáfrica</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso o exterior protegido</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Intensa o sol directo suave</p>
-          <p class="kv"><b>Riego:</b> Escaso; dejar secar completamente</p>
-          <p class="kv"><b>Temperatura:</b> 15–30 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Mineral con buen drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas brillantes y carnosas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar encharque.<br/>• Puede florecer en invierno con buena luz.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P015 ===== -->
-  <section class="card" id="P015">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0037.jpg" alt="P015 Fittonia y Hypoestes mix" />
-    <div>
-      <div class="id">Planta P015 — Composición Fittonia e Hypoestes / <span class="latin">Fittonia albivenis + Hypoestes phyllostachya</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> Alegría</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Composición tropical de interior</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Fittonia albivenis</span> y <span class="latin">Hypoestes phyllostachya</span></p>
-          <p class="kv"><b>Origen:</b> Sudamérica / Madagascar</p>
-          <p class="kv"><b>Ubicación:</b> Interior con luz filtrada</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Media–alta, sin sol directo</p>
-          <p class="kv"><b>Riego:</b> Frecuente; mantener humedad constante</p>
-          <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-          <p class="kv"><b>Humedad:</b> Alta</p>
-          <p class="kv"><b>Sustrato:</b> Orgánico con turba y perlita</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Mezcla sana, colores vivos.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Pulverizar con agua tibia.<br/>• Evitar resecar el sustrato.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P016 ===== -->
-  <section class="card" id="P016">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0038.jpg" alt="P016 Coleus blumei" />
-    <div>
-      <div class="id">Planta P016 — Coleo / <span class="latin">Coleus blumei</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Planta ornamental de follaje</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Coleus blumei</span></p>
-          <p class="kv"><b>Origen:</b> Asia tropical</p>
-          <p class="kv"><b>Ubicación:</b> Interior luminoso o exterior protegido</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Alta indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado-frecuente; no dejar secar del todo</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Media–alta</p>
-          <p class="kv"><b>Sustrato:</b> Rico en materia orgánica</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Follaje denso, crecimiento vigoroso.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Pinzar puntas para mantener forma compacta.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-
-    <!-- ===== P017 ===== -->
-  <section class="card" id="P017">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0028.jpg" alt="P017 Aloe juvenil" />
-    <div>
-      <div class="id">Planta P017 — Aloe (juvenil, identificación tentativa) / <span class="latin">Aloe sp.</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Aloe sp.</span> (posible híbrido con <span class="latin">Gasteria</span>)</p>
-          <p class="kv"><b>Origen:</b> África (según especie)</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Intensa; sol suave de mañana si es posible</p>
-          <p class="kv"><b>Riego:</b> Muy escaso; solo cuando el sustrato esté completamente seco</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C (mín. 12 °C)</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Mineral (50–70 % arena/perlita/pómice)</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Plántula sana; buen color verde claro.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar agua en la roseta.<br/>• Reidentificar cuando emita hojas adultas.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P018 ===== -->
-  <section class="card" id="P018">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0029.jpg" alt="P018 Haworthia cooperi" />
-    <div>
-      <div class="id">Planta P018 — Haworthia (grupo) / <span class="latin">Haworthiopsis cooperi</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Haworthiopsis cooperi</span> (aprox.)</p>
-          <p class="kv"><b>Origen:</b> Sudáfrica</p>
-          <p class="kv"><b>Ubicación:</b> Interior con luz brillante indirecta</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Intensa sin sol directo fuerte</p>
-          <p class="kv"><b>Riego:</b> Escaso; regar a fondo y dejar secar por completo</p>
-          <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Muy drenante (50 % mineral)</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Roseta compacta, crecimiento activo.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar agua estancada en el plato.<br/>• Posible división por hijuelos más adelante.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P019 ===== -->
-  <section class="card" id="P019">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0031.jpg" alt="P019 Kalanchoe plántulas" />
-    <div>
-      <div class="id">Planta P019 — Kalanchoe (plántulas) / <span class="latin">Kalanchoe sp.</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculentas juveniles</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Kalanchoe sp.</span></p>
-          <p class="kv"><b>Origen:</b> Madagascar/África (según especie)</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Alta para evitar estiramiento</p>
-          <p class="kv"><b>Riego:</b> Moderado-escaso; dejar secar casi por completo</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Drenante con perlita/pómice</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Varias plántulas vigorosas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Trasplantar por separado cuando tengan 6–8 hojas verdaderas.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Siembra/propagación en marcha.</div>
-    </div>
-  </section>
-
-  <!-- ===== P020 ===== -->
-  <section class="card" id="P020">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0032.jpg" alt="P020 Areca" />
-    <div>
-      <div class="id">Planta P020 — Palmera areca / <span class="latin">Dypsis lutescens</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Palmera de interior (macolla)</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Dypsis lutescens</span></p>
-          <p class="kv"><b>Origen:</b> Madagascar</p>
-          <p class="kv"><b>Ubicación:</b> Interior, junto a ventana luminosa sin sol directo</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Alta, difusa</p>
-          <p class="kv"><b>Riego:</b> Moderado; mantener ligeramente húmedo, sin encharcar</p>
-          <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-          <p class="kv"><b>Humedad:</b> Media–alta; agradecerá pulverizaciones</p>
-          <p class="kv"><b>Sustrato:</b> Universal con buen drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Gran porte; puntas ligeramente secas en algunas frondas.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Usar agua reposada/filtrada para reducir puntas marrones.<br/>• Retirar frondas muy secas a ras.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P021 ===== -->
-  <section class="card" id="P021">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0033.jpg" alt="P021 Gynura aurantiaca" />
-    <div>
-      <div class="id">Planta P021 — Gynura (terciopelo morado) / <span class="latin">Gynura aurantiaca</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Vivaz ornamental</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Gynura aurantiaca</span></p>
-          <p class="kv"><b>Origen:</b> Asia tropical</p>
-          <p class="kv"><b>Ubicación:</b> Interior luminoso, lejos de sol directo fuerte</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Brillante indirecta</p>
-          <p class="kv"><b>Riego:</b> Moderado; mantener ligeramente húmedo sin encharcar</p>
-          <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Ligero con buen drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Tallos decaídos por posible falta de riego o frío.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Recortar puntas para rebrote vigoroso.<br/>• Mantener riegos regulares y temperatura estable.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial. Recuperación en curso.</div>
-    </div>
-  </section>
-    <!-- ===== P022 ===== -->
-    <section class="card" id="P022">
-      <div class="gallery">
-        <img class="thumb" loading="lazy" src="img/Imagen de WhatsApp-ba3ce5b3.jpg" alt="P022 Campánula en plena floración (13/10/2025)" />
-        <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0020.jpg" alt="P022 Campánula (12/10/2025, registro inicial)" />
-      </div>
-
-      <div>
-        <div class="id">Planta P022 — Campánula / <span class="latin">Campanula portenschlagiana</span></div>
-
-        <div class="row">
-          <div class="block">
-            <h4>Ficha</h4>
-            <p class="kv"><b>Apodo:</b> Campánula morada</p>
-            <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-            <p class="kv"><b>Tipo:</b> Vivaz de flor ornamental</p>
-            <p class="kv"><b>Nombre científico:</b> <span class="latin">Campanula portenschlagiana</span></p>
-            <p class="kv"><b>Origen:</b> Región del Adriático (Europa)</p>
-            <p class="kv"><b>Ubicación:</b> Exterior luminoso, sombra brillante (balcón noreste)</p>
+          <!-- Mini–gráfico: distribución por tipo -->
+          <div class="mini-charts">
+            <figure class="donut-card">
+              <div id="chart-types" class="donut" aria-hidden="true"></div>
+              <figcaption class="donut-caption">
+                Distribución por tipo
+              </figcaption>
+              <ul
+                id="chart-legend"
+                class="donut-legend"
+                aria-label="Leyenda"
+              ></ul>
+            </figure>
           </div>
-          <div class="block">
-            <h4>Cuidados</h4>
-            <p class="kv"><b>Luz:</b> Brillante o semisombra; evitar sol directo intenso</p>
-            <p class="kv"><b>Riego:</b> Regular; mantener sustrato húmedo sin encharcar</p>
-            <p class="kv"><b>Temperatura:</b> 10–25 °C</p>
-            <p class="kv"><b>Humedad:</b> Media</p>
-            <p class="kv"><b>Sustrato:</b> Universal con perlita o arena para mejorar el drenaje</p>
+
+          <!-- SAlud general-->
+          <div class="health">
+            <div class="health-top">
+              <span>Salud general</span>
+              <span id="health-percent">—</span>
+            </div>
+            <div class="bar">
+              <span class="bar-fill" id="health-bar" style="width: 0%"></span>
+            </div>
+            <div class="health-legend" id="health-legend">
+              — sanas · — con atención
+            </div>
+          </div>
+
+          <div class="meta-line">
+            <span id="last-update">Última actualización: —</span>
+          </div>
+
+          <!-- Acciones: Descargar -->
+          <div class="dash-actions">
+            <div class="download">
+              <button
+                class="btn dl-toggle"
+                id="dlToggle"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                ⬇️ Descargar
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  class="caret"
+                >
+                  <path d="M7 10l5 5 5-5z" fill="currentColor" />
+                </svg>
+              </button>
+              <div class="dl-menu" id="dlMenu" role="menu" hidden>
+                <button class="dl-item" data-format="json" role="menuitem">
+                  JSON
+                </button>
+                <button class="dl-item" data-format="txt" role="menuitem">
+                  TXT
+                </button>
+                <button class="dl-item" data-format="csv" role="menuitem">
+                  Excel (CSV)
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="block">
-            <h4>Estado</h4>
-            <p class="kv"><b>Última revisión:</b> 13/10/2025</p>
-            <p class="kv"><b>Estado actual:</b> En floración abundante y uniforme, hojas verdes y sanas.
-              Flores violetas cubren gran parte de la planta, vigor excelente.</p>
-          </div>
-          <div class="block">
-            <h4>Observaciones</h4>
-            <p class="kv">
-              • Mantiene porte compacto y denso.<br/>
-              • Retirar flores marchitas para prolongar floración.<br/>
-              • Evitar exceso de agua en días nublados.<br/>
-              • Posible trasplante tras el final de floración para estimular nuevos brotes.
+        <div class="dash-right">
+          <div class="filters">
+            <div class="filter-title">Filtrar por tipo</div>
+            <div class="chips">
+              <button class="chip is-active" data-filter="all">Todas</button>
+              <button class="chip" data-filter="suculenta">Suculentas</button>
+              <button class="chip" data-filter="trepadora">
+                Trepadoras/Colgantes
+              </button>
+              <button class="chip" data-filter="palmera">Palmeras</button>
+              <button class="chip" data-filter="arbusto|árbol">
+                Arbustos/Árboles
+              </button>
+              <button class="chip" data-filter="herbácea|ornamental">
+                Herbáceas/Ornamentales
+              </button>
+            </div>
+            <p class="filter-hint">
+              Click en un chip para mostrar/ocultar. “Todas” restablece.
             </p>
           </div>
         </div>
+      </section>
 
-        <div class="hist">
-          12/10/2025 — Registro inicial en plena flor.<br/>
-          13/10/2025 — Actualización: nueva foto y estado de floración vigorosa.
-        </div>
-      </div>
-    </section>
+      <!-- 🔎 Barra de búsqueda -->
+      <section
+        class="toolbar"
+        id="searchBar"
+        role="search"
+        aria-label="Buscar plantas"
+      >
+        <div class="toolbar-row">
+          <div class="field grow">
+            <input
+              id="q"
+              type="search"
+              placeholder="Buscar por nombre, científico o apodo"
+              aria-label="Buscar"
+            />
+          </div>
 
+          <div class="field">
+            <select id="filterType" aria-label="Filtrar por tipo">
+              <option value="">Tipo: todos</option>
+              <!-- JS añadirá opciones reales -->
+            </select>
+          </div>
 
+          <div class="field">
+            <select id="filterState" aria-label="Filtrar por estado">
+              <option value="">Estado: todos</option>
+              <!-- JS añadirá opciones reales -->
+            </select>
+          </div>
 
-  <!-- ===== P023 ===== -->
-  <section class="card" id="P023">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0021.jpg" alt="P023 Dracaena fragrans variegata" />
-    <div>
-      <div class="id">Planta P023 — Drácena variegada / <span class="latin">Dracaena fragrans</span> (cultivar)</div>
+          <!-- Filtros adicionales -->
+          <div class="field">
+            <select id="filterLight" aria-label="Filtrar por luz">
+              <option value="">Luz: todas</option>
+              <!-- JS añadirá opciones reales -->
+            </select>
+          </div>
 
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Arbusto de interior</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Dracaena fragrans</span></p>
-          <p class="kv"><b>Origen:</b> África tropical</p>
-          <p class="kv"><b>Ubicación:</b> Interior, junto a ventana con luz filtrada</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Media–alta, sin sol directo fuerte</p>
-          <p class="kv"><b>Riego:</b> Moderado; dejar secar 2–3 cm superiores</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal aireado (con perlita)</p>
-        </div>
-      </div>
+          <div class="field">
+            <select id="filterWater" aria-label="Filtrar por riego">
+              <option value="">Riego: todos</option>
+              <!-- JS añadirá opciones reales -->
+            </select>
+          </div>
 
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas firmes; variegación marcada.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Girar la maceta para crecimiento uniforme.<br/>• Sensible al exceso de sales (usar agua reposada).</p>
-        </div>
-      </div>
+          <div class="field">
+            <select id="filterHealth" aria-label="Filtrar por salud">
+              <option value="">Salud: todas</option>
+              <option value="sanas">Sanas</option>
+              <option value="atencion">Con atención</option>
+            </select>
+          </div>
 
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P024 ===== -->
-  <section class="card" id="P024">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0023.jpg" alt="P024 Sansevieria laurentii" />
-    <div>
-      <div class="id">Planta P024 — Sansevieria laurentii / <span class="latin">Dracaena (Sansevieria) trifasciata ‘Laurentii’</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta rizomatosa</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Dracaena trifasciata</span> ‘Laurentii’</p>
-          <p class="kv"><b>Origen:</b> África occidental</p>
-          <p class="kv"><b>Ubicación:</b> Interior luminoso; tolera semisombra</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Media–alta; evita sol muy fuerte en verano</p>
-          <p class="kv"><b>Riego:</b> Muy escaso; cada 2–4 semanas según estación</p>
-          <p class="kv"><b>Temperatura:</b> 15–30 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja–media</p>
-          <p class="kv"><b>Sustrato:</b> Muy drenante (con arena/pómice)</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas firmes; bordes amarillos intactos.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar agua en el centro de las rosetas.<br/>• Maceta pesada ayuda a la estabilidad.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P025 ===== -->
-  <section class="card" id="P025">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0024.jpg" alt="P025 Pachira aquatica" />
-    <div>
-      <div class="id">Planta P025 — Pachira / <span class="latin">Pachira aquatica</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Árbol de interior (troncos trenzados)</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Pachira aquatica</span></p>
-          <p class="kv"><b>Origen:</b> Centro y Sudamérica</p>
-          <p class="kv"><b>Ubicación:</b> Interior luminoso, sin corrientes frías</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Media–alta</p>
-          <p class="kv"><b>Riego:</b> Moderado; dejar secar capa superior entre riegos</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Media–alta</p>
-          <p class="kv"><b>Sustrato:</b> Universal aireado con drenaje</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas sanas; desarrollo homogéneo.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar encharcamientos para prevenir pudrición de tronco.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P026 ===== -->
-  <section class="card" id="P026">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0025.jpg" alt="P026 Aloe vera 1" />
-    <div>
-      <div class="id">Planta P026 — Aloe vera / <span class="latin">Aloe vera</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Aloe vera</span></p>
-          <p class="kv"><b>Origen:</b> Prob. Arabia/África</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso; sol suave</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Alta; tolera sol directo gradual</p>
-          <p class="kv"><b>Riego:</b> Escaso; regar a fondo y dejar secar por completo</p>
-          <p class="kv"><b>Temperatura:</b> 18–30 °C (mín. 10–12 °C)</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Mineral-drenante (50–70 % inertes)</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Vigorosa; hojas firmes.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Retirar agua del plato; sensible a pudrición.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P027 ===== -->
-  <section class="card" id="P027">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0026.jpg" alt="P027 Dracaena fragrans multicaña" />
-    <div>
-      <div class="id">Planta P027 — Drácena (multicaña) / <span class="latin">Dracaena fragrans</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Arbusto de interior, porte alto</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Dracaena fragrans</span></p>
-          <p class="kv"><b>Origen:</b> África tropical</p>
-          <p class="kv"><b>Ubicación:</b> Interior, ventana luminosa sin sol directo</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Media–alta</p>
-          <p class="kv"><b>Riego:</b> Moderado; evitar encharque</p>
-          <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-          <p class="kv"><b>Humedad:</b> Media</p>
-          <p class="kv"><b>Sustrato:</b> Universal aireado</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Frondas largas, buen porte.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Limpiar polvo de hojas para mejorar fotosíntesis.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P028 ===== -->
-  <section class="card" id="P028">
-    <img class="thumb" loading="lazy" src="img/IMG-20251012-WA0027.jpg" alt="P028 Aloe vera 2" />
-    <div>
-      <div class="id">Planta P028 — Aloe vera (2ª maceta) / <span class="latin">Aloe vera</span></div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
-          <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
-          <p class="kv"><b>Tipo:</b> Suculenta</p>
-          <p class="kv"><b>Nombre científico:</b> <span class="latin">Aloe vera</span></p>
-          <p class="kv"><b>Origen:</b> Prob. Arabia/África</p>
-          <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
-        </div>
-        <div class="block">
-          <h4>Cuidados</h4>
-          <p class="kv"><b>Luz:</b> Alta; adapta gradualmente al sol</p>
-          <p class="kv"><b>Riego:</b> Escaso; dejar secar completamente</p>
-          <p class="kv"><b>Temperatura:</b> 18–30 °C</p>
-          <p class="kv"><b>Humedad:</b> Baja</p>
-          <p class="kv"><b>Sustrato:</b> Mineral-drenante</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="block">
-          <h4>Estado</h4>
-          <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
-          <p class="kv"><b>Estado actual:</b> Hojas sanas; puntas algo secas en una hoja vieja.</p>
-        </div>
-        <div class="block">
-          <h4>Observaciones</h4>
-          <p class="kv">• Evitar riegos nocturnos en clima frío.</p>
-        </div>
-      </div>
-
-      <div class="hist">12/10/2025 — Registro inicial.</div>
-    </div>
-  </section>
-
-  <!-- ===== P029 ===== -->
-    <section class="card" id="P029">
-    <img class="thumb" loading="lazy" src="img/Imagen de WhatsApp-47207885.jpg" alt="P029 Suculenta (Sedum sp., identificación tentativa)" />
-    <div>
-        <div class="id">Planta P029 — Suculenta (identificación tentativa: Sedum) / <span class="latin">Sedum sp.</span></div>
-
-        <div class="row">
-        <div class="block">
-            <h4>Ficha</h4>
-            <p class="kv"><b>Apodo:</b> Soriana</p>
-            <p class="kv"><b>Fecha de registro:</b> 13/10/2025</p>
-            <p class="kv"><b>Tipo:</b> Suculenta de roseta</p>
-            <p class="kv"><b>Nombre científico:</b> <span class="latin">Sedum</span> (identificación tentativa)</p>
-            <p class="kv"><b>Origen o procedencia:</b> Cultivo doméstico (género originario de América/Europa)</p>
-            <p class="kv"><b>Ubicación actual:</b> Exterior protegido o interior muy luminoso (alféizar/ventana)</p>
-        </div>
-        <div class="block">
-            <h4>Cuidados</h4>
-            <p class="kv"><b>Condiciones de luz recomendadas:</b> Luz alta; puede recibir sol suave de mañana.</p>
-            <p class="kv"><b>Riego:</b> Escaso; regar a fondo y dejar secar completamente el sustrato.</p>
-            <p class="kv"><b>Temperatura ideal:</b> 15–28 °C (mín. ~10–12 °C protegido de heladas)</p>
-            <p class="kv"><b>Humedad recomendada:</b> Baja</p>
-            <p class="kv"><b>Sustrato usado:</b> Muy drenante (mezcla mineral con arena/perlita/pómice 50–70 %)</p>
-        </div>
+          <button
+            id="clearFilters"
+            class="btn-clear"
+            aria-label="Limpiar filtros"
+          >
+            Limpiar
+          </button>
         </div>
 
-        <div class="row">
-        <div class="block">
-            <h4>Estado</h4>
-            <p class="kv"><b>Última revisión:</b> 13/10/2025</p>
-            <p class="kv"><b>Estado actual:</b> Plántula compacta y sana; hojas glaucas firmes sin daños visibles.</p>
+        <div class="toolbar-meta">
+          <span id="resultCount">Mostrando todas</span>
         </div>
-        <div class="block">
-            <h4>Observaciones</h4>
-            <p class="kv">• Mantener en zona muy luminosa para evitar estiramiento.<br/>
-            • Vigilar exceso de riego; retirar restos secos de otras plantas en la maceta.<br/>
-            • Reidentificar cuando crezca (posible <span class="latin">Sedum</span> híbrido).</p>
+      </section>
+
+      <!-- ===== P001 ===== -->
+      <section class="card" id="P001">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0030.jpg"
+          alt="P001 Singonio"
+        />
+        <div>
+          <div class="id">
+            Planta P001 — Singonio /
+            <span class="latin">Syngonium podophyllum</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Planta de interior tropical, trepadora
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Syngonium podophyllum</span>
+              </p>
+              <p class="kv">
+                <b>Origen o procedencia:</b> Selvas tropicales de América
+                Central y del Sur
+              </p>
+              <p class="kv">
+                <b>Ubicación actual:</b> Interior, junto a ventana con luz
+                filtrada
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Condiciones de luz recomendadas:</b> Luz brillante indirecta;
+                tolera sombra parcial. Evitar sol directo.
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; mantener el sustrato ligeramente húmedo,
+                sin encharcar. Dejar secar la capa superior.
+              </p>
+              <p class="kv"><b>Temperatura ideal:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad recomendada:</b> Media–alta (60–80 %)</p>
+              <p class="kv">
+                <b>Sustrato usado:</b> Mezcla aireada con turba, perlita y
+                corteza
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Sano y vigoroso. Hojas grandes, bien
+                coloreadas, sin signos de plagas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • El tutor con fibra de coco proporciona buen soporte.<br />•
+                Próxima revisión en 3–4 semanas para observar brotes nuevos.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">
+            12/10/2025 — Registro inicial. Planta sana, hojas en expansión.
+          </div>
         </div>
+      </section>
+
+      <!-- ===== P002 ===== -->
+      <section class="card" id="P002">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0040.jpg"
+          alt="P002 Palmera de salón"
+        />
+        <div>
+          <div class="id">
+            Planta P002 — Palmera de salón /
+            <span class="latin">Chamaedorea elegans</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Planta de interior tropical, palmera pequeña
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Chamaedorea elegans</span>
+              </p>
+              <p class="kv"><b>Origen o procedencia:</b> México y Guatemala</p>
+              <p class="kv">
+                <b>Ubicación actual:</b> Interior, zona luminosa sin sol directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Luz brillante filtrada o sombra parcial
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; mantener el sustrato ligeramente húmedo,
+                evitar encharcar
+              </p>
+              <p class="kv"><b>Temperatura ideal:</b> 18–26 °C</p>
+              <p class="kv">
+                <b>Humedad recomendada:</b> Media–alta; pulverizar en ambientes
+                secos
+              </p>
+              <p class="kv">
+                <b>Sustrato usado:</b> Turba + perlita + compost vegetal
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Sano, con puntas marrones leves (falta de
+                humedad o exceso de sales).
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Retirar hojas secas o puntas dañadas.<br />• Regar con agua
+                filtrada o reposada.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">
+            12/10/2025 — Buen crecimiento; puntas secas leves.
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== P003 ===== -->
+      <section class="card" id="P003">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0041.jpg"
+          alt="P003 Tradescantia zebrina"
+        />
+        <div>
+          <div class="id">
+            Planta P003 — Tradescantia morada /
+            <span class="latin">Tradescantia zebrina</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> Purpurina</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Planta colgante o rastrera</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Tradescantia zebrina</span>
+              </p>
+              <p class="kv">
+                <b>Origen o procedencia:</b> México y América Central
+              </p>
+              <p class="kv">
+                <b>Ubicación actual:</b> Interior, luz brillante indirecta
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Abundante, sin sol directo prolongado
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Regular; sustrato húmedo pero no empapado
+              </p>
+              <p class="kv"><b>Temperatura ideal:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Ligero y aireado con perlita</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Muy saludable, follaje denso y color
+                intenso.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">• Poda ligera cada 2 meses para mantener forma.</p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Excelente vigor.</div>
+        </div>
+      </section>
+
+      <!-- ===== P004 ===== -->
+      <section class="card" id="P004">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0042.jpg"
+          alt="P004 Cinta"
+        />
+        <div>
+          <div class="id">
+            Planta P004 — Cinta /
+            <span class="latin">Chlorophytum comosum</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Herbácea perenne de interior</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Chlorophytum comosum</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Sudáfrica</p>
+              <p class="kv"><b>Ubicación:</b> Interior, estante luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; regar cuando se seca la capa superior
+              </p>
+              <p class="kv"><b>Temperatura:</b> 16–27 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Universal con buen drenaje</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Follaje largo y saludable, algunas puntas
+                secas leves.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • El exceso de sales o cloro causa puntas marrones.<br />•
+                Genera hijuelos con facilidad.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Crecimiento activo.</div>
+        </div>
+      </section>
+
+      <!-- ===== P005 ===== -->
+      <section class="card" id="P005">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0043.jpg"
+          alt="P005 Begonia maculata"
+        />
+        <div>
+          <div class="id">
+            Planta P005 — Begonia maculata /
+            <span class="latin">Begonia maculata</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Planta ornamental de interior</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Begonia maculata</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Brasil</p>
+              <p class="kv"><b>Ubicación:</b> Interior con buena luz difusa</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; no dejar secar por completo ni encharcar
+              </p>
+              <p class="kv"><b>Temperatura:</b> 20–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Alta (70–80 %)</p>
+              <p class="kv"><b>Sustrato:</b> Turba + perlita + corteza</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas sanas, con algunos daños mecánicos
+                leves.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar mojar hojas al regar.<br />• Añadir humidificador
+                cercano.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Planta estable y adaptada.</div>
+        </div>
+      </section>
+
+      <!-- ===== P006 ===== -->
+      <section class="card" id="P006">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0044.jpg"
+          alt="P006 Ficus elastica 'Tineke'"
+        />
+        <div>
+          <div class="id">
+            Planta P006 — Ficus elástica variegata /
+            <span class="latin">Ficus elastica ‘Tineke’</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Planta arbustiva tropical</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Ficus elastica</span> ‘Tineke’
+              </p>
+              <p class="kv"><b>Origen:</b> India y Malasia</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior, junto a ventana con luz filtrada
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Espaciado; dejar secar la capa superior
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–30 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv">
+                <b>Sustrato:</b> Universal + perlita + fibra de coco
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Leve estrés por sequedad o exceso de sol
+                (bordes amarillos).
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar sol directo fuerte.<br />• Controlar humedad ambiental.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — En recuperación; hojas firmes.</div>
+        </div>
+      </section>
+
+      <!-- ===== P007 ===== -->
+      <section class="card" id="P007">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0045.jpg"
+          alt="P007 Haworthia fasciata"
+        />
+        <div>
+          <div class="id">
+            Planta P007 — Haworthia /
+            <span class="latin">Haworthia fasciata</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta de interior</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Haworthia fasciata</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Sudáfrica</p>
+              <p class="kv"><b>Ubicación:</b> Interior, estante luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta o sol suave</p>
+              <p class="kv">
+                <b>Riego:</b> Escaso; solo cuando el sustrato esté completamente
+                seco
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Mineral con arena y perlita</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Sano, compacto y bien formado.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar exceso de agua.<br />• Buen candidato para reproducción
+                por hijuelos.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Planta saludable.</div>
+        </div>
+      </section>
+
+      <!-- ===== P008 ===== -->
+      <section class="card" id="P008">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0046.jpg"
+          alt="P008 Cinta joven"
+        />
+        <div>
+          <div class="id">
+            Planta P008 — Cinta joven /
+            <span class="latin">Chlorophytum comosum</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Hijuelo de cinta adulta</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Chlorophytum comosum</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Propagación doméstica</p>
+              <p class="kv"><b>Ubicación:</b> Interior, maceta amarilla</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta</p>
+              <p class="kv"><b>Riego:</b> Moderado</p>
+              <p class="kv"><b>Temperatura:</b> 16–27 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Universal aireado</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Muy saludable, hojas vigorosas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">• Mantener riego regular hasta afianzarse.</p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Enraizando bien.</div>
+        </div>
+      </section>
+
+      <!-- ===== P009 ===== -->
+      <section class="card" id="P009">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0047.jpg"
+          alt="P009 Adenium obesum"
+        />
+        <div>
+          <div class="id">
+            Planta P009 — Adenio o rosa del desierto /
+            <span class="latin">Adenium obesum</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> Kolog</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Arbusto suculento</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Adenium obesum</span>
+              </p>
+              <p class="kv"><b>Origen:</b> África y Arabia</p>
+              <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Mucha luz; tolera sol directo</p>
+              <p class="kv">
+                <b>Riego:</b> Escaso; dejar secar completamente entre riegos
+              </p>
+              <p class="kv"><b>Temperatura:</b> 20–30 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Arenoso con excelente drenaje</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Sano, con brotes nuevos visibles.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">• En invierno reducir riego al mínimo.</p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Brotes activos.</div>
+        </div>
+      </section>
+
+      <!-- ===== P010 ===== -->
+      <section class="card" id="P010">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0048.jpg"
+          alt="P010 Poto dorado"
+        />
+        <div>
+          <div class="id">
+            Planta P010 — Poto dorado /
+            <span class="latin">Epipremnum aureum</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Planta trepadora tropical</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Epipremnum aureum</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Islas Salomón</p>
+              <p class="kv"><b>Ubicación:</b> Interior, estante luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta o semisombra</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; dejar secar capa superior entre riegos
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Universal aireado con perlita</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas sanas, algunas puntas secas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Recortar tallos largos para estimular ramificación.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Planta en expansión.</div>
+        </div>
+      </section>
+
+      <!-- ===== P011 ===== -->
+      <section class="card" id="P011">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0049.jpg"
+          alt="P011 Kalanchoe tomentosa"
+        />
+        <div>
+          <div class="id">
+            Planta P011 — Kalanchoe tomentosa /
+            <span class="latin">Kalanchoe tomentosa</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Kalanchoe tomentosa</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Madagascar</p>
+              <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Intensa o sol directo suave</p>
+              <p class="kv">
+                <b>Riego:</b> Escaso; solo cuando el sustrato esté seco
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Arenoso con perlita</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Leve estrés hídrico, tallo alargado.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Requiere más luz directa para compactarse.<br />• Evitar
+                exceso de agua.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — En recuperación.</div>
+        </div>
+      </section>
+
+      <!-- ===== P012 ===== -->
+      <section class="card" id="P012">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0034.jpg"
+          alt="P012 Chlorophytum comosum"
+        />
+        <div>
+          <div class="id">
+            Planta P012 — Cinta /
+            <span class="latin">Chlorophytum comosum</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Planta de interior colgante</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Chlorophytum comosum</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Sudáfrica</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior muy luminoso o sombra parcial
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; dejar secar la capa superior
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–27 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv">
+                <b>Sustrato:</b> Universal aireado con buen drenaje
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Plántula joven, hojas sanas y erguidas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Enraíza fácilmente por esquejes.<br />• Evitar exceso de agua
+                en invierno.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial de plántula.</div>
+        </div>
+      </section>
+
+      <!-- ===== P013 ===== -->
+      <section class="card" id="P013">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0035.jpg"
+          alt="P013 Monstera deliciosa"
+        />
+        <div>
+          <div class="id">
+            Planta P013 — Monstera /
+            <span class="latin">Monstera deliciosa</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Trepadora tropical</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Monstera deliciosa</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Centroamérica</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior muy luminoso sin sol directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; mantener sustrato ligeramente húmedo
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–30 °C</p>
+              <p class="kv"><b>Humedad:</b> Alta</p>
+              <p class="kv"><b>Sustrato:</b> Fibroso con perlita o corteza</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas grandes con fenestraciones.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Puede guiarse con tutor.<br />• Limpiar hojas con paño húmedo.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P014 ===== -->
+      <section class="card" id="P014">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0036.jpg"
+          alt="P014 Crassula ovata"
+        />
+        <div>
+          <div class="id">
+            Planta P014 — Árbol de Jade /
+            <span class="latin">Crassula ovata</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Crassula ovata</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Sudáfrica</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior muy luminoso o exterior protegido
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Intensa o sol directo suave</p>
+              <p class="kv"><b>Riego:</b> Escaso; dejar secar completamente</p>
+              <p class="kv"><b>Temperatura:</b> 15–30 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Mineral con buen drenaje</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas brillantes y carnosas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar encharque.<br />• Puede florecer en invierno con buena
+                luz.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P015 ===== -->
+      <section class="card" id="P015">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0037.jpg"
+          alt="P015 Fittonia y Hypoestes mix"
+        />
+        <div>
+          <div class="id">
+            Planta P015 — Composición Fittonia e Hypoestes /
+            <span class="latin"
+              >Fittonia albivenis + Hypoestes phyllostachya</span
+            >
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> Alegría</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Composición tropical de interior</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Fittonia albivenis</span> y
+                <span class="latin">Hypoestes phyllostachya</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Sudamérica / Madagascar</p>
+              <p class="kv"><b>Ubicación:</b> Interior con luz filtrada</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Media–alta, sin sol directo</p>
+              <p class="kv">
+                <b>Riego:</b> Frecuente; mantener humedad constante
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Alta</p>
+              <p class="kv"><b>Sustrato:</b> Orgánico con turba y perlita</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Mezcla sana, colores vivos.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Pulverizar con agua tibia.<br />• Evitar resecar el sustrato.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P016 ===== -->
+      <section class="card" id="P016">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0038.jpg"
+          alt="P016 Coleus blumei"
+        />
+        <div>
+          <div class="id">
+            Planta P016 — Coleo / <span class="latin">Coleus blumei</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Planta ornamental de follaje</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Coleus blumei</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Asia tropical</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso o exterior protegido
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado-frecuente; no dejar secar del todo
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media–alta</p>
+              <p class="kv"><b>Sustrato:</b> Rico en materia orgánica</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Follaje denso, crecimiento vigoroso.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">• Pinzar puntas para mantener forma compacta.</p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P017 ===== -->
+      <section class="card" id="P017">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0028.jpg"
+          alt="P017 Aloe juvenil"
+        />
+        <div>
+          <div class="id">
+            Planta P017 — Aloe (juvenil, identificación tentativa) /
+            <span class="latin">Aloe sp.</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Aloe sp.</span> (posible híbrido con
+                <span class="latin">Gasteria</span>)
+              </p>
+              <p class="kv"><b>Origen:</b> África (según especie)</p>
+              <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Intensa; sol suave de mañana si es posible
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Muy escaso; solo cuando el sustrato esté
+                completamente seco
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C (mín. 12 °C)</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv">
+                <b>Sustrato:</b> Mineral (50–70 % arena/perlita/pómice)
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Plántula sana; buen color verde claro.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar agua en la roseta.<br />• Reidentificar cuando emita
+                hojas adultas.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P018 ===== -->
+      <section class="card" id="P018">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0029.jpg"
+          alt="P018 Haworthia cooperi"
+        />
+        <div>
+          <div class="id">
+            Planta P018 — Haworthia (grupo) /
+            <span class="latin">Haworthiopsis cooperi</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Haworthiopsis cooperi</span> (aprox.)
+              </p>
+              <p class="kv"><b>Origen:</b> Sudáfrica</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior con luz brillante indirecta
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Intensa sin sol directo fuerte</p>
+              <p class="kv">
+                <b>Riego:</b> Escaso; regar a fondo y dejar secar por completo
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Muy drenante (50 % mineral)</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Roseta compacta, crecimiento activo.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar agua estancada en el plato.<br />• Posible división por
+                hijuelos más adelante.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P019 ===== -->
+      <section class="card" id="P019">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0031.jpg"
+          alt="P019 Kalanchoe plántulas"
+        />
+        <div>
+          <div class="id">
+            Planta P019 — Kalanchoe (plántulas) /
+            <span class="latin">Kalanchoe sp.</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculentas juveniles</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Kalanchoe sp.</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Madagascar/África (según especie)</p>
+              <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta para evitar estiramiento</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado-escaso; dejar secar casi por completo
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Drenante con perlita/pómice</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Varias plántulas vigorosas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Trasplantar por separado cuando tengan 6–8 hojas verdaderas.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Siembra/propagación en marcha.</div>
+        </div>
+      </section>
+
+      <!-- ===== P020 ===== -->
+      <section class="card" id="P020">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0032.jpg"
+          alt="P020 Areca"
+        />
+        <div>
+          <div class="id">
+            Planta P020 — Palmera areca /
+            <span class="latin">Dypsis lutescens</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Palmera de interior (macolla)</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Dypsis lutescens</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Madagascar</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior, junto a ventana luminosa sin sol
+                directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta, difusa</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; mantener ligeramente húmedo, sin
+                encharcar
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv">
+                <b>Humedad:</b> Media–alta; agradecerá pulverizaciones
+              </p>
+              <p class="kv"><b>Sustrato:</b> Universal con buen drenaje</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Gran porte; puntas ligeramente secas en
+                algunas frondas.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Usar agua reposada/filtrada para reducir puntas marrones.<br />•
+                Retirar frondas muy secas a ras.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P021 ===== -->
+      <section class="card" id="P021">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0033.jpg"
+          alt="P021 Gynura aurantiaca"
+        />
+        <div>
+          <div class="id">
+            Planta P021 — Gynura (terciopelo morado) /
+            <span class="latin">Gynura aurantiaca</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Vivaz ornamental</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Gynura aurantiaca</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Asia tropical</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso, lejos de sol directo fuerte
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Brillante indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; mantener ligeramente húmedo sin
+                encharcar
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Ligero con buen drenaje</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Tallos decaídos por posible falta de riego
+                o frío.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Recortar puntas para rebrote vigoroso.<br />• Mantener riegos
+                regulares y temperatura estable.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">
+            12/10/2025 — Registro inicial. Recuperación en curso.
+          </div>
+        </div>
+      </section>
+      <!-- ===== P022 ===== -->
+      <section class="card" id="P022">
+        <div class="gallery">
+          <img
+            class="thumb"
+            loading="lazy"
+            src="img/Imagen de WhatsApp-ba3ce5b3.jpg"
+            alt="P022 Campánula en plena floración (13/10/2025)"
+          />
+          <img
+            class="thumb"
+            loading="lazy"
+            src="img/IMG-20251012-WA0020.jpg"
+            alt="P022 Campánula (12/10/2025, registro inicial)"
+          />
         </div>
 
-        <div class="hist">13/10/2025 — Registro inicial a partir de foto. Identificación tentativa.</div>
-    </div>
-    </section>
+        <div>
+          <div class="id">
+            Planta P022 — Campánula /
+            <span class="latin">Campanula portenschlagiana</span>
+          </div>
 
-    <!-- ===== P030 ===== -->
-<section class="card" id="P030">
-  <img class="thumb" loading="lazy" src="img/IMG-20251014-WA0004.jpg" alt="P030 Peperomia obtusifolia (verde)" />
-  <div>
-    <div class="id">Planta P030 — Peperomia bebé / <span class="latin">Peperomia obtusifolia</span> (aprox.)</div>
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> Campánula morada</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Vivaz de flor ornamental</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Campanula portenschlagiana</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Región del Adriático (Europa)</p>
+              <p class="kv">
+                <b>Ubicación:</b> Exterior luminoso, sombra brillante (balcón
+                noreste)
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Brillante o semisombra; evitar sol directo intenso
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Regular; mantener sustrato húmedo sin encharcar
+              </p>
+              <p class="kv"><b>Temperatura:</b> 10–25 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv">
+                <b>Sustrato:</b> Universal con perlita o arena para mejorar el
+                drenaje
+              </p>
+            </div>
+          </div>
 
-    <div class="row">
-      <div class="block">
-        <h4>Ficha</h4>
-        <p class="kv"><b>Apodo:</b> —</p>
-        <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
-        <p class="kv"><b>Tipo:</b> Planta de interior tropical, compacta</p>
-        <p class="kv"><b>Nombre científico:</b> <span class="latin">Peperomia obtusifolia</span></p>
-        <p class="kv"><b>Origen:</b> América tropical</p>
-        <p class="kv"><b>Ubicación:</b> Interior luminoso (escritorio/ventana sin sol directo)</p>
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 13/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> En floración abundante y uniforme, hojas
+                verdes y sanas. Flores violetas cubren gran parte de la planta,
+                vigor excelente.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Mantiene porte compacto y denso.<br />
+                • Retirar flores marchitas para prolongar floración.<br />
+                • Evitar exceso de agua en días nublados.<br />
+                • Posible trasplante tras el final de floración para estimular
+                nuevos brotes.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">
+            12/10/2025 — Registro inicial en plena flor.<br />
+            13/10/2025 — Actualización: nueva foto y estado de floración
+            vigorosa.
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== P023 ===== -->
+      <section class="card" id="P023">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0021.jpg"
+          alt="P023 Dracaena fragrans variegata"
+        />
+        <div>
+          <div class="id">
+            Planta P023 — Drácena variegada /
+            <span class="latin">Dracaena fragrans</span> (cultivar)
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Arbusto de interior</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Dracaena fragrans</span>
+              </p>
+              <p class="kv"><b>Origen:</b> África tropical</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior, junto a ventana con luz filtrada
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Media–alta, sin sol directo fuerte</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; dejar secar 2–3 cm superiores
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Universal aireado (con perlita)</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas firmes; variegación marcada.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Girar la maceta para crecimiento uniforme.<br />• Sensible al
+                exceso de sales (usar agua reposada).
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P024 ===== -->
+      <section class="card" id="P024">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0023.jpg"
+          alt="P024 Sansevieria laurentii"
+        />
+        <div>
+          <div class="id">
+            Planta P024 — Sansevieria laurentii /
+            <span class="latin"
+              >Dracaena (Sansevieria) trifasciata ‘Laurentii’</span
+            >
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta rizomatosa</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Dracaena trifasciata</span> ‘Laurentii’
+              </p>
+              <p class="kv"><b>Origen:</b> África occidental</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso; tolera semisombra
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Media–alta; evita sol muy fuerte en verano
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Muy escaso; cada 2–4 semanas según estación
+              </p>
+              <p class="kv"><b>Temperatura:</b> 15–30 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja–media</p>
+              <p class="kv"><b>Sustrato:</b> Muy drenante (con arena/pómice)</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas firmes; bordes amarillos intactos.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar agua en el centro de las rosetas.<br />• Maceta pesada
+                ayuda a la estabilidad.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P025 ===== -->
+      <section class="card" id="P025">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0024.jpg"
+          alt="P025 Pachira aquatica"
+        />
+        <div>
+          <div class="id">
+            Planta P025 — Pachira / <span class="latin">Pachira aquatica</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Árbol de interior (troncos trenzados)
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Pachira aquatica</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Centro y Sudamérica</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso, sin corrientes frías
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Media–alta</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; dejar secar capa superior entre riegos
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media–alta</p>
+              <p class="kv"><b>Sustrato:</b> Universal aireado con drenaje</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas sanas; desarrollo homogéneo.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar encharcamientos para prevenir pudrición de tronco.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P026 ===== -->
+      <section class="card" id="P026">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0025.jpg"
+          alt="P026 Aloe vera 1"
+        />
+        <div>
+          <div class="id">
+            Planta P026 — Aloe vera / <span class="latin">Aloe vera</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta</p>
+              <p class="kv">
+                <b>Nombre científico:</b> <span class="latin">Aloe vera</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Prob. Arabia/África</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior muy luminoso; sol suave
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta; tolera sol directo gradual</p>
+              <p class="kv">
+                <b>Riego:</b> Escaso; regar a fondo y dejar secar por completo
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–30 °C (mín. 10–12 °C)</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv">
+                <b>Sustrato:</b> Mineral-drenante (50–70 % inertes)
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv"><b>Estado actual:</b> Vigorosa; hojas firmes.</p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">• Retirar agua del plato; sensible a pudrición.</p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P027 ===== -->
+      <section class="card" id="P027">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0026.jpg"
+          alt="P027 Dracaena fragrans multicaña"
+        />
+        <div>
+          <div class="id">
+            Planta P027 — Drácena (multicaña) /
+            <span class="latin">Dracaena fragrans</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Arbusto de interior, porte alto</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Dracaena fragrans</span>
+              </p>
+              <p class="kv"><b>Origen:</b> África tropical</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior, ventana luminosa sin sol directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Media–alta</p>
+              <p class="kv"><b>Riego:</b> Moderado; evitar encharque</p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Universal aireado</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Frondas largas, buen porte.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Limpiar polvo de hojas para mejorar fotosíntesis.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P028 ===== -->
+      <section class="card" id="P028">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251012-WA0027.jpg"
+          alt="P028 Aloe vera 2"
+        />
+        <div>
+          <div class="id">
+            Planta P028 — Aloe vera (2ª maceta) /
+            <span class="latin">Aloe vera</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta</p>
+              <p class="kv">
+                <b>Nombre científico:</b> <span class="latin">Aloe vera</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Prob. Arabia/África</p>
+              <p class="kv"><b>Ubicación:</b> Interior muy luminoso</p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta; adapta gradualmente al sol</p>
+              <p class="kv"><b>Riego:</b> Escaso; dejar secar completamente</p>
+              <p class="kv"><b>Temperatura:</b> 18–30 °C</p>
+              <p class="kv"><b>Humedad:</b> Baja</p>
+              <p class="kv"><b>Sustrato:</b> Mineral-drenante</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 12/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas sanas; puntas algo secas en una hoja
+                vieja.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">• Evitar riegos nocturnos en clima frío.</p>
+            </div>
+          </div>
+
+          <div class="hist">12/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P029 ===== -->
+      <section class="card" id="P029">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/Imagen de WhatsApp-47207885.jpg"
+          alt="P029 Suculenta (Sedum sp., identificación tentativa)"
+        />
+        <div>
+          <div class="id">
+            Planta P029 — Suculenta (identificación tentativa: Sedum) /
+            <span class="latin">Sedum sp.</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> Soriana</p>
+              <p class="kv"><b>Fecha de registro:</b> 13/10/2025</p>
+              <p class="kv"><b>Tipo:</b> Suculenta de roseta</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Sedum</span> (identificación tentativa)
+              </p>
+              <p class="kv">
+                <b>Origen o procedencia:</b> Cultivo doméstico (género
+                originario de América/Europa)
+              </p>
+              <p class="kv">
+                <b>Ubicación actual:</b> Exterior protegido o interior muy
+                luminoso (alféizar/ventana)
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Condiciones de luz recomendadas:</b> Luz alta; puede recibir
+                sol suave de mañana.
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Escaso; regar a fondo y dejar secar completamente
+                el sustrato.
+              </p>
+              <p class="kv">
+                <b>Temperatura ideal:</b> 15–28 °C (mín. ~10–12 °C protegido de
+                heladas)
+              </p>
+              <p class="kv"><b>Humedad recomendada:</b> Baja</p>
+              <p class="kv">
+                <b>Sustrato usado:</b> Muy drenante (mezcla mineral con
+                arena/perlita/pómice 50–70 %)
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 13/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Plántula compacta y sana; hojas glaucas
+                firmes sin daños visibles.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Mantener en zona muy luminosa para evitar estiramiento.<br />
+                • Vigilar exceso de riego; retirar restos secos de otras plantas
+                en la maceta.<br />
+                • Reidentificar cuando crezca (posible
+                <span class="latin">Sedum</span> híbrido).
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">
+            13/10/2025 — Registro inicial a partir de foto. Identificación
+            tentativa.
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== P030 ===== -->
+      <section class="card" id="P030">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251014-WA0004.jpg"
+          alt="P030 Peperomia obtusifolia (verde)"
+        />
+        <div>
+          <div class="id">
+            Planta P030 — Peperomia bebé /
+            <span class="latin">Peperomia obtusifolia</span> (aprox.)
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Planta de interior tropical, compacta
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Peperomia obtusifolia</span>
+              </p>
+              <p class="kv"><b>Origen:</b> América tropical</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso (escritorio/ventana sin sol
+                directo)
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Brillante indirecta; tolera semisombra
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Moderado-escaso; dejar secar capa superior
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv"><b>Sustrato:</b> Universal aireado con perlita</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Roseta compacta, hojas brillantes y
+                turgentes.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Sensible al exceso de agua; maceta con drenaje.<br />• Girar
+                cada 1–2 semanas para crecimiento uniforme.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">14/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P031 ===== -->
+      <section class="card" id="P031">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251014-WA0005.jpg"
+          alt="P031 Peperomia albovittata 'Piccolo Banda'"
+        />
+        <div>
+          <div class="id">
+            Planta P031 — Peperomia ‘Piccolo Banda’ /
+            <span class="latin">Peperomia albovittata</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
+              <p class="kv"><b>Tipo:</b> Planta de interior ornamental</p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Peperomia albovittata</span> ‘Piccolo Banda’
+              </p>
+              <p class="kv"><b>Origen:</b> América del Sur (cultivar)</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso, sin sol directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Alta indirecta para mantener el plateado
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; prefiere ligeros secados entre riegos
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv">
+                <b>Sustrato:</b> Ligero y drenante (universal + perlita)
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Follaje plateado con bandas verdes,
+                pecíolos rojos; planta sana y tupida.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar luz muy baja (pierde contraste).<br />• Sensible a
+                corrientes frías.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">14/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P032 ===== -->
+      <section class="card" id="P032">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251014-WA0006.jpg"
+          alt="P032 Peperomia obtusifolia 'Variegata'"
+        />
+        <div>
+          <div class="id">
+            Planta P032 — Peperomia variegada /
+            <span class="latin">Peperomia obtusifolia</span> ‘Variegata’
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Planta de interior tropical, variegada
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Peperomia obtusifolia</span> ‘Variegata’
+              </p>
+              <p class="kv"><b>Origen:</b> América tropical (cultivar)</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior muy luminoso (imprescindible para la
+                variegación)
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta indirecta; evitar sol fuerte</p>
+              <p class="kv">
+                <b>Riego:</b> Moderado-escaso; hojas carnosas almacenan agua
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv">
+                <b>Sustrato:</b> Universal con perlita; drenaje excelente
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Brotes nuevos; variegación crema/verde
+                bien definida.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Rotar para evitar que “busque” la luz.<br />• Si pierde
+                variegación, aumentar luminosidad.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">14/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P033 ===== -->
+      <section class="card" id="P033">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251014-WA0007.jpg"
+          alt="P033 Peperomia 'Rosso'"
+        />
+        <div>
+          <div class="id">
+            Planta P033 — Peperomia ‘Rosso’ /
+            <span class="latin">Peperomia caperata</span> ‘Rosso’ (aprox.)
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Planta de interior ornamental, compacta
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Peperomia caperata</span> ‘Rosso’
+              </p>
+              <p class="kv"><b>Origen:</b> Brasil (cultivar)</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior luminoso, lejos del sol directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv">
+                <b>Luz:</b> Brillante indirecta para resaltar el envés rojo
+              </p>
+              <p class="kv">
+                <b>Riego:</b> Moderado; dejar secar 2–3 cm superiores
+              </p>
+              <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
+              <p class="kv"><b>Humedad:</b> Media</p>
+              <p class="kv">
+                <b>Sustrato:</b> Suelto y drenante (universal + perlita)
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hojas verde oscuro con venas marcadas y
+                reverso rojizo; porte muy compacto.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Evitar encharque y pulverizar directamente las hojas.<br />•
+                Ideal maceta ancha y poco profunda.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">14/10/2025 — Registro inicial.</div>
+        </div>
+      </section>
+
+      <!-- ===== P034 ===== -->
+      <section class="card" id="P034">
+        <img
+          class="thumb"
+          loading="lazy"
+          src="img/IMG-20251014-WA0008.jpg"
+          alt="P034 Monstera adansonii (esqueje)"
+        />
+        <div>
+          <div class="id">
+            Planta P034 — Monstera adansonii (esqueje) /
+            <span class="latin">Monstera adansonii</span>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Ficha</h4>
+              <p class="kv"><b>Apodo:</b> —</p>
+              <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Tipo:</b> Trepadora tropical (esqueje enraizando)
+              </p>
+              <p class="kv">
+                <b>Nombre científico:</b>
+                <span class="latin">Monstera adansonii</span>
+              </p>
+              <p class="kv"><b>Origen:</b> Centro–Sudamérica</p>
+              <p class="kv">
+                <b>Ubicación:</b> Interior muy luminoso sin sol directo
+              </p>
+            </div>
+            <div class="block">
+              <h4>Cuidados</h4>
+              <p class="kv"><b>Luz:</b> Alta indirecta</p>
+              <p class="kv">
+                <b>Riego:</b> Mantener húmedo (si está en agua o mezcla ligera)
+                sin encharcar
+              </p>
+              <p class="kv"><b>Temperatura:</b> 20–28 °C</p>
+              <p class="kv"><b>Humedad:</b> Media–alta</p>
+              <p class="kv">
+                <b>Sustrato:</b> Para trasplante: mezcla aireada (turba/coco +
+                perlita + corteza)
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="block">
+              <h4>Estado</h4>
+              <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
+              <p class="kv">
+                <b>Estado actual:</b> Hoja con fenestraciones; esqueje en frasco
+                iniciando raíces.
+              </p>
+            </div>
+            <div class="block">
+              <h4>Observaciones</h4>
+              <p class="kv">
+                • Trasplantar cuando las raíces superen 3–4 cm.<br />• Añadir
+                tutor o guía al establecerse.
+              </p>
+            </div>
+          </div>
+
+          <div class="hist">14/10/2025 — Registro inicial de esqueje.</div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <p class="brand">
+          <img
+            src="img/monstera-leaf-verde-borde-13px.svg"
+            alt="Logo Monstera"
+            class="logo-leaf"
+          />
+          <strong>Jardín de Belén & Alonso</strong>
+        </p>
+        <p class="tagline">Registro digital de plantas y cuidados</p>
+        <p class="meta">© 2025 Alonso · Cultiva con paciencia y luz 🌞</p>
       </div>
-      <div class="block">
-        <h4>Cuidados</h4>
-        <p class="kv"><b>Luz:</b> Brillante indirecta; tolera semisombra</p>
-        <p class="kv"><b>Riego:</b> Moderado-escaso; dejar secar capa superior</p>
-        <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-        <p class="kv"><b>Humedad:</b> Media</p>
-        <p class="kv"><b>Sustrato:</b> Universal aireado con perlita</p>
+      <div class="social-links">
+        <a
+          href="https://github.com/AlonsoVine"
+          class="social-btn github"
+          target="_blank"
+          aria-label="GitHub"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.87 10.94c.58.1.79-.25.79-.56v-2.1c-3.2.7-3.87-1.54-3.87-1.54-.53-1.35-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.18.08 1.8 1.2 1.8 1.2 1.04 1.8 2.73 1.28 3.4.98.1-.76.41-1.28.74-1.58-2.56-.3-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.54.12-3.2 0 0 .98-.32 3.2 1.2a10.6 10.6 0 0 1 5.82 0c2.22-1.52 3.2-1.2 3.2-1.2.64 1.66.24 2.9.12 3.2.75.81 1.2 1.84 1.2 3.1 0 4.44-2.7 5.4-5.28 5.68.44.38.82 1.12.82 2.26v3.35c0 .3.21.66.8.55A11.52 11.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"
+            />
+          </svg>
+        </a>
+
+        <a
+          href="https://alonsovine.github.io/portfolio/"
+          class="social-btn portfolio"
+          target="_blank"
+          aria-label="Portfolio personal"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"
+            />
+          </svg>
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/alonso-vi%C3%B1%C3%A9-barrancos/"
+          class="social-btn linkedin"
+          target="_blank"
+          aria-label="LinkedIn"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M20.45 20.45h-3.55v-5.26c0-1.26 0-2.88-1.75-2.88s-2.02 1.37-2.02 2.79v5.35h-3.56V9h3.42v1.56h.05c.48-.9 1.67-1.85 3.44-1.85 3.68 0 4.36 2.42 4.36 5.56v6.18ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.78A1.77 1.77 0 0 0 0 1.78v20.44C0 23.22.78 24 1.78 24h20.44A1.77 1.77 0 0 0 24 22.22V1.78A1.77 1.77 0 0 0 22.22 0Z"
+            />
+          </svg>
+        </a>
       </div>
-    </div>
+    </footer>
 
-    <div class="row">
-      <div class="block">
-        <h4>Estado</h4>
-        <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
-        <p class="kv"><b>Estado actual:</b> Roseta compacta, hojas brillantes y turgentes.</p>
-      </div>
-      <div class="block">
-        <h4>Observaciones</h4>
-        <p class="kv">• Sensible al exceso de agua; maceta con drenaje.<br/>• Girar cada 1–2 semanas para crecimiento uniforme.</p>
-      </div>
-    </div>
-
-    <div class="hist">14/10/2025 — Registro inicial.</div>
-  </div>
-</section>
-
-<!-- ===== P031 ===== -->
-<section class="card" id="P031">
-  <img class="thumb" loading="lazy" src="img/IMG-20251014-WA0005.jpg" alt="P031 Peperomia albovittata 'Piccolo Banda'" />
-  <div>
-    <div class="id">Planta P031 — Peperomia ‘Piccolo Banda’ / <span class="latin">Peperomia albovittata</span></div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Ficha</h4>
-        <p class="kv"><b>Apodo:</b> —</p>
-        <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
-        <p class="kv"><b>Tipo:</b> Planta de interior ornamental</p>
-        <p class="kv"><b>Nombre científico:</b> <span class="latin">Peperomia albovittata</span> ‘Piccolo Banda’</p>
-        <p class="kv"><b>Origen:</b> América del Sur (cultivar)</p>
-        <p class="kv"><b>Ubicación:</b> Interior luminoso, sin sol directo</p>
-      </div>
-      <div class="block">
-        <h4>Cuidados</h4>
-        <p class="kv"><b>Luz:</b> Alta indirecta para mantener el plateado</p>
-        <p class="kv"><b>Riego:</b> Moderado; prefiere ligeros secados entre riegos</p>
-        <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-        <p class="kv"><b>Humedad:</b> Media</p>
-        <p class="kv"><b>Sustrato:</b> Ligero y drenante (universal + perlita)</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Estado</h4>
-        <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
-        <p class="kv"><b>Estado actual:</b> Follaje plateado con bandas verdes, pecíolos rojos; planta sana y tupida.</p>
-      </div>
-      <div class="block">
-        <h4>Observaciones</h4>
-        <p class="kv">• Evitar luz muy baja (pierde contraste).<br/>• Sensible a corrientes frías.</p>
-      </div>
-    </div>
-
-    <div class="hist">14/10/2025 — Registro inicial.</div>
-  </div>
-</section>
-
-<!-- ===== P032 ===== -->
-<section class="card" id="P032">
-  <img class="thumb" loading="lazy" src="img/IMG-20251014-WA0006.jpg" alt="P032 Peperomia obtusifolia 'Variegata'" />
-  <div>
-    <div class="id">Planta P032 — Peperomia variegada / <span class="latin">Peperomia obtusifolia</span> ‘Variegata’</div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Ficha</h4>
-        <p class="kv"><b>Apodo:</b> —</p>
-        <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
-        <p class="kv"><b>Tipo:</b> Planta de interior tropical, variegada</p>
-        <p class="kv"><b>Nombre científico:</b> <span class="latin">Peperomia obtusifolia</span> ‘Variegata’</p>
-        <p class="kv"><b>Origen:</b> América tropical (cultivar)</p>
-        <p class="kv"><b>Ubicación:</b> Interior muy luminoso (imprescindible para la variegación)</p>
-      </div>
-      <div class="block">
-        <h4>Cuidados</h4>
-        <p class="kv"><b>Luz:</b> Alta indirecta; evitar sol fuerte</p>
-        <p class="kv"><b>Riego:</b> Moderado-escaso; hojas carnosas almacenan agua</p>
-        <p class="kv"><b>Temperatura:</b> 18–28 °C</p>
-        <p class="kv"><b>Humedad:</b> Media</p>
-        <p class="kv"><b>Sustrato:</b> Universal con perlita; drenaje excelente</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Estado</h4>
-        <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
-        <p class="kv"><b>Estado actual:</b> Brotes nuevos; variegación crema/verde bien definida.</p>
-      </div>
-      <div class="block">
-        <h4>Observaciones</h4>
-        <p class="kv">• Rotar para evitar que “busque” la luz.<br/>• Si pierde variegación, aumentar luminosidad.</p>
-      </div>
-    </div>
-
-    <div class="hist">14/10/2025 — Registro inicial.</div>
-  </div>
-</section>
-
-<!-- ===== P033 ===== -->
-<section class="card" id="P033">
-  <img class="thumb" loading="lazy" src="img/IMG-20251014-WA0007.jpg" alt="P033 Peperomia 'Rosso'" />
-  <div>
-    <div class="id">Planta P033 — Peperomia ‘Rosso’ / <span class="latin">Peperomia caperata</span> ‘Rosso’ (aprox.)</div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Ficha</h4>
-        <p class="kv"><b>Apodo:</b> —</p>
-        <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
-        <p class="kv"><b>Tipo:</b> Planta de interior ornamental, compacta</p>
-        <p class="kv"><b>Nombre científico:</b> <span class="latin">Peperomia caperata</span> ‘Rosso’</p>
-        <p class="kv"><b>Origen:</b> Brasil (cultivar)</p>
-        <p class="kv"><b>Ubicación:</b> Interior luminoso, lejos del sol directo</p>
-      </div>
-      <div class="block">
-        <h4>Cuidados</h4>
-        <p class="kv"><b>Luz:</b> Brillante indirecta para resaltar el envés rojo</p>
-        <p class="kv"><b>Riego:</b> Moderado; dejar secar 2–3 cm superiores</p>
-        <p class="kv"><b>Temperatura:</b> 18–26 °C</p>
-        <p class="kv"><b>Humedad:</b> Media</p>
-        <p class="kv"><b>Sustrato:</b> Suelto y drenante (universal + perlita)</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Estado</h4>
-        <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
-        <p class="kv"><b>Estado actual:</b> Hojas verde oscuro con venas marcadas y reverso rojizo; porte muy compacto.</p>
-      </div>
-      <div class="block">
-        <h4>Observaciones</h4>
-        <p class="kv">• Evitar encharque y pulverizar directamente las hojas.<br/>• Ideal maceta ancha y poco profunda.</p>
-      </div>
-    </div>
-
-    <div class="hist">14/10/2025 — Registro inicial.</div>
-  </div>
-</section>
-
-<!-- ===== P034 ===== -->
-<section class="card" id="P034">
-  <img class="thumb" loading="lazy" src="img/IMG-20251014-WA0008.jpg" alt="P034 Monstera adansonii (esqueje)" />
-  <div>
-    <div class="id">Planta P034 — Monstera adansonii (esqueje) / <span class="latin">Monstera adansonii</span></div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Ficha</h4>
-        <p class="kv"><b>Apodo:</b> —</p>
-        <p class="kv"><b>Fecha de registro:</b> 14/10/2025</p>
-        <p class="kv"><b>Tipo:</b> Trepadora tropical (esqueje enraizando)</p>
-        <p class="kv"><b>Nombre científico:</b> <span class="latin">Monstera adansonii</span></p>
-        <p class="kv"><b>Origen:</b> Centro–Sudamérica</p>
-        <p class="kv"><b>Ubicación:</b> Interior muy luminoso sin sol directo</p>
-      </div>
-      <div class="block">
-        <h4>Cuidados</h4>
-        <p class="kv"><b>Luz:</b> Alta indirecta</p>
-        <p class="kv"><b>Riego:</b> Mantener húmedo (si está en agua o mezcla ligera) sin encharcar</p>
-        <p class="kv"><b>Temperatura:</b> 20–28 °C</p>
-        <p class="kv"><b>Humedad:</b> Media–alta</p>
-        <p class="kv"><b>Sustrato:</b> Para trasplante: mezcla aireada (turba/coco + perlita + corteza)</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="block">
-        <h4>Estado</h4>
-        <p class="kv"><b>Última revisión:</b> 14/10/2025</p>
-        <p class="kv"><b>Estado actual:</b> Hoja con fenestraciones; esqueje en frasco iniciando raíces.</p>
-      </div>
-      <div class="block">
-        <h4>Observaciones</h4>
-        <p class="kv">• Trasplantar cuando las raíces superen 3–4 cm.<br/>• Añadir tutor o guía al establecerse.</p>
-      </div>
-    </div>
-
-    <div class="hist">14/10/2025 — Registro inicial de esqueje.</div>
-  </div>
-</section>
-
-
-
-
-</main>
-
-<footer>
-  <div class="footer-inner">
-    <p class="brand">
-      <img src="img/monstera-leaf-verde-borde-13px.svg" alt="Logo Monstera" class="logo-leaf" />
-      <strong>Jardín de Belén & Alonso</strong>
-    </p>
-    <p class="tagline">Registro digital de plantas y cuidados</p>
-    <p class="meta">
-      © 2025 Alonso · Cultiva con paciencia y luz 🌞
-    </p>
-  </div>
-  <div class="social-links">
-    <a href="https://github.com/AlonsoVine" class="social-btn github" target="_blank" aria-label="GitHub">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-        <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.87 10.94c.58.1.79-.25.79-.56v-2.1c-3.2.7-3.87-1.54-3.87-1.54-.53-1.35-1.3-1.7-1.3-1.7-1.06-.72.08-.7.08-.7 1.18.08 1.8 1.2 1.8 1.2 1.04 1.8 2.73 1.28 3.4.98.1-.76.41-1.28.74-1.58-2.56-.3-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.2-3.1-.12-.3-.52-1.54.12-3.2 0 0 .98-.32 3.2 1.2a10.6 10.6 0 0 1 5.82 0c2.22-1.52 3.2-1.2 3.2-1.2.64 1.66.24 2.9.12 3.2.75.81 1.2 1.84 1.2 3.1 0 4.44-2.7 5.4-5.28 5.68.44.38.82 1.12.82 2.26v3.35c0 .3.21.66.8.55A11.52 11.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"/>
+    <!-- Botón flotante Volver arriba -->
+    <button
+      id="backToTop"
+      class="back-to-top"
+      aria-label="Volver arriba"
+      title="Volver arriba"
+    >
+      <!-- ícono flecha (SVG) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 5l-7 7h4v7h6v-7h4z" fill="currentColor" />
       </svg>
-    </a>
-
-    <a href="https://alonsovine.github.io/portfolio/" class="social-btn portfolio" target="_blank" aria-label="Portfolio personal">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-        <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"/>
-      </svg>
-    </a>
-
-    <a href="https://www.linkedin.com/in/alonso-vi%C3%B1%C3%A9-barrancos/" class="social-btn linkedin" target="_blank" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-        <path d="M20.45 20.45h-3.55v-5.26c0-1.26 0-2.88-1.75-2.88s-2.02 1.37-2.02 2.79v5.35h-3.56V9h3.42v1.56h.05c.48-.9 1.67-1.85 3.44-1.85 3.68 0 4.36 2.42 4.36 5.56v6.18ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.78A1.77 1.77 0 0 0 0 1.78v20.44C0 23.22.78 24 1.78 24h20.44A1.77 1.77 0 0 0 24 22.22V1.78A1.77 1.77 0 0 0 22.22 0Z"/>
-      </svg>
-    </a>
-  </div>
-
-</footer>
-
-<!-- Botón flotante Volver arriba -->
-<button id="backToTop" class="back-to-top" aria-label="Volver arriba" title="Volver arriba">
-  <!-- ícono flecha (SVG) -->
-  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 5l-7 7h4v7h6v-7h4z" fill="currentColor"/>
-  </svg>
-</button>
-<!-- Lightbox / Visor de imágenes -->
-<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visor de imágenes" hidden>
-  <div class="lb-inner" role="document">
-    <button class="lb-btn lb-close" aria-label="Cerrar (Esc)">✕</button>
-    <button class="lb-btn lb-prev" aria-label="Anterior" title="Anterior">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15.4 3.4 6.8 12l8.6 8.6 1.4-1.4L9.6 12l7.2-7.2z" fill="currentColor"/></svg>
     </button>
-    <figure class="lb-figure">
-      <img class="lb-img" src="" alt=""/>
-      <figcaption class="lb-caption" aria-live="polite"></figcaption>
-    </figure>
-    <button class="lb-btn lb-next" aria-label="Siguiente" title="Siguiente">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m8.6 20.6 8.6-8.6-8.6-8.6-1.4 1.4L14.4 12 7.2 19.2z" fill="currentColor"/></svg>
-    </button>
-  </div>
-  <div class="lb-sr" id="lb-help">Usa Esc para cerrar, ← → para navegar</div>
-  </div>
+    <!-- Lightbox / Visor de imágenes -->
+    <div
+      id="lightbox"
+      class="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Visor de imágenes"
+      hidden
+    >
+      <div class="lb-inner" role="document">
+        <button class="lb-btn lb-close" aria-label="Cerrar (Esc)">✕</button>
+        <button class="lb-btn lb-prev" aria-label="Anterior" title="Anterior">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              d="M15.4 3.4 6.8 12l8.6 8.6 1.4-1.4L9.6 12l7.2-7.2z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+        <figure class="lb-figure">
+          <img class="lb-img" src="" alt="" />
+          <figcaption class="lb-caption" aria-live="polite"></figcaption>
+        </figure>
+        <button class="lb-btn lb-next" aria-label="Siguiente" title="Siguiente">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              d="m8.6 20.6 8.6-8.6-8.6-8.6-1.4 1.4L14.4 12 7.2 19.2z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="lb-sr" id="lb-help">
+        Usa Esc para cerrar, ← → para navegar
+      </div>
+    </div>
 
-<script src="script.js"></script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
-
