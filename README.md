@@ -1,6 +1,6 @@
 <div align="center">
 
-![IMG](img\fondo-readme.png "imagen cámara")
+![IMG](img/fondo-readme.png "imagen cámara")
 
 # Jardín de Belén & Alonso
 
