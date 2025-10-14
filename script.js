@@ -233,6 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const qInput = document.getElementById('q');
   const typeSel = document.getElementById('filterType');
   const stateSel = document.getElementById('filterState');
+  const lightSel = document.getElementById('filterLight');
+  const waterSel = document.getElementById('filterWater');
+  const healthSel = document.getElementById('filterHealth');
   const clearBtn = document.getElementById('clearFilters');
   const resultCount = document.getElementById('resultCount');
 
@@ -251,23 +254,43 @@ document.addEventListener('DOMContentLoaded', () => {
     return '';
   }
 
+  // Clasificación rápida de salud a partir del contenido
+  function deriveHealth(section){
+    const txt = (section?.innerText || '').toLowerCase();
+    const positive = /(muy saludable|sano|vigoros|hojas firmes|floración|excelente|bien|estable)/;
+    const attention = /(estrés|puntas secas|decaíd|amarill|dañad|falta de|recuperación)/;
+    const ok = positive.test(txt) && !attention.test(txt) ? 'sanas' : (attention.test(txt) ? 'atencion' : 'sanas');
+    return ok;
+  }
+
   const tiposSet = new Set();
   const estadosSet = new Set();
+  const lucesSet = new Set();
+  const riegosSet = new Set();
 
   for(const s of cards){
     const name = (s.querySelector('.id')?.textContent || '').toLowerCase();
     const tipo = getKV(s, 'Tipo:').toLowerCase();
     const estado = getKV(s, 'Estado actual:').toLowerCase();
+    const luz = (getKV(s, 'Luz:') || getKV(s, 'Condiciones de luz recomendadas:')).toLowerCase();
+    const riego = getKV(s, 'Riego:').toLowerCase();
+    const salud = deriveHealth(s);
 
     s.dataset.name = name;
     s.dataset.tipo = tipo;
     s.dataset.estado = estado;
+    s.dataset.luz = luz;
+    s.dataset.riego = riego;
+    s.dataset.salud = salud; // 'sanas' | 'atencion'
 
     if(tipo) tiposSet.add(tipo);
     if(estado) estadosSet.add(estado);
+    if(luz) lucesSet.add(luz);
+    if(riego) riegosSet.add(riego);
   }
 
   function fillSelect(select, values){
+    if(!select) return;
     const sorted = Array.from(values).sort((a,b)=>a.localeCompare(b,'es'));
     for(const v of sorted){
       const opt = document.createElement('option');
@@ -278,19 +301,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   fillSelect(typeSel, tiposSet);
   fillSelect(stateSel, estadosSet);
+  fillSelect(lightSel, lucesSet);
+  fillSelect(waterSel, riegosSet);
 
   function applyFilters(){
     const q = qInput.value.trim().toLowerCase();
     const t = typeSel.value;
     const e = stateSel.value;
+    const l = lightSel ? lightSel.value : '';
+    const w = waterSel ? waterSel.value : '';
+    const h = healthSel ? healthSel.value : '';
 
     let visible = 0;
     for(const s of cards){
       const byName = !q || s.dataset.name.includes(q);
       const byType = !t || s.dataset.tipo === t;
       const byState = !e || s.dataset.estado === e;
+      const byLight = !l || s.dataset.luz === l;
+      const byWater = !w || s.dataset.riego === w;
+      const byHealth = !h || s.dataset.salud === h;
 
-      const show = byName && byType && byState;
+      const show = byName && byType && byState && byLight && byWater && byHealth;
       s.style.display = show ? '' : 'none';
       if(show) visible++;
     }
@@ -307,11 +338,17 @@ document.addEventListener('DOMContentLoaded', () => {
   qInput.addEventListener('input', applyFilters);
   typeSel.addEventListener('change', applyFilters);
   stateSel.addEventListener('change', applyFilters);
+  lightSel?.addEventListener('change', applyFilters);
+  waterSel?.addEventListener('change', applyFilters);
+  healthSel?.addEventListener('change', applyFilters);
 
   clearBtn.addEventListener('click', ()=>{
     qInput.value = '';
     typeSel.value = '';
     stateSel.value = '';
+    if(lightSel) lightSel.value = '';
+    if(waterSel) waterSel.value = '';
+    if(healthSel) healthSel.value = '';
     applyFilters();
     qInput.focus();
   });

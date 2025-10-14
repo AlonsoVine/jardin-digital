@@ -473,9 +473,13 @@ html.light .social-btn:hover {
 
 .toolbar-row{
   display: grid;
-  grid-template-columns: 1fr 200px 200px auto;
+  grid-template-columns: repeat(5, minmax(160px, 1fr)) auto; /* 5 selects + botón */
   gap: 10px;
   align-items: center;
+}
+.field.grow{ 
+  width: 100%;
+  grid-column: 1 / -1;  /* el buscador ocupa toda la primera fila */
 }
 
 .field{
