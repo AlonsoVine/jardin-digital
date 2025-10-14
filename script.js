@@ -3,6 +3,89 @@
    Archivo central para las funciones interactivas del proyecto
    ============================================================ */
 
+
+
+(function(){
+  const btn = document.getElementById('backToTop');
+  if(!btn) return;
+
+  const SHOW_AFTER = 400;
+  let ticking = false;
+
+  function onScroll(){
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if(y > SHOW_AFTER){
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  function scrollTopSmooth(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){
+      window.scrollTo(0, 0);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  btn.addEventListener('click', scrollTopSmooth);
+  btn.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      scrollTopSmooth();
+    }
+  });
+
+  onScroll();
+})();
+
+/* ────────────────────────────────
+   Activar animaciones cuando el DOM esté listo
+   ──────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.classList.add('ready');
+});
+
+/* ────────────────────────────────
+   Modo claro / oscuro
+   ──────────────────────────────── */
+(function(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+
+  const html = document.documentElement;
+
+  // Cargar preferencia guardada
+  const saved = localStorage.getItem('theme');
+  if(saved === 'light') html.classList.add('light');
+
+  // Actualizar icono
+  function updateIcon(){
+    btn.textContent = html.classList.contains('light') ? '🌞' : '🌙';
+  }
+
+  // Cambiar tema al pulsar
+  btn.addEventListener('click', ()=>{
+    html.classList.toggle('light');
+    const isLight = html.classList.contains('light');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    updateIcon();
+  });
+
+  updateIcon();
+})();
+
+
 /* ────────────────────────────────
    Botón "Volver arriba" flotante
    ──────────────────────────────── */

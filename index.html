@@ -13,6 +13,10 @@
     Registro digital de plantas y cuidados.
     Imágenes de nuestro proyecto personal y su constante crecimiento.
   </div>
+   <!-- 🌗 Botón modo claro/oscuro -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+    🌙
+  </button>
 </header>
 
 <main class="container">
@@ -301,7 +305,7 @@ if (document.readyState === 'loading') {
       <div class="row">
         <div class="block">
           <h4>Ficha</h4>
-          <p class="kv"><b>Apodo:</b> —</p>
+          <p class="kv"><b>Apodo:</b> Purpurina</p>
           <p class="kv"><b>Fecha de registro:</b> 12 de octubre de 2025</p>
           <p class="kv"><b>Tipo:</b> Planta colgante o rastrera</p>
           <p class="kv"><b>Nombre científico:</b> <span class="latin">Tradescantia zebrina</span></p>
@@ -1464,53 +1468,6 @@ if (document.readyState === 'loading') {
     <path d="M12 5l-7 7h4v7h6v-7h4z" fill="currentColor"/>
   </svg>
 </button>
-
-<!-- 🔽 Aquí pegas el script justo antes del cierre del body -->
-<script>
-(function(){
-  const btn = document.getElementById('backToTop');
-  if(!btn) return;
-
-  const SHOW_AFTER = 400;
-  let ticking = false;
-
-  function onScroll(){
-    const y = window.scrollY || document.documentElement.scrollTop;
-    if(y > SHOW_AFTER){
-      btn.classList.add('show');
-    } else {
-      btn.classList.remove('show');
-    }
-    ticking = false;
-  }
-
-  window.addEventListener('scroll', function(){
-    if(!ticking){
-      window.requestAnimationFrame(onScroll);
-      ticking = true;
-    }
-  }, { passive: true });
-
-  function scrollTopSmooth(){
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(reduceMotion){
-      window.scrollTo(0, 0);
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
-
-  btn.addEventListener('click', scrollTopSmooth);
-  btn.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      scrollTopSmooth();
-    }
-  });
-
-  onScroll();
-})();
-</script>
 
 <script src="script.js"></script>
 
