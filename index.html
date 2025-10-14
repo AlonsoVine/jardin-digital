@@ -8,20 +8,26 @@
   <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-<header class="container" id="top">
-  <h1>
-    <img src="img/monstera-leaf-verde-borde-13px.svg" alt="Logo Monstera" class="logo-leaf" />
-    Jardín de Belén & Alonso
-  </h1>
-  <div style="color:var(--muted);margin-top:6px;font-size:13px">
-    Registro digital de plantas y cuidados.
-    Imágenes de nuestro proyecto personal y su constante crecimiento.
+<header class="container header-grid" id="top">
+  <div class="header-main">
+    <h1>
+      <img src="img/monstera-leaf-verde-borde-8px.svg" alt="Logo Monstera" class="logo-leaf" />
+      Jardín de Belén & Alonso
+    </h1>
+    <div class="header-sub">
+      Registro digital de plantas y cuidados. Imágenes de nuestro proyecto personal y su constante crecimiento.
+    </div>
   </div>
-   <!-- 🌗 Botón modo claro/oscuro -->
-  <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
-    🌙
-  </button>
+
+  <!-- 👇 Ambos botones DENTRO del MISMO contenedor -->
+  <div class="header-actions" role="group" aria-label="Acciones del encabezado">
+    <button id="themeToggle" class="bubble-btn theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+    <button id="ambienceBtn" class="bubble-btn sound-btn" aria-label="Sonido ambiente (pájaros)" aria-pressed="false" title="Sonido ambiente">
+      <span class="icon-bird" aria-hidden="true"></span>
+    </button>
+  </div>
 </header>
+
 
 <main class="container">
   

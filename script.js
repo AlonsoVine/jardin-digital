@@ -654,4 +654,64 @@ Historial: ${p.historial}
     toggle.setAttribute('aria-expanded','false');
     menu.hidden = true;
   });
+})();/* ────────────────────────────────
+   Sonido ambiente (botón del pájaro)
+   ──────────────────────────────── */
+(function(){
+  const btn = document.getElementById('ambienceBtn');
+  if(!btn) return;
+
+  // Ruta de tu pista real
+  const AMBIENCE_SRC = 'audio/relaxing-birds-and-piano-music-137153.mp3';
+
+  // Reutiliza la misma instancia si ya existe (por si hay más controles)
+  const audio = window.__ambAudio || new Audio(AMBIENCE_SRC);
+  window.__ambAudio = audio;
+
+  audio.loop = true;
+  audio.preload = 'auto';
+
+  // Volumen y estado persistentes
+  const savedVol = parseFloat(localStorage.getItem('amb_vol') || '0.25');
+  audio.volume = isNaN(savedVol) ? 0.25 : savedVol;
+
+  const wasOn = localStorage.getItem('amb_on') === '1';
+  if (wasOn) { btn.classList.add('is-on'); btn.setAttribute('aria-pressed','true'); }
+
+  async function playIfAllowed(){
+    try{
+      await audio.play();
+      btn.classList.add('is-on');
+      btn.setAttribute('aria-pressed','true');
+      localStorage.setItem('amb_on','1');
+    }catch(e){
+      console.warn('No se pudo reproducir. Revisa la ruta:', AMBIENCE_SRC, e);
+      btn.classList.remove('is-on');
+      btn.setAttribute('aria-pressed','false');
+      localStorage.setItem('amb_on','0');
+    }
+  }
+  function pauseSound(){
+    audio.pause();
+    btn.classList.remove('is-on');
+    btn.setAttribute('aria-pressed','false');
+    localStorage.setItem('amb_on','0');
+  }
+
+  btn.addEventListener('click', ()=> audio.paused ? playIfAllowed() : pauseSound());
+
+  // Si estaba activado antes, lo arrancamos en el primer gesto del usuario
+  window.addEventListener('pointerdown', function once(){
+    if(localStorage.getItem('amb_on')==='1' && audio.paused) playIfAllowed();
+    window.removeEventListener('pointerdown', once);
+  }, { once:true });
+
+  // Pausa al cambiar de pestaña; reanuda si estaba encendido
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden && !audio.paused) audio.pause();
+    else if(!document.hidden && localStorage.getItem('amb_on')==='1') playIfAllowed();
+  });
+
+  // Log si la ruta del audio es inválida
+  audio.addEventListener('error', ()=> console.warn('No se pudo cargar:', AMBIENCE_SRC));
 })();

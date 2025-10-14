@@ -765,3 +765,117 @@ html.light .donut-card{ background: #ffffff; border-color: #dcded8; }
 @media (max-width: 520px){
   .dl-menu{ right: 0; left: auto; }
 }
+
+/* ── Icono del pájaro externo ─────────────────────────────── */
+/* Icono pájaro coloreable por tema usando máscara del SVG externo */
+.icon-bird{
+  width: 18px;
+  height: 18px;
+  display: block;
+  background-color: currentColor;                 /* el color lo pone el tema */
+  -webkit-mask: url("img/bird.svg") no-repeat center / contain;
+          mask: url("img/bird.svg") no-repeat center / contain;
+  transition: color .25s ease, transform .2s ease;
+}
+
+/* Colores por tema */
+html:not(.light) .bubble-btn .icon-bird{ color: #fff; }     /* oscuro → blanco */
+html.light       .bubble-btn .icon-bird{ color: #2a2a2a; }  /* claro → oscuro */
+
+/* Hover y estado activo */
+.bubble-btn:hover .icon-bird{ transform: scale(1.1); }
+.bubble-btn.is-on .icon-bird{ color: #b8f5ae; }  /* activo → verde suave */
+
+/* ── Soniddo ambiental ─────────────────────────────── */
+
+/* Layout de header: texto | acciones */
+.header-grid{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;      /* centra verticalmente los dos */
+  gap: 16px;
+}
+
+/* Acciones alineadas en FILA a la derecha */
+.header-actions{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Botón base */
+.bubble-btn{
+  background: var(--panel);
+  color: var(--accent);
+  border: 1px solid var(--line);
+  width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,.25);
+  transition: background .2s, color .2s, transform .2s, box-shadow .2s;
+}
+.bubble-btn:hover{ transform: scale(1.05); color:#b8f5ae; box-shadow:0 6px 14px rgba(0,0,0,.35); }
+.bubble-btn.is-on{ color:#b8f5ae; box-shadow:0 6px 16px rgba(0,0,0,.4); }
+
+/* Icono pájaro con máscara para poder colorearlo por tema */
+.icon-bird{
+  width: 18px; height: 18px; display: block;
+  background-color: currentColor;
+  -webkit-mask: url("img/bird.svg") no-repeat center / contain;
+          mask: url("img/bird.svg") no-repeat center / contain;
+  transition: color .25s ease, transform .2s ease;
+}
+.bubble-btn:hover .icon-bird{ transform: scale(1.1); }
+
+/* Colores por tema */
+html:not(.light) .sound-btn .icon-bird{ color:#fff; }     /* oscuro → blanco */
+html.light .sound-btn .icon-bird{ color:#2a2a2a; }        /* claro → oscuro */
+
+/* Tema claro: fondo/borde suaves */
+html.light .bubble-btn{ background:#ffffffd9; border-color:#dcded8; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+html.light .bubble-btn:hover{ color:#5aa26a; box-shadow:0 4px 12px rgba(0,0,0,.12); }
+
+/* Responsive: mantiene los dos botones en fila */
+@media (max-width: 520px){
+  .header-grid{ gap: 12px; }
+  .header-actions{ gap: 8px; }
+}
+
+/* Onda activa alrededor del botón de sonido */
+.sound-btn{ position: relative; overflow: visible; }
+.sound-btn.is-on::before,
+.sound-btn.is-on::after{
+  content: "";
+  position: absolute;
+  inset: -6px;                 /* tamaño del anillo alrededor */
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  opacity: 0;
+  pointer-events: none;        /* no bloquear clics */
+  animation: sound-wave 2.2s ease-out infinite;
+}
+.sound-btn.is-on::after{ animation-delay: 1.1s; }
+
+@keyframes sound-wave{
+  0%   { transform: scale(0.9); opacity: .35; }
+  70%  { opacity: .10; }
+  100% { transform: scale(1.85); opacity: 0; }
+}
+
+/* Respeta reducción de movimiento */
+@media (prefers-reduced-motion: reduce){
+  .sound-btn.is-on::before,
+  .sound-btn.is-on::after{ animation: none; display: none; }
+}
+
+/* ── FIX: alinear theme-toggle en la fila, no absoluto ───────────── */
+.header-actions .theme-toggle{
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  width: 38px; height: 38px;          /* igual que .bubble-btn */
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 18px;
+}
