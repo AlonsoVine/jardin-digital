@@ -397,6 +397,26 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* ── Logo del header ─────────────────────────────── */
+.logo-leaf {
+  width: 22px;                 /* tamaño equilibrado con el texto */
+  height: 22px;
+  vertical-align: middle;      /* alinea con el texto */
+  margin-right: 8px;           /* separación respecto al título */
+  transform: translateY(-2px); /* ajusta alineación vertical fina */
+  transition: transform .25s ease;
+}
+
+/* Efecto suave al pasar el ratón */
+h1:hover .logo-leaf {
+  transform: translateY(-2px) scale(1.15);
+}
+
+/* En modo claro el icono puede quedar más visible si tiene borde sutil */
+html.light .logo-leaf {
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.15));
+}
+
 /* ── Botones sociales del footer ─────────────────────────────── */
 .social-links {
   display: flex;
