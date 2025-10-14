@@ -270,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   for(const s of cards){
     const name = (s.querySelector('.id')?.textContent || '').toLowerCase();
+    const apodo = getKV(s, 'Apodo:').toLowerCase();
     const tipo = getKV(s, 'Tipo:').toLowerCase();
     const estado = getKV(s, 'Estado actual:').toLowerCase();
     const luz = (getKV(s, 'Luz:') || getKV(s, 'Condiciones de luz recomendadas:')).toLowerCase();
@@ -282,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     s.dataset.luz = luz;
     s.dataset.riego = riego;
     s.dataset.salud = salud; // 'sanas' | 'atencion'
+    s.dataset.apodo = apodo;
 
     if(tipo) tiposSet.add(tipo);
     if(estado) estadosSet.add(estado);
@@ -314,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let visible = 0;
     for(const s of cards){
-      const byName = !q || s.dataset.name.includes(q);
+      const byName = !q || s.dataset.name.includes(q) || (s.dataset.apodo && s.dataset.apodo.includes(q));
       const byType = !t || s.dataset.tipo === t;
       const byState = !e || s.dataset.estado === e;
       const byLight = !l || s.dataset.luz === l;
