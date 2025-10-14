@@ -1145,6 +1145,47 @@ Historial: ${p.historial}
 })();
 
 /* ============================================================
+   Recorrido automático de fichas (autoplay)
+   ============================================================ */
+(function(){
+  const btn = document.getElementById('autoplayBtn');
+  return; // antiguo autoplay por tarjetas deshabilitado (usamos autoplay del lightbox)
+
+  let timer = null;
+  let index = 0;
+  const INTERVAL = 4000; // ms
+
+  function visibleCards(){
+    const all = Array.from(document.querySelectorAll('section.card[id^="P"]'));
+    return all.filter(c => c.style.display !== 'none');
+  }
+
+  function step(){
+    const cards = visibleCards();
+    if(!cards.length){ stop(); return; }
+    if(index >= cards.length) index = 0;
+    const card = cards[index++];
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function play(){
+    if(timer) return;
+    btn.setAttribute('aria-pressed','true');
+    btn.textContent = '⏸ Pausar';
+    step();
+    timer = setInterval(step, INTERVAL);
+  }
+  function stop(){
+    if(timer){ clearInterval(timer); timer = null; }
+    btn.setAttribute('aria-pressed','false');
+    btn.textContent = '▶️ Paseo por el jardín.';
+  }
+
+  btn.addEventListener('click', ()=> timer ? stop() : play());
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) stop(); });
+})();
+
+/* ============================================================
    Lightbox (visor) para imágenes de plantas
    - Click en .thumb abre overlay
    - Esc cierra, ←/→ navegan
@@ -1191,11 +1232,13 @@ Historial: ${p.historial}
     overlay.classList.add("is-open");
     document.documentElement.classList.add("no-scroll");
     btnClose?.focus({ preventScroll: true });
+    try{ document.dispatchEvent(new CustomEvent('lightbox:open')); }catch(_){}
   }
 
   function close() {
     overlay.classList.remove("is-open");
     document.documentElement.classList.remove("no-scroll");
+    try{ document.dispatchEvent(new CustomEvent('lightbox:close')); }catch(_){}
   }
 
   function next() {
@@ -1231,4 +1274,60 @@ Historial: ${p.historial}
     if (e.key === "ArrowRight") next();
     if (e.key === "ArrowLeft") prev();
   });
+  // Export API para otros módulos
+  window.__lightbox = {
+    openAt,
+    close,
+    next,
+    prev,
+    isOpen: () => overlay.classList.contains('is-open'),
+    thumbs
+  };
+})();
+
+/* ============================================================
+   Recorrido automático (modo galería/lightbox)
+   - Abre el visor y va mostrando imágenes en orden aleatorio
+   - Se detiene al cerrar el visor o cambiar de pestaña
+   ============================================================ */
+(function(){
+  const btn = document.getElementById('autoplayBtn');
+  if(!btn) return;
+
+  let timer = null;
+  let order = [];
+  let pos = 0;
+  const INTERVAL = 4000; // ms
+
+  function shuffle(n){
+    const a=[...Array(n).keys()];
+    for(let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+    return a;
+  }
+
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } btn.setAttribute('aria-pressed','false'); btn.textContent='▶️ Paseo por el jardín.'; }
+
+  function step(){
+    const lb = window.__lightbox; if(!lb) return stop();
+    const total = lb.thumbs?.length||0; if(!total){ stop(); return; }
+    if(!order.length) { order = shuffle(total); pos = 0; }
+    if(pos >= order.length) { order = shuffle(total); pos = 0; }
+    const idx = order[pos++];
+    lb.openAt(idx);
+  }
+
+  function play(){
+    if(timer){ stop(); return; }
+    btn.setAttribute('aria-pressed','true');
+    btn.textContent='⏸ Pausar';
+    step();
+    timer = setInterval(step, INTERVAL);
+  }
+
+  // Exponer para otros módulos si se necesita
+  window.__startLightboxAutoplay = play;
+
+  btn.addEventListener('click', play);
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) stop(); });
+  document.addEventListener('lightbox:close', stop);
 })();

@@ -1,5 +1,7 @@
 <div align="center">
 
+![IMG](img\fondo-readme.png "imagen cámara")
+
 # Jardín de Belén & Alonso
 
 ### Un jardín digital donde la naturaleza y el amor crecen juntos

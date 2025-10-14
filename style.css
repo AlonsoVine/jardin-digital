@@ -971,6 +971,9 @@ html.light .bars-card { background: #ffffff; border-color: #dcded8; }
   color: var(--accent);
 }
 
+.utils-note{ font-size: 12px; color: var(--muted); margin-top: 6px; }
+.dash-utils{ margin-top: 10px; display: grid; gap: 6px; align-items: center; justify-items: start; }
+
 /* cerrar menú si se desborda en móvil */
 @media (max-width: 520px) {
   .dl-menu {
