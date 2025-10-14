@@ -63,7 +63,7 @@
         </figure>
       </div>
 
-
+      <!-- SAlud general-->
       <div class="health">
         <div class="health-top">
           <span>Salud general</span>
@@ -78,6 +78,24 @@
       <div class="meta-line">
         <span id="last-update">Última actualización: —</span>
       </div>
+
+      <!-- Acciones: Descargar -->
+      <div class="dash-actions">
+        <div class="download">
+          <button class="btn dl-toggle" id="dlToggle" aria-haspopup="true" aria-expanded="false">
+            ⬇️ Descargar
+            <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" class="caret">
+              <path d="M7 10l5 5 5-5z" fill="currentColor"/>
+            </svg>
+          </button>
+          <div class="dl-menu" id="dlMenu" role="menu" hidden>
+            <button class="dl-item" data-format="json" role="menuitem">JSON</button>
+            <button class="dl-item" data-format="txt"  role="menuitem">TXT</button>
+            <button class="dl-item" data-format="csv"  role="menuitem">Excel (CSV)</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="dash-right">
@@ -1582,8 +1600,7 @@
     <p class="brand">🌿 <strong>Jardín de Belén & Alonso</strong></p>
     <p class="tagline">Registro digital de plantas y cuidados</p>
     <p class="meta">
-      © 2025 Alonso · Cultiva con paciencia y luz 🌞  
-      · <a href="#top">Volver arriba</a>
+      © 2025 Alonso · Cultiva con paciencia y luz 🌞
     </p>
   </div>
 </footer>

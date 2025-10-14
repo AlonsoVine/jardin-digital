@@ -643,3 +643,61 @@ html.light footer a:hover{
 
 /* Tema claro: toques más suaves */
 html.light .donut-card{ background: #ffffff; border-color: #dcded8; }
+
+
+/* ── Descarga del resumen ─────────────────────────────── */
+.dash-actions{
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn{
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn:hover{ border-color: var(--accent); color: var(--accent); }
+
+.download{ position: relative; display: inline-block; }
+.dl-toggle .caret{ transition: transform .15s ease; }
+.dl-toggle[aria-expanded="true"] .caret{ transform: rotate(180deg); }
+
+.dl-menu{
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  padding: 6px;
+  min-width: 180px;
+  z-index: 99;
+}
+.dl-item{
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.dl-item:hover{ background: rgba(151,227,141,.12); color: var(--accent); }
+
+/* cerrar menú si se desborda en móvil */
+@media (max-width: 520px){
+  .dl-menu{ right: 0; left: auto; }
+}

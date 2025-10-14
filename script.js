@@ -509,3 +509,149 @@ document.addEventListener('DOMContentLoaded', () => {
     initDashboard();
   }
 })();
+
+
+
+/* ===== Exportar datos del jardín ===== */
+(function(){
+  const toggle = document.getElementById('dlToggle');
+  const menu   = document.getElementById('dlMenu');
+
+  if(!toggle || !menu) return;
+
+  // Abrir/cerrar menú
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    menu.hidden = open;
+  });
+
+  // Cerrar al clicar fuera o con ESC
+  document.addEventListener('click', (e)=>{
+    if(!menu.hidden && !menu.contains(e.target) && e.target !== toggle){
+      toggle.setAttribute('aria-expanded','false'); menu.hidden = true;
+    }
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && !menu.hidden){
+      toggle.setAttribute('aria-expanded','false'); menu.hidden = true;
+    }
+  });
+
+  // Utilidades
+  function getText(el){ return (el?.textContent || '').trim(); }
+  function getKV(section, labelStarts){
+    const kvs = section.querySelectorAll('p.kv');
+    for(const p of kvs){
+      const txt = getText(p);
+      // admite etiquetas como "Origen:", "Origen o procedencia:", etc.
+      for(const pref of [].concat(labelStarts)){
+        if(txt.toLowerCase().startsWith(pref.toLowerCase())){
+          return txt.slice(pref.length).replace(/^:\s*/,'').trim();
+        }
+      }
+    }
+    return '';
+  }
+
+  // Recolecta todas las plantas leyendo las cards
+  function collectPlants(){
+    const cards = Array.from(document.querySelectorAll('section.card[id^="P"]'));
+    return cards.map(card => {
+      const id = card.id || '';
+      const title = getText(card.querySelector('.id'));
+      // "Planta P0XX — Nombre / Nombre científico"
+      const [ , nombreComun='', nombreCientificoRaw='' ] = title.match(/—\s*(.*?)\s*\/\s*(.+)$/) || [];
+      const nombreCientifico = nombreCientificoRaw.replace(/^\s*<.*?>|<\/.*?>$/g,'').replace(/\s*<.*?>\s*/g,'').trim();
+
+      return {
+        id,
+        nombreComun,
+        nombreCientifico,
+        tipo: getKV(card, ['Tipo:', 'Tipo']),
+        fechaRegistro: getKV(card, ['Fecha de registro:', 'Fecha de registro']),
+        origen: getKV(card, ['Origen:', 'Origen o procedencia:', 'Procedencia:', 'Origen/Procedencia:']),
+        ubicacion: getKV(card, ['Ubicación:', 'Ubicación actual:']),
+        luz: getKV(card, ['Luz:', 'Condiciones de luz recomendadas:', 'Alta indirecta', 'Condiciones de luz']),
+        riego: getKV(card, ['Riego:']),
+        temperatura: getKV(card, ['Temperatura:', 'Temperatura ideal:']),
+        humedad: getKV(card, ['Humedad:', 'Humedad recomendada:']),
+        sustrato: getKV(card, ['Sustrato:', 'Sustrato usado:']),
+        ultimaRevision: getKV(card, ['Última revisión:']),
+        estadoActual: getKV(card, ['Estado actual:']),
+        observaciones: getText(card.querySelector('.row .block:nth-of-type(2) .kv')) || '',
+        historial: getText(card.querySelector('.hist')) || ''
+      };
+    });
+  }
+
+  // Formateadores
+  function toJSON(data){ return JSON.stringify(data, null, 2); }
+
+  function toTXT(data){
+    return data.map(p => (
+`# ${p.id} — ${p.nombreComun} / ${p.nombreCientifico}
+Tipo: ${p.tipo}
+Fecha de registro: ${p.fechaRegistro}
+Origen: ${p.origen}
+Ubicación: ${p.ubicacion}
+Luz: ${p.luz}
+Riego: ${p.riego}
+Temperatura: ${p.temperatura}
+Humedad: ${p.humedad}
+Sustrato: ${p.sustrato}
+Última revisión: ${p.ultimaRevision}
+Estado actual: ${p.estadoActual}
+Observaciones: ${p.observaciones}
+Historial: ${p.historial}
+`).trim()
+    ).join('\n\n----------------------------------------\n\n');
+  }
+
+  function csvEscape(v){
+    if(v == null) return '';
+    const s = String(v).replace(/"/g,'""');
+    return /[",\n;]/.test(s) ? `"${s}"` : s;
+  }
+  function toCSV(data){
+    const cols = [
+      'id','nombreComun','nombreCientifico','tipo','fechaRegistro','origen','ubicacion',
+      'luz','riego','temperatura','humedad','sustrato','ultimaRevision','estadoActual',
+      'observaciones','historial'
+    ];
+    const head = cols.join(',');
+    const rows = data.map(p => cols.map(c => csvEscape(p[c])).join(','));
+    return [head, ...rows].join('\n');
+  }
+
+  // Descargar
+  function download(text, ext, mime){
+    const ts = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const file = `jardin_belen_alon_${ts.getFullYear()}${pad(ts.getMonth()+1)}${pad(ts.getDate())}_${pad(ts.getHours())}${pad(ts.getMinutes())}.${ext}`;
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = file;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // Click en una opción del menú
+  menu.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.dl-item');
+    if(!btn) return;
+    const fmt = btn.dataset.format;
+    const data = collectPlants();
+
+    if(fmt === 'json') download(toJSON(data), 'json', 'application/json');
+    if(fmt === 'txt')  download(toTXT(data),  'txt',  'text/plain;charset=utf-8');
+    if(fmt === 'csv')  download(toCSV(data),  'csv',  'text/csv;charset=utf-8');
+
+    // cerrar menú tras descargar
+    toggle.setAttribute('aria-expanded','false');
+    menu.hidden = true;
+  });
+})();
