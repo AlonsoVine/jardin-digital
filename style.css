@@ -33,7 +33,7 @@ header {
   padding: 28px 20px;
   border-bottom: 1px solid var(--line);
   background: rgba(11, 12, 12, 0.85); /* ligeramente translúcido */
-  backdrop-filter: blur(6px); /* efecto de desenfoque suave */
+  backdrop-filter: blur(6px);`n  -webkit-backdrop-filter: blur(6px); /* efecto de desenfoque suave */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
@@ -58,7 +58,7 @@ h1 {
   gap: 16px;
   margin-bottom: 16px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);`n  -webkit-backdrop-filter: blur(2px);
 }
 
 .thumb {
@@ -164,6 +164,7 @@ footer {
   background: rgba(16, 18, 19, 0.9); /* mismo tono que --panel */
   border-top: 1px solid var(--line);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--muted);
   padding: 28px 16px;
   text-align: center;
@@ -231,6 +232,7 @@ footer a:hover {
   max-height: calc(100vh - var(--header-h) - 24px);
   overflow: auto;
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   width: 220px;
   /* ❌ sin transform, sin top:50% */
 }
@@ -778,8 +780,8 @@ html.light header {
   background: rgba(249, 249, 247, 0.88); /* panel claro translúcido */
   border-bottom: 1px solid var(--line);
   color: var(--text);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);`n  -webkit-backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);`n  -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -804,8 +806,8 @@ html.light footer {
   background: rgba(255, 255, 255, 0.92);
   border-top: 1px solid var(--line);
   color: var(--muted);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);`n  -webkit-backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);`n  -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -1318,3 +1320,4 @@ html.light .floating-leaves{
   from{ transform: rotate(var(--tiltA, -8deg)); }
   to  { transform: rotate(var(--tiltB, 8deg)); }
 }
+

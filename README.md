@@ -71,11 +71,6 @@ Estructura clara, pensada para mantener orden y escalar fácilmente:
 - Persistencia (`leaves_on`) y respeto a `prefers-reduced-motion`.  
 - Color adaptativo: más claras en oscuro, más oscuras en claro.
 
-### 🪴 Modo “En cuidado / observación”
-- Posibilidad de marcar plantas que requieren atención.  
-- Visualización con borde y saturación reducida.  
-- Persistencia en `localStorage` (`careStates`).
-
 ### 💚 Interfaz y accesibilidad
 - Roles y etiquetas **ARIA** en botones, menús y buscador.  
 - Cierre de menús con **Escape** o clic fuera.  
