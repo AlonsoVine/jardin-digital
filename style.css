@@ -1085,6 +1085,20 @@ html.light .bubble-btn:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
+/* Nuevo icono: hoja al viento */
+.icon-leafwind {
+  width: 18px;
+  height: 18px;
+  display: block;
+  background-color: currentColor;
+  -webkit-mask: url("img/leaf-fluttering-in-wind.svg") no-repeat center / contain;
+          mask: url("img/leaf-fluttering-in-wind.svg") no-repeat center / contain;
+  transition: color 0.25s ease, transform 0.2s ease;
+}
+.bubble-btn:hover .icon-leafwind { transform: scale(1.1); }
+html:not(.light) .leaves-btn .icon-leafwind { color: #fff; }
+html.light .leaves-btn .icon-leafwind { color: #2a2a2a; }
+
 /* Responsive: mantiene los dos botones en fila */
 @media (max-width: 520px) {
   .header-grid {
@@ -1244,4 +1258,63 @@ html.no-scroll {
   place-items: center;
   font-size: 18px;
 }
+/* ── 🍃 Hojas flotantes ───────────────────────────────────────── */
+.floating-leaves{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;                 /* no bloquea clics */
+  z-index: 0;                           /* detrás del contenido */
+  /* Color base por tema */
+  color: rgba(255,255,255,.70);         /* modo oscuro: hojas claras */
+}
+html.light .floating-leaves{
+  /* modo claro: gris oscuro para buen contraste */
+  color: rgba(34,34,34,.70);
+}
 
+/* Cada hoja usa máscara del SVG y “toma” el color vía currentColor */
+.floating-leaves .leaf{
+  position: absolute;
+  top: -12vh;                           /* entra desde arriba */
+  width: var(--size, 28px);
+  height: var(--size, 28px);
+  opacity: var(--opacity, .32);
+  transform: translate3d(var(--sx, 10vw), -10vh, 0) rotate(0deg);
+  animation: leaf-fall var(--dur, 14s) linear var(--delay, 0s) infinite;
+  will-change: transform;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
+}
+
+/* Capa interior: aplica la máscara y el vaivén de rotación */
+.floating-leaves .leaf .inner{
+  width: 100%; height: 100%; display: block;
+  background-color: currentColor;
+  -webkit-mask: var(--mask-url) center / contain no-repeat;
+          mask: var(--mask-url) center / contain no-repeat;
+  will-change: transform;
+  animation: leaf-wobble var(--tiltDur, 2.8s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+/* Trayectoria con ligera oscilación y giro */
+@keyframes leaf-fall{
+  0%{
+    transform: translate3d(var(--sx), -10vh, 0) rotate(0deg);
+  }
+  50%{
+    transform: translate3d(var(--mx, 20vw), 50vh, 0) rotate(90deg);
+  }
+  100%{
+    transform: translate3d(var(--ex), 110vh, 0) rotate(180deg);
+  }
+}
+
+/* Respeto a usuarios con reducción de movimiento */
+@media (prefers-reduced-motion: reduce){
+  .floating-leaves{ display: none; }
+}
+
+/* Pequeño vaivén de rotación */
+@keyframes leaf-wobble{
+  from{ transform: rotate(var(--tiltA, -8deg)); }
+  to  { transform: rotate(var(--tiltB, 8deg)); }
+}
