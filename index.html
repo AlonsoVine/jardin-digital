@@ -51,8 +51,19 @@
         >
           <span class="icon-bird" aria-hidden="true"></span>
         </button>
+        <button
+          id="leavesToggle"
+          class="bubble-btn leaves-btn"
+          aria-label="Hojas flotantes"
+          aria-pressed="true"
+          title="Hojas flotantes"
+        >
+          <span class="icon-leafwind" aria-hidden="true"></span>
+        </button>
       </div>
     </header>
+    <!-- Hojas flotantes (capa visual) -->
+    <div class="floating-leaves" aria-hidden="true"></div>
 
     <main class="container">
       <!-- ===== RESUMEN DEL JARDÍN ===== -->
@@ -103,19 +114,38 @@
                 aria-label="Leyenda"
               ></ul>
             </figure>
-            <figure class="bars-card" aria-label="Distribuciones de luz y riego">
+            <figure
+              class="bars-card"
+              aria-label="Distribuciones de luz y riego"
+            >
               <div class="bars-wrap">
                 <div class="bars-block">
                   <div class="bars-title">Luz</div>
                   <div id="chart-light" class="bars" aria-hidden="true"></div>
-                  <ul id="legend-light" class="bars-legend" aria-label="Leyenda luz"></ul>
-                  <div class="avg-meter" id="avg-light" aria-label="Luz promedio"></div>
+                  <ul
+                    id="legend-light"
+                    class="bars-legend"
+                    aria-label="Leyenda luz"
+                  ></ul>
+                  <div
+                    class="avg-meter"
+                    id="avg-light"
+                    aria-label="Luz promedio"
+                  ></div>
                 </div>
                 <div class="bars-block">
                   <div class="bars-title">Riego</div>
                   <div id="chart-water" class="bars" aria-hidden="true"></div>
-                  <ul id="legend-water" class="bars-legend" aria-label="Leyenda riego"></ul>
-                  <div class="avg-meter" id="avg-water" aria-label="Riego promedio"></div>
+                  <ul
+                    id="legend-water"
+                    class="bars-legend"
+                    aria-label="Leyenda riego"
+                  ></ul>
+                  <div
+                    class="avg-meter"
+                    id="avg-water"
+                    aria-label="Riego promedio"
+                  ></div>
                 </div>
               </div>
             </figure>
@@ -166,12 +196,23 @@
                   Excel (CSV)
                 </button>
               </div>
-              <div class="utils-note">Exporta todas las fichas a JSON, TXT o CSV.</div>
+              <div class="utils-note">
+                Exporta todas las fichas a JSON, TXT o CSV.
+              </div>
             </div>
           </div>
           <div class="dash-utils">
-            <button id="autoplayBtn" class="btn" aria-pressed="false" title="Recorrer automáticamente las plantas">▶️ Paseo por el jardín.</button>
-            <div class="utils-note">Recorre las plantas con desplazamiento suave cada pocos segundos.</div>
+            <button
+              id="autoplayBtn"
+              class="btn"
+              aria-pressed="false"
+              title="Recorrer automáticamente las plantas"
+            >
+              ▶️ Paseo por el jardín.
+            </button>
+            <div class="utils-note">
+              Recorre las plantas con desplazamiento suave cada pocos segundos.
+            </div>
           </div>
 
           <div class="meta-line">
@@ -198,7 +239,9 @@
               <!-- Extras útiles -->
               <button class="chip" data-filter="colgant">Colgantes</button>
               <button class="chip" data-filter="tropical">Tropicales</button>
-              <button class="chip" data-filter="ornamental">Ornamentales</button>
+              <button class="chip" data-filter="ornamental">
+                Ornamentales
+              </button>
               <button class="chip" data-filter="vivaz|vivaces">Vivaces</button>
               <button class="chip" data-filter="árbol">Árboles</button>
               <button class="chip" data-filter="arbusto">Arbustos</button>

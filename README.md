@@ -2,136 +2,152 @@
 
 ![IMG](img/fondo-readme.png "imagen cámara")
 
-# Jardín de Belén & Alonso
+# <img src="img/monstera-leaf-verde-borde-8px.svg" width="32" align="center" /> Jardín de Belén & Alonso
 
-### Un jardín digital donde la naturaleza y el amor crecen juntos
+### 🌸 Un jardín digital donde la naturaleza y el amor crecen juntos
 
 Creado con cariño por **Belén** y **Alon**  
-<sub>Proyecto personal y colaborativo — Iniciado en 2025</sub>
+<sub>Proyecto personal y colaborativo — Iniciado en 2025</sub>  
 
-URL: https://alonsovine.github.io/jardin-digital/
+🔗 **URL:** [https://alonsovine.github.io/jardin-digital/](https://alonsovine.github.io/jardin-digital/)
 
 </div>
 
 ---
 
-## Descripción
+## 🌿 Descripción
 
-Jardín de Belén & Alon es una web artesanal para registrar y acompañar la vida de nuestras plantas.  
-Cada ficha documenta una especie real de nuestro hogar, uniendo conocimiento botánico, diseño web y emoción compartida.
+**Jardín de Belén & Alon** es una web artesanal para registrar y acompañar la vida de nuestras plantas.  
+Cada ficha documenta una especie real de nuestro hogar, uniendo conocimiento botánico, diseño web y emoción compartida.  
 
-El objetivo del proyecto es combinar ciencia y sensibilidad: cultivar un jardín vivo que crece en la tierra y en la pantalla.
+El proyecto busca equilibrar ciencia y sensibilidad: cultivar un jardín vivo que crece tanto en la tierra como en la pantalla.
 
 ---
 
-## Organización del proyecto
+## 🪴 Organización del proyecto
 
-Estructura simple, pensada para mantener orden y escalar fácilmente:
+Estructura clara, pensada para mantener orden y escalar fácilmente:
 
-- `index.html` — Página principal con el resumen, la barra de búsqueda y todas las fichas (P001…PXXX).
+- `index.html` — Página principal con el resumen, la barra de búsqueda y todas las fichas (`P001…PXXX`).
 - `style.css` — Estilos principales, temas claro/oscuro, animaciones y diseño responsive.
-- `script.js` — Lógica de interactividad: KPIs, filtros, donut, exportación, tema y sonido.
-- `img/` — Fotografías de plantas e iconos (incluye `bird.svg` y hojas Monstera).
-- `audio/` — Pista local de ambiente: `relaxing-birds-and-piano-music-137153.mp3`.
-- `jardin_de_belen_y_alon_2025.txt` — Notas del proyecto.
+- `script.js` — Lógica de interactividad: KPIs, filtros, donut, exportación, tema, sonido y hojas flotantes.
+- `img/` — Fotografías de plantas e iconos (incluye `monstera-leaf-verde-borde-8px.svg` y `bird.svg`).
+- `audio/` — Sonidos de ambiente: `relaxing-birds-and-piano-music-137153.mp3`.
+- `jardin_de_belen_y_alon_2025.txt` — Notas y apuntes del proyecto.
 
 ---
 
-## Funcionalidades principales
+## ✨ Funcionalidades principales
 
-- Resumen del jardín (dashboard)
-  - KPIs automáticos: total, suculentas, trepadoras/colgantes, palmeras, arbustos/árboles, herbáceas/ornamentales.
-  - Indicador de salud general con barra y porcentaje “sanas” vs “con atención”.
-  - Última actualización calculada a partir de las fichas.
-  - Mini gráfico donut por tipo con leyenda.
+### 🌸 Panel resumen (dashboard)
+- KPIs automáticos: total de plantas, suculentas, trepadoras/colgantes, palmeras, arbustos/árboles y herbáceas/ornamentales.  
+- Indicador de **salud general** con barra y porcentaje (“sanas” vs “en cuidado”).  
+- Fecha de **última actualización** calculada automáticamente.  
+- Mini gráfico **donut** con distribución por tipo.  
+- **Animaciones** suaves al cargar los indicadores.
 
-- Búsqueda y filtros
-  - Barra de búsqueda por nombre común/científico.
-  - Selectores dinámicos de “Tipo” y “Estado” construidos desde el contenido real.
-  - Chips rápidos de categoría (Todas, Suculentas, Trepadoras/Colgantes, etc.).
-  - Contador de resultados y botón “Limpiar”.
+### 🔍 Búsqueda y filtros dinámicos
+- Barra de búsqueda por nombre común o científico.  
+- Filtros por **tipo**, **estado**, **luz**, **riego** y **salud**.  
+- Chips rápidos de categoría (Todas, Suculentas, Trepadoras, etc.).  
+- Contador de resultados y botón **“Limpiar”**.  
+- Soporte para combinaciones múltiples de filtros.
 
-- Exportación de datos
-  - Descarga de todas las fichas como `JSON`, `TXT` o `CSV (Excel)`.
-  - Archivos generados en el cliente a partir del DOM actual.
-  - Nombre de archivo con fecha y hora: `jardin_belen_alon_YYYYMMDD_HHMM.ext`.
+### 🧾 Exportación de datos
+- Descarga completa de las fichas en formatos **JSON**, **TXT** o **CSV (Excel)**.  
+- Archivos generados en el cliente, con nombre `jardin_belen_alon_YYYYMMDD_HHMM.ext`.  
 
-- Tema claro/oscuro
-  - Conmutador en el header; persistencia con `localStorage` (`theme`).
-  - Variables CSS y transiciones suaves; respeta `prefers-reduced-motion`.
+### 🌓 Tema claro / oscuro
+- Botón de alternancia 🌙☀️ con transición suave y persistencia (`localStorage: theme`).  
+- Variables CSS y detección automática de `prefers-color-scheme`.  
 
-- Sonido ambiente (pájaros)
-  - Botón dedicado en el header; reproduce/pausa una pista local.
-  - Persistencia de estado y volumen (`amb_on`, `amb_vol`) en `localStorage`.
-  - Pausa automática al cambiar de pestaña y reanuda si estaba activo.
+### 🎵 Sonido ambiente
+- Botón dedicado 🎶 (pájaro) en el header; reproduce o pausa la pista local.  
+- Estado y volumen recordados (`amb_on`, `amb_vol`), pausa automática al cambiar de pestaña.  
 
-- Accesibilidad y UX
-  - Roles y etiquetas ARIA en botones, menús y búsqueda.
-  - Cierre de menús con “Escape” y al hacer clic fuera.
-  - Botón flotante “Volver arriba” con soporte de teclado.
-  - Imágenes con `loading="lazy"` y texto alternativo.
+### 🍃 Animación de hojas flotantes
+- Hojas Monstera animadas descendiendo suavemente.  
+- Activación/desactivación con botón 🍃 junto al de sonido.  
+- Persistencia (`leaves_on`) y respeto a `prefers-reduced-motion`.  
+- Color adaptativo: más claras en oscuro, más oscuras en claro.
 
-- UI y rendimiento
-  - Header pegajoso con desenfoque, animaciones de entrada y micro-efectos al hover.
-  - Diseño responsive móvil/desktop sin dependencias externas.
+### 🪴 Modo “En cuidado / observación”
+- Posibilidad de marcar plantas que requieren atención.  
+- Visualización con borde y saturación reducida.  
+- Persistencia en `localStorage` (`careStates`).
 
----
+### 💚 Interfaz y accesibilidad
+- Roles y etiquetas **ARIA** en botones, menús y buscador.  
+- Cierre de menús con **Escape** o clic fuera.  
+- Botón flotante **“Volver arriba”** con soporte de teclado.  
+- Imágenes con `loading="lazy"` y texto alternativo.  
+- Animaciones respetuosas con `prefers-reduced-motion`.
 
-## Cómo ejecutar
-
-- Opción rápida: abrir `index.html` directamente en tu navegador.
-- Opción recomendada: servir como sitio estático (por ejemplo con Live Server).  
-  Nota: algunos navegadores restringen audio autoplay; el botón de pájaro activa manualmente el sonido.
-
----
-
-## Añadir o editar fichas
-
-Cada planta vive en una sección `.card` con id `P###`. Para añadir una nueva:
-
-1) Duplica una tarjeta existente en `index.html` y actualiza:
-- Encabezado `.id`: “Planta PXXX — Nombre / Nombre científico”.
-- Bloque “Ficha”: `Apodo`, `Fecha de registro`, `Tipo`, `Origen o procedencia`, `Ubicación actual`.
-- Bloque “Cuidados`: `Luz`/`Condiciones de luz`, `Riego`, `Temperatura`, `Humedad`, `Sustrato`.
-- Bloque “Estado`: `Última revisión`, `Estado actual`.
-- “Observaciones” e “Historial”.
-
-2) Coloca la imagen en `img/` y actualiza `src` y `alt` en `<img class="thumb" loading="lazy" ...>`.
-
-3) Mantén las etiquetas tal como aparecen (por ejemplo `Tipo:`, `Estado actual:`).  
-   El script lee estas claves para construir filtros y exportar datos.
+### 🌸 Experiencia visual
+- Header pegajoso con desenfoque y micro-efectos.  
+- Diseño **responsive** móvil/desktop sin dependencias externas.  
+- Paleta cromática natural, animaciones discretas y tipografía elegante.
 
 ---
 
-## Personalización y mantenimiento
+## ⚙️ Cómo ejecutar
 
-- Audio de ambiente: cambia `AMBIENCE_SRC` en `script.js` si mueves la pista.
-- Tema: el HTML usa la clase `light` para el modo claro; se persiste en `localStorage`.
-- Exportación: los formatos incluyen todas las claves visibles en las tarjetas.
-- Si renombraras etiquetas en las fichas, adapta los prefijos que el parser de `script.js` reconoce.
-
----
-
-## Tecnologías utilizadas
-
-- HTML5 y CSS3 — Semántica, variables CSS, diseño responsive.
-- JavaScript (vanilla) — Interactividad sin dependencias externas.
-- Git + GitHub Pages — Publicación del sitio estático.
+- Opción rápida: abre `index.html` directamente en tu navegador.  
+- Opción recomendada: usar un servidor estático (por ejemplo **Live Server**).  
+  > Nota: algunos navegadores restringen la reproducción automática de audio; el botón de pájaro activa el sonido manualmente.
 
 ---
 
-## Futuras mejoras
+## 🌱 Añadir o editar fichas
 
-- Línea temporal de evolución fotográfica por planta.
-- Sección de floraciones destacadas y alertas de cuidados.
-- Paginación/carga progresiva de fichas.
-- Edición y alta de plantas mediante formulario + JSON.
-- Internacionalización (ES/EN) y búsqueda avanzada.
+Cada planta vive en una sección `.card` con id `P###`.  
+Para añadir una nueva:
+
+1. Duplica una tarjeta existente en `index.html` y actualiza:
+   - Encabezado `.id`: `Planta PXXX — Nombre / Nombre científico`.  
+   - Bloque **Ficha**: `Apodo`, `Fecha de registro`, `Tipo`, `Origen`, `Ubicación`.  
+   - Bloque **Cuidados**: `Luz`, `Riego`, `Temperatura`, `Humedad`, `Sustrato`.  
+   - Bloque **Estado**: `Última revisión`, `Estado actual`.  
+   - “Observaciones” e “Historial”.
+
+2. Coloca la imagen en `img/` y actualiza `src` y `alt` en `<img class="thumb" ...>`.
+
+3. Mantén las etiquetas (`Tipo:`, `Estado actual:`); el script las usa para generar filtros y estadísticas.
 
 ---
 
-## Autores
+## 🧠 Personalización y mantenimiento
 
-**Belén & Alon** — Proyecto conjunto de diseño, naturaleza y amor.  
-Iniciado en 2025 — cultivado con paciencia, código y ternura.
+- 🎵 **Audio:** cambia `AMBIENCE_SRC` en `script.js` si mueves la pista.  
+- 🌗 **Tema:** el HTML usa `.light` para modo claro; persiste automáticamente.  
+- 💾 **Exportación:** los formatos incluyen todos los campos visibles en las fichas.  
+- 🪴 **Campos clave:** si renombras etiquetas, actualiza los prefijos que lee el script.  
+- 🍃 **Hojas:** activa/desactiva la animación desde el botón del header.  
+
+---
+
+## 💻 Tecnologías utilizadas
+
+- 🧩 **HTML5 + CSS3** — Semántica, variables CSS, animaciones y diseño responsive.  
+- ⚡ **JavaScript (vanilla)** — Interactividad sin dependencias externas.  
+- ☁️ **Git + GitHub Pages** — Publicación del sitio estático.  
+
+---
+
+## 🌼 Futuras mejoras
+
+- 📸 Línea temporal de evolución fotográfica por planta.  
+- 🌺 Sección de floraciones destacadas y alertas de cuidados.  
+- 📆 Agenda automática de próximos riegos.  
+- ✏️ Alta/edición de plantas mediante formulario con guardado en JSON o backend.  
+- 🌐 Internacionalización (ES/EN).  
+- 📱 Paginación o carga progresiva de fichas.  
+- 🌾 Integración con backend ligero (Supabase/Firebase/Sheets).  
+
+---
+
+## 💞 Autores
+
+**Belén & Alon** — proyecto conjunto de diseño, naturaleza y amor.  
+🌿 Iniciado en 2025 — cultivado con paciencia, código y ternura.  
 

@@ -1145,6 +1145,27 @@ Historial: ${p.historial}
 })();
 
 /* ============================================================
+   Botón hojas flotantes (mostrar/ocultar capa visual)
+   ============================================================ */
+(function(){
+  const btn = document.getElementById('leavesToggle');
+  const layer = document.querySelector('.floating-leaves');
+  if(!btn || !layer) return;
+
+  const saved = localStorage.getItem('leaves_on');
+  const on = saved !== '0';
+  function apply(state){
+    layer.style.display = state ? '' : 'none';
+    btn.classList.toggle('is-on', state);
+    btn.setAttribute('aria-pressed', String(state));
+    localStorage.setItem('leaves_on', state ? '1' : '0');
+  }
+  apply(on);
+
+  btn.addEventListener('click', ()=> apply(!(btn.classList.contains('is-on'))));
+})();
+
+/* ============================================================
    Recorrido automático de fichas (autoplay)
    ============================================================ */
 (function(){
@@ -1330,4 +1351,71 @@ Historial: ${p.historial}
   btn.addEventListener('click', play);
   document.addEventListener('visibilitychange', ()=>{ if(document.hidden) stop(); });
   document.addEventListener('lightbox:close', stop);
+})();
+
+/* ────────────────────────────────
+   Hojas flotantes (generación)
+   ──────────────────────────────── */
+(function(){
+  const layer = document.querySelector('.floating-leaves');
+  if(!layer) return;
+
+  // Si el usuario prefiere menos movimiento, no renderizamos
+  const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mqReduce.matches) return;
+
+  const NUM_LEAVES = 10;           // 6–12 es muy suave
+  const vw = () => Math.floor(Math.random() * 100);           // 0..99
+  const pick = (min, max) => min + Math.random() * (max - min);
+  const isLight = document.documentElement.classList.contains('light');
+  const masks = [
+    'img/monstera-leaf-verde-borde-8px.svg',
+    'img/leaves-svgrepo-com.svg',
+    'img/leaves-svgrepo-com (1).svg',
+    'img/leaves-svgrepo-com (2).svg',
+    'img/leaves-svgrepo-com (3).svg',
+    'img/leaves-5-svgrepo-com.svg'
+  ];
+
+  for (let i=0; i<NUM_LEAVES; i++){
+    const leaf = document.createElement('span');
+    leaf.className = 'leaf';
+    const inner = document.createElement('span');
+    inner.className = 'inner';
+
+    // Posición X de inicio/mitad/fin (en vw) para crear ligera deriva horizontal
+    const startX = vw();                           // 0..100 vw
+    const sway   = pick(6, 14);                    // cuánto se desplaza lateralmente
+    const dir    = Math.random() < 0.5 ? -1 : 1;   // izquierda o derecha
+    const midX   = startX + dir * (sway * 0.6);
+    const endX   = startX + dir * sway;
+
+    // Tamaño, duración y desfase
+    const size   = pick(26, 44);                   // px (más grandes)
+    const dur    = pick(14, 22);                   // s
+    const delay  = -pick(0, dur);                  // negativo para entrar desfasadas
+    const op     = pick(isLight ? 0.22 : 0.18, isLight ? 0.42 : 0.35);
+
+    leaf.style.setProperty('--sx', `${startX}vw`);
+    leaf.style.setProperty('--mx', `${midX}vw`);
+    leaf.style.setProperty('--ex', `${endX}vw`);
+    leaf.style.setProperty('--size', `${size}px`);
+    leaf.style.setProperty('--dur', `${dur}s`);
+    leaf.style.setProperty('--delay', `${delay}s`);
+    leaf.style.setProperty('--opacity', op.toFixed(2));
+
+    // Máscara SVG aleatoria para variedad
+    const maskUrl = masks[Math.floor(Math.random() * masks.length)];
+    inner.style.setProperty('--mask-url', `url("${maskUrl}")`);
+
+    // Vaivén de rotación aleatorio (sobre el hijo)
+    const tilt = pick(6, 12);
+    const dirTilt = Math.random() < 0.5 ? -1 : 1;
+    leaf.style.setProperty('--tiltDur', `${pick(2.2, 3.4)}s`);
+    leaf.style.setProperty('--tiltA', `${-dirTilt * tilt}deg`);
+    leaf.style.setProperty('--tiltB', `${dirTilt * tilt}deg`);
+
+    leaf.appendChild(inner);
+    layer.appendChild(leaf);
+  }
 })();
