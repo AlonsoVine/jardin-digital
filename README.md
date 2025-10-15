@@ -141,8 +141,7 @@ Para añadir una nueva:
 
 ---
 
-## 💞 Autores
+## 💞 Autor
 
-**Belén & Alon** — proyecto conjunto de diseño, naturaleza y amor.  
+**Alonso** — proyecto conjunto de diseño, naturaleza y amor.  
 🌿 Iniciado en 2025 — cultivado con paciencia, código y ternura.  
-

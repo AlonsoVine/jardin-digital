@@ -472,11 +472,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Animaciones numéricas y easing
-  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-  function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+  function easeOutQuint(t) {
+    return 1 - Math.pow(1 - t, 5);
+  }
 
-  function animateNumber(elOrId, to, { duration = 1500, prefix = '', suffix = '' } = {}) {
-    const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+  function animateNumber(
+    elOrId,
+    to,
+    { duration = 1500, prefix = "", suffix = "" } = {}
+  ) {
+    const el =
+      typeof elOrId === "string" ? document.getElementById(elOrId) : elOrId;
     if (!el) return;
     const from = 0;
     const start = performance.now();
@@ -490,17 +499,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateKPIs(c) {
-    animateNumber('kpi-total', c.total);
-    animateNumber('kpi-sucus', c.sucu);
-    animateNumber('kpi-trepas', c.trepa);
-    animateNumber('kpi-palmas', c.palma);
-    animateNumber('kpi-arbustos', c.arb);
-    animateNumber('kpi-herb', c.herb);
+    animateNumber("kpi-total", c.total);
+    animateNumber("kpi-sucus", c.sucu);
+    animateNumber("kpi-trepas", c.trepa);
+    animateNumber("kpi-palmas", c.palma);
+    animateNumber("kpi-arbustos", c.arb);
+    animateNumber("kpi-herb", c.herb);
   }
 
   function updateHealth(c) {
     const percentOk = c.total ? Math.round((c.ok / c.total) * 100) : 0;
-    animateNumber('health-percent', percentOk, { suffix: '% sanas' });
+    animateNumber("health-percent", percentOk, { suffix: "% sanas" });
     const bar = document.getElementById("health-bar");
     if (bar) bar.style.width = percentOk + "%";
     const legend = document.getElementById("health-legend");
@@ -608,17 +617,17 @@ document.addEventListener("DOMContentLoaded", () => {
       // animación del stroke
       const DURATION = 1600;
       const delay = segIndex * 180; // pequeño escalonado
-      function animateArc(startTime){
-        function step(now){
+      function animateArc(startTime) {
+        function step(now) {
           const t = Math.min(1, (now - startTime) / DURATION);
           const eased = easeOutQuint(t);
           const val = len * eased;
           arc.setAttribute("stroke-dasharray", `${val} ${circumference - val}`);
-          if(t < 1) requestAnimationFrame(step);
+          if (t < 1) requestAnimationFrame(step);
         }
         requestAnimationFrame(step);
       }
-      setTimeout(()=>animateArc(performance.now()), delay);
+      setTimeout(() => animateArc(performance.now()), delay);
       offset += len;
       segIndex++;
     });
@@ -660,138 +669,177 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------- Barras: Luz y Riego ----------
-  function getKVForBars(section, labels){
-    const kvs = section.querySelectorAll('p.kv');
-    for(const p of kvs){
-      const raw = (p.textContent||'').trim();
-      for(const l of labels){
-        if(raw.toLowerCase().startsWith(l.toLowerCase())){
-          return raw.slice(l.length).replace(/^:\s*/,'').trim();
+  function getKVForBars(section, labels) {
+    const kvs = section.querySelectorAll("p.kv");
+    for (const p of kvs) {
+      const raw = (p.textContent || "").trim();
+      for (const l of labels) {
+        if (raw.toLowerCase().startsWith(l.toLowerCase())) {
+          return raw.slice(l.length).replace(/^:\s*/, "").trim();
         }
       }
     }
-    return '';
+    return "";
   }
 
-  function normalizeLight(str){
-    const s = (str||'').toLowerCase();
+  function normalizeLight(str) {
+    const s = (str || "").toLowerCase();
     const isAlta = /(muy\s*alta|alta|brillante|mucha|intensa)/.test(s);
     const isBaja = /(muy\s*baja|baja|sombra|poca)/.test(s);
     const isMedia = /(media|filtrada|parcial|luminosa)/.test(s);
-    if(isAlta) return 'alta';
-    if(isMedia) return 'media';
-    if(isBaja) return 'baja';
-    if(/indirecta/.test(s)) return 'media';
-    return 'media';
+    if (isAlta) return "alta";
+    if (isMedia) return "media";
+    if (isBaja) return "baja";
+    if (/indirecta/.test(s)) return "media";
+    return "media";
   }
 
-  function normalizeWater(str){
-    const s = (str||'').toLowerCase();
-    const alto = /(frecuent|abundant|mantener\s+h[úu]med|cada\s*(1|dos|2) d[íi]as)/.test(s);
-    const bajo = /(escaso|poco|dejar\s+secar\s+complet|espaciado|espor[aá]dico)/.test(s);
+  function normalizeWater(str) {
+    const s = (str || "").toLowerCase();
+    const alto =
+      /(frecuent|abundant|mantener\s+h[úu]med|cada\s*(1|dos|2) d[íi]as)/.test(
+        s
+      );
+    const bajo =
+      /(escaso|poco|dejar\s+secar\s+complet|espaciado|espor[aá]dico)/.test(s);
     const moderado = /(moderad|regular)/.test(s);
-    if(alto) return 'alto';
-    if(bajo) return 'bajo';
-    if(moderado) return 'moderado';
-    if(/dejar\s+secar/.test(s)) return 'moderado';
-    return 'moderado';
+    if (alto) return "alto";
+    if (bajo) return "bajo";
+    if (moderado) return "moderado";
+    if (/dejar\s+secar/.test(s)) return "moderado";
+    return "moderado";
   }
 
-  function countLightWater(cards){
-    const light = { alta:0, media:0, baja:0 };
-    const water = { alto:0, moderado:0, bajo:0 };
-    cards.forEach(card=>{
-      const l = getKVForBars(card, ['Luz:', 'Condiciones de luz recomendadas:']);
-      const w = getKVForBars(card, ['Riego:']);
+  function countLightWater(cards) {
+    const light = { alta: 0, media: 0, baja: 0 };
+    const water = { alto: 0, moderado: 0, bajo: 0 };
+    cards.forEach((card) => {
+      const l = getKVForBars(card, [
+        "Luz:",
+        "Condiciones de luz recomendadas:",
+      ]);
+      const w = getKVForBars(card, ["Riego:"]);
       light[normalizeLight(l)]++;
       water[normalizeWater(w)]++;
     });
     return { light, water };
   }
 
-  function renderBars(containerId, legendId, entries){
+  function renderBars(containerId, legendId, entries) {
     const cont = document.getElementById(containerId);
     const legend = document.getElementById(legendId);
-    if(!cont) return;
-    const total = entries.reduce((a,b)=>a+b.val,0) || 0;
-    cont.innerHTML = '';
-    if(legend) legend.innerHTML = '';
-    entries.forEach(e=>{
-      if(e.val<=0) return;
-      const pct = total ? Math.round((e.val/total)*100) : 0;
+    if (!cont) return;
+    const total = entries.reduce((a, b) => a + b.val, 0) || 0;
+    cont.innerHTML = "";
+    if (legend) legend.innerHTML = "";
+    entries.forEach((e) => {
+      if (e.val <= 0) return;
+      const pct = total ? Math.round((e.val / total) * 100) : 0;
 
-      const item = document.createElement('div');
-      item.className = 'baritem';
+      const item = document.createElement("div");
+      item.className = "baritem";
 
-      const row = document.createElement('div');
-      row.className = 'barrow';
-      const fill = document.createElement('span');
-      fill.className = 'fill';
+      const row = document.createElement("div");
+      row.className = "barrow";
+      const fill = document.createElement("span");
+      fill.className = "fill";
       fill.style.background = e.color;
-      fill.style.width = '0%';
+      fill.style.width = "0%";
       row.appendChild(fill);
 
-      const label = document.createElement('span');
-      label.className = 'barlabel';
-      const sw = document.createElement('span');
-      sw.className = 'swatch';
+      const label = document.createElement("span");
+      label.className = "barlabel";
+      const sw = document.createElement("span");
+      sw.className = "swatch";
       sw.style.background = e.color;
       label.appendChild(sw);
-      label.appendChild(document.createTextNode(`${e.label}: ${e.val} · ${pct}%`));
+      label.appendChild(
+        document.createTextNode(`${e.label}: ${e.val} · ${pct}%`)
+      );
 
       item.appendChild(row);
       item.appendChild(label);
       cont.appendChild(item);
 
-      requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
+      requestAnimationFrame(() => {
+        fill.style.width = pct + "%";
+      });
     });
   }
 
-  function renderLightWater(cards){
+  function renderLightWater(cards) {
     const { light, water } = countLightWater(cards);
     const lightData = [
-      { key:'alta',  label:'Alta',  val: light.alta,  color:'#9AD08B' },
-      { key:'media', label:'Media', val: light.media, color:'#B7E3B0' },
-      { key:'baja',  label:'Baja',  val: light.baja,  color:'#D2F0CD' },
+      { key: "alta", label: "Alta", val: light.alta, color: "#9AD08B" },
+      { key: "media", label: "Media", val: light.media, color: "#B7E3B0" },
+      { key: "baja", label: "Baja", val: light.baja, color: "#D2F0CD" },
     ];
     const waterData = [
-      { key:'alto',      label:'Alto',      val: water.alto,      color:'#7AB7E6' },
-      { key:'moderado',  label:'Moderado',  val: water.moderado,  color:'#9CCAF0' },
-      { key:'bajo',      label:'Bajo',      val: water.bajo,      color:'#C2E0F7' },
+      { key: "alto", label: "Alto", val: water.alto, color: "#7AB7E6" },
+      {
+        key: "moderado",
+        label: "Moderado",
+        val: water.moderado,
+        color: "#9CCAF0",
+      },
+      { key: "bajo", label: "Bajo", val: water.bajo, color: "#C2E0F7" },
     ];
-    renderBars('chart-light', 'legend-light', lightData);
-    renderBars('chart-water', 'legend-water', waterData);
+    renderBars("chart-light", "legend-light", lightData);
+    renderBars("chart-water", "legend-water", waterData);
 
     // Indicadores promedio
-    renderAverages('avg-light', lightData, { baja:1, media:2, alta:3 });
-    renderAverages('avg-water', waterData, { bajo:1, moderado:2, alto:3 });
+    renderAverages("avg-light", lightData, { baja: 1, media: 2, alta: 3 });
+    renderAverages("avg-water", waterData, { bajo: 1, moderado: 2, alto: 3 });
   }
 
-  function renderAverages(containerId, entries, weights){
+  function renderAverages(containerId, entries, weights) {
     const cont = document.getElementById(containerId);
-    if(!cont) return;
-    const total = entries.reduce((a,b)=>a + (b.val||0), 0) || 0;
-    if(!total){ cont.innerHTML=''; return; }
+    if (!cont) return;
+    const total = entries.reduce((a, b) => a + (b.val || 0), 0) || 0;
+    if (!total) {
+      cont.innerHTML = "";
+      return;
+    }
     // weighted average 1..3
-    let sum = 0; entries.forEach(e=>{ const w = weights[e.key]||0; sum += w * (e.val||0); });
+    let sum = 0;
+    entries.forEach((e) => {
+      const w = weights[e.key] || 0;
+      sum += w * (e.val || 0);
+    });
     const avg = sum / total; // 1..3
     const pct = Math.round(((avg - 1) / 2) * 100); // 0..100
     // closest label
-    const nearest = entries.slice().sort((a,b)=>Math.abs(weights[a.key]-avg)-Math.abs(weights[b.key]-avg))[0];
+    const nearest = entries
+      .slice()
+      .sort(
+        (a, b) =>
+          Math.abs(weights[a.key] - avg) - Math.abs(weights[b.key] - avg)
+      )[0];
 
     // build UI
-    cont.innerHTML = '';
-    const head = document.createElement('div'); head.className='avg-head';
-    const lspan = document.createElement('span'); lspan.innerHTML = `Promedio: <b>${nearest.label}</b>`;
-    const rspan = document.createElement('span'); rspan.textContent = pct + '%';
-    head.appendChild(lspan); head.appendChild(rspan); cont.appendChild(head);
+    cont.innerHTML = "";
+    const head = document.createElement("div");
+    head.className = "avg-head";
+    const lspan = document.createElement("span");
+    lspan.innerHTML = `Promedio: <b>${nearest.label}</b>`;
+    const rspan = document.createElement("span");
+    rspan.textContent = pct + "%";
+    head.appendChild(lspan);
+    head.appendChild(rspan);
+    cont.appendChild(head);
 
-    const row = document.createElement('div'); row.className='barrow';
-    const fill = document.createElement('span'); fill.className='fill';
+    const row = document.createElement("div");
+    row.className = "barrow";
+    const fill = document.createElement("span");
+    fill.className = "fill";
     // color cercano a la categoría dominante
     fill.style.background = nearest.color;
-    fill.style.width = '0%'; row.appendChild(fill); cont.appendChild(row);
-    requestAnimationFrame(()=>{ fill.style.width = pct + '%'; });
+    fill.style.width = "0%";
+    row.appendChild(fill);
+    cont.appendChild(row);
+    requestAnimationFrame(() => {
+      fill.style.width = pct + "%";
+    });
   }
 
   // ---------- Init ----------
@@ -822,55 +870,62 @@ document.addEventListener("DOMContentLoaded", () => {
    - Muestra nombre, científico, apodo e imagen
    - Al pulsar, expande para ver la ficha completa
    ============================================================ */
-(function(){
+(function () {
   const cards = Array.from(document.querySelectorAll('section.card[id^="P"]'));
-  if(!cards.length) return;
+  if (!cards.length) return;
 
-  function getKV(section, label){
-    const kvs = section.querySelectorAll('p.kv');
-    for(const p of kvs){
-      const raw = (p.textContent||'').trim();
-      if(raw.toLowerCase().startsWith(label.toLowerCase())){
-        return raw.slice(label.length).replace(/^:\s*/,'').trim();
+  function getKV(section, label) {
+    const kvs = section.querySelectorAll("p.kv");
+    for (const p of kvs) {
+      const raw = (p.textContent || "").trim();
+      if (raw.toLowerCase().startsWith(label.toLowerCase())) {
+        return raw.slice(label.length).replace(/^:\s*/, "").trim();
       }
     }
-    return '';
+    return "";
   }
 
-  cards.forEach(card=>{
+  cards.forEach((card) => {
     // Crear línea de resumen si no existe
-    let summary = card.querySelector('.summary-line');
-    if(!summary){
-      summary = document.createElement('div');
-      summary.className = 'summary-line';
-      const apodo = getKV(card, 'Apodo:');
-      const tag = document.createElement('span');
-      tag.className = 'tag';
-      tag.textContent = apodo ? `Apodo: ${apodo}` : 'Apodo: —';
+    let summary = card.querySelector(".summary-line");
+    if (!summary) {
+      summary = document.createElement("div");
+      summary.className = "summary-line";
+      const apodo = getKV(card, "Apodo:");
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = apodo ? `Apodo: ${apodo}` : "Apodo: —";
       summary.appendChild(tag);
 
-      const toggle = document.createElement('button');
-      toggle.className = 'card-toggle';
-      toggle.setAttribute('aria-label','Mostrar/ocultar detalles');
-      toggle.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>';
+      const toggle = document.createElement("button");
+      toggle.className = "card-toggle";
+      toggle.setAttribute("aria-label", "Mostrar/ocultar detalles");
+      toggle.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z" fill="currentColor"/></svg>';
       summary.appendChild(toggle);
 
-      const title = card.querySelector('.id');
-      if(title){ title.insertAdjacentElement('afterend', summary); }
+      const title = card.querySelector(".id");
+      if (title) {
+        title.insertAdjacentElement("afterend", summary);
+      }
 
-      function setState(expanded){
-        card.classList.toggle('is-collapsed', !expanded);
-        card.classList.toggle('is-expanded', !!expanded);
-        toggle.setAttribute('aria-expanded', String(!!expanded));
+      function setState(expanded) {
+        card.classList.toggle("is-collapsed", !expanded);
+        card.classList.toggle("is-expanded", !!expanded);
+        toggle.setAttribute("aria-expanded", String(!!expanded));
 
         // Mostrar solo la última imagen cuando está colapsada
-        const thumbs = Array.from(card.querySelectorAll('img.thumb'));
-        if(thumbs.length > 1){
-          if(!expanded){
+        const thumbs = Array.from(card.querySelectorAll("img.thumb"));
+        if (thumbs.length > 1) {
+          if (!expanded) {
             // En vista compacta mostrar SOLO la primera imagen
-            thumbs.forEach((img, i)=>{ img.style.display = (i === 0) ? '' : 'none'; });
+            thumbs.forEach((img, i) => {
+              img.style.display = i === 0 ? "" : "none";
+            });
           } else {
-            thumbs.forEach(img=>{ img.style.display = ''; });
+            thumbs.forEach((img) => {
+              img.style.display = "";
+            });
           }
         }
       }
@@ -879,9 +934,14 @@ document.addEventListener("DOMContentLoaded", () => {
       setState(false);
 
       // Click toggle
-      toggle.addEventListener('click', (e)=>{ e.stopPropagation(); setState(!card.classList.contains('is-expanded')); });
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setState(!card.classList.contains("is-expanded"));
+      });
       // También permitir click en el título
-      title?.addEventListener('click', ()=> setState(!card.classList.contains('is-expanded')));
+      title?.addEventListener("click", () =>
+        setState(!card.classList.contains("is-expanded"))
+      );
     }
   });
 })();
@@ -1147,63 +1207,71 @@ Historial: ${p.historial}
 /* ============================================================
    Botón hojas flotantes (mostrar/ocultar capa visual)
    ============================================================ */
-(function(){
-  const btn = document.getElementById('leavesToggle');
-  const layer = document.querySelector('.floating-leaves');
-  if(!btn || !layer) return;
+(function () {
+  const btn = document.getElementById("leavesToggle");
+  const layer = document.querySelector(".floating-leaves");
+  if (!btn || !layer) return;
 
-  const saved = localStorage.getItem('leaves_on');
-  const on = saved !== '0';
-  function apply(state){
-    layer.style.display = state ? '' : 'none';
-    btn.classList.toggle('is-on', state);
-    btn.setAttribute('aria-pressed', String(state));
-    localStorage.setItem('leaves_on', state ? '1' : '0');
+  const saved = localStorage.getItem("leaves_on");
+  const on = saved !== "0";
+  function apply(state) {
+    layer.style.display = state ? "" : "none";
+    btn.classList.toggle("is-on", state);
+    btn.setAttribute("aria-pressed", String(state));
+    localStorage.setItem("leaves_on", state ? "1" : "0");
   }
   apply(on);
 
-  btn.addEventListener('click', ()=> apply(!(btn.classList.contains('is-on'))));
+  btn.addEventListener("click", () => apply(!btn.classList.contains("is-on")));
 })();
 
 /* ============================================================
    Recorrido automático de fichas (autoplay)
    ============================================================ */
-(function(){
-  const btn = document.getElementById('autoplayBtn');
+(function () {
+  const btn = document.getElementById("autoplayBtn");
   return; // antiguo autoplay por tarjetas deshabilitado (usamos autoplay del lightbox)
 
   let timer = null;
   let index = 0;
   const INTERVAL = 4000; // ms
 
-  function visibleCards(){
+  function visibleCards() {
     const all = Array.from(document.querySelectorAll('section.card[id^="P"]'));
-    return all.filter(c => c.style.display !== 'none');
+    return all.filter((c) => c.style.display !== "none");
   }
 
-  function step(){
+  function step() {
     const cards = visibleCards();
-    if(!cards.length){ stop(); return; }
-    if(index >= cards.length) index = 0;
+    if (!cards.length) {
+      stop();
+      return;
+    }
+    if (index >= cards.length) index = 0;
     const card = cards[index++];
-    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    card.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function play(){
-    if(timer) return;
-    btn.setAttribute('aria-pressed','true');
-    btn.textContent = '⏸ Pausar';
+  function play() {
+    if (timer) return;
+    btn.setAttribute("aria-pressed", "true");
+    btn.textContent = "⏸ Pausar";
     step();
     timer = setInterval(step, INTERVAL);
   }
-  function stop(){
-    if(timer){ clearInterval(timer); timer = null; }
-    btn.setAttribute('aria-pressed','false');
-    btn.textContent = '▶️ Paseo por el jardín.';
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    btn.setAttribute("aria-pressed", "false");
+    btn.textContent = "▶️ Paseo por el jardín.";
   }
 
-  btn.addEventListener('click', ()=> timer ? stop() : play());
-  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) stop(); });
+  btn.addEventListener("click", () => (timer ? stop() : play()));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+  });
 })();
 
 /* ============================================================
@@ -1253,13 +1321,17 @@ Historial: ${p.historial}
     overlay.classList.add("is-open");
     document.documentElement.classList.add("no-scroll");
     btnClose?.focus({ preventScroll: true });
-    try{ document.dispatchEvent(new CustomEvent('lightbox:open')); }catch(_){}
+    try {
+      document.dispatchEvent(new CustomEvent("lightbox:open"));
+    } catch (_) {}
   }
 
   function close() {
     overlay.classList.remove("is-open");
     document.documentElement.classList.remove("no-scroll");
-    try{ document.dispatchEvent(new CustomEvent('lightbox:close')); }catch(_){}
+    try {
+      document.dispatchEvent(new CustomEvent("lightbox:close"));
+    } catch (_) {}
   }
 
   function next() {
@@ -1301,8 +1373,8 @@ Historial: ${p.historial}
     close,
     next,
     prev,
-    isOpen: () => overlay.classList.contains('is-open'),
-    thumbs
+    isOpen: () => overlay.classList.contains("is-open"),
+    thumbs,
   };
 })();
 
@@ -1311,36 +1383,60 @@ Historial: ${p.historial}
    - Abre el visor y va mostrando imágenes en orden aleatorio
    - Se detiene al cerrar el visor o cambiar de pestaña
    ============================================================ */
-(function(){
-  const btn = document.getElementById('autoplayBtn');
-  if(!btn) return;
+(function () {
+  const btn = document.getElementById("autoplayBtn");
+  if (!btn) return;
 
   let timer = null;
   let order = [];
   let pos = 0;
   const INTERVAL = 4000; // ms
 
-  function shuffle(n){
-    const a=[...Array(n).keys()];
-    for(let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  function shuffle(n) {
+    const a = [...Array(n).keys()];
+    for (let i = n - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
     return a;
   }
 
-  function stop(){ if(timer){ clearInterval(timer); timer=null; } btn.setAttribute('aria-pressed','false'); btn.textContent='▶️ Paseo por el jardín.'; }
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    btn.setAttribute("aria-pressed", "false");
+    btn.textContent = "▶️ Paseo por el jardín.";
+  }
 
-  function step(){
-    const lb = window.__lightbox; if(!lb) return stop();
-    const total = lb.thumbs?.length||0; if(!total){ stop(); return; }
-    if(!order.length) { order = shuffle(total); pos = 0; }
-    if(pos >= order.length) { order = shuffle(total); pos = 0; }
+  function step() {
+    const lb = window.__lightbox;
+    if (!lb) return stop();
+    const total = lb.thumbs?.length || 0;
+    if (!total) {
+      stop();
+      return;
+    }
+    if (!order.length) {
+      order = shuffle(total);
+      pos = 0;
+    }
+    if (pos >= order.length) {
+      order = shuffle(total);
+      pos = 0;
+    }
     const idx = order[pos++];
     lb.openAt(idx);
   }
 
-  function play(){
-    if(timer){ stop(); return; }
-    btn.setAttribute('aria-pressed','true');
-    btn.textContent='⏸ Pausar';
+  function play() {
+    if (timer) {
+      stop();
+      return;
+    }
+    btn.setAttribute("aria-pressed", "true");
+    btn.textContent = "⏸ Pausar";
     step();
     timer = setInterval(step, INTERVAL);
   }
@@ -1348,72 +1444,74 @@ Historial: ${p.historial}
   // Exponer para otros módulos si se necesita
   window.__startLightboxAutoplay = play;
 
-  btn.addEventListener('click', play);
-  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) stop(); });
-  document.addEventListener('lightbox:close', stop);
+  btn.addEventListener("click", play);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+  });
+  document.addEventListener("lightbox:close", stop);
 })();
 
 /* ────────────────────────────────
    Hojas flotantes (generación)
    ──────────────────────────────── */
-(function(){
-  const layer = document.querySelector('.floating-leaves');
-  if(!layer) return;
+(function () {
+  const layer = document.querySelector(".floating-leaves");
+  if (!layer) return;
 
   // Si el usuario prefiere menos movimiento, no renderizamos
-  const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (mqReduce.matches) return;
 
-  const NUM_LEAVES = 10;           // 6–12 es muy suave
-  const vw = () => Math.floor(Math.random() * 100);           // 0..99
+  const NUM_LEAVES = 10; // 6–12 es muy suave
+  const vw = () => Math.floor(Math.random() * 100); // 0..99
   const pick = (min, max) => min + Math.random() * (max - min);
-  const isLight = document.documentElement.classList.contains('light');
+  const isLight = document.documentElement.classList.contains("light");
   const masks = [
-    'img/monstera-leaf-verde-borde-8px.svg',
-    'img/leaves-svgrepo-com.svg',
-    'img/leaves-svgrepo-com (1).svg',
-    'img/leaves-svgrepo-com (2).svg',
-    'img/leaves-svgrepo-com (3).svg',
-    'img/leaves-5-svgrepo-com.svg'
+    "img/monstera-leaf-verde-borde-8px.svg",
+    "img/leaves-svgrepo-com.svg",
+    "img/leaves-svgrepo-com (1).svg",
+    "img/leaves-svgrepo-com (2).svg",
+    "img/leaves-svgrepo-com (3).svg",
+    "img/leaves-5-svgrepo-com.svg",
   ];
 
-  for (let i=0; i<NUM_LEAVES; i++){
-    const leaf = document.createElement('span');
-    leaf.className = 'leaf';
-    const inner = document.createElement('span');
-    inner.className = 'inner';
+  for (let i = 0; i < NUM_LEAVES; i++) {
+    const leaf = document.createElement("span");
+    leaf.className = "leaf";
+    const inner = document.createElement("span");
+    inner.className = "inner";
 
     // Posición X de inicio/mitad/fin (en vw) para crear ligera deriva horizontal
-    const startX = vw();                           // 0..100 vw
-    const sway   = pick(6, 14);                    // cuánto se desplaza lateralmente
-    const dir    = Math.random() < 0.5 ? -1 : 1;   // izquierda o derecha
-    const midX   = startX + dir * (sway * 0.6);
-    const endX   = startX + dir * sway;
+    const startX = vw(); // 0..100 vw
+    const sway = pick(6, 14); // cuánto se desplaza lateralmente
+    const dir = Math.random() < 0.5 ? -1 : 1; // izquierda o derecha
+    const midX = startX + dir * (sway * 0.6);
+    const endX = startX + dir * sway;
 
     // Tamaño, duración y desfase
-    const size   = pick(26, 44);                   // px (más grandes)
-    const dur    = pick(14, 22);                   // s
-    const delay  = -pick(0, dur);                  // negativo para entrar desfasadas
-    const op     = pick(isLight ? 0.22 : 0.18, isLight ? 0.42 : 0.35);
+    const size = pick(26, 44); // px (más grandes)
+    const dur = pick(14, 22); // s
+    const delay = -pick(0, dur); // negativo para entrar desfasadas
+    const op = pick(isLight ? 0.22 : 0.18, isLight ? 0.42 : 0.35);
 
-    leaf.style.setProperty('--sx', `${startX}vw`);
-    leaf.style.setProperty('--mx', `${midX}vw`);
-    leaf.style.setProperty('--ex', `${endX}vw`);
-    leaf.style.setProperty('--size', `${size}px`);
-    leaf.style.setProperty('--dur', `${dur}s`);
-    leaf.style.setProperty('--delay', `${delay}s`);
-    leaf.style.setProperty('--opacity', op.toFixed(2));
+    leaf.style.setProperty("--sx", `${startX}vw`);
+    leaf.style.setProperty("--mx", `${midX}vw`);
+    leaf.style.setProperty("--ex", `${endX}vw`);
+    leaf.style.setProperty("--size", `${size}px`);
+    leaf.style.setProperty("--dur", `${dur}s`);
+    leaf.style.setProperty("--delay", `${delay}s`);
+    leaf.style.setProperty("--opacity", op.toFixed(2));
 
     // Máscara SVG aleatoria para variedad
     const maskUrl = masks[Math.floor(Math.random() * masks.length)];
-    inner.style.setProperty('--mask-url', `url("${maskUrl}")`);
+    inner.style.setProperty("--mask-url", `url("${maskUrl}")`);
 
     // Vaivén de rotación aleatorio (sobre el hijo)
     const tilt = pick(6, 12);
     const dirTilt = Math.random() < 0.5 ? -1 : 1;
-    leaf.style.setProperty('--tiltDur', `${pick(2.2, 3.4)}s`);
-    leaf.style.setProperty('--tiltA', `${-dirTilt * tilt}deg`);
-    leaf.style.setProperty('--tiltB', `${dirTilt * tilt}deg`);
+    leaf.style.setProperty("--tiltDur", `${pick(2.2, 3.4)}s`);
+    leaf.style.setProperty("--tiltA", `${-dirTilt * tilt}deg`);
+    leaf.style.setProperty("--tiltB", `${dirTilt * tilt}deg`);
 
     leaf.appendChild(inner);
     layer.appendChild(leaf);
