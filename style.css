@@ -134,6 +134,105 @@ h1 {
   }
 }
 
+/* //estilos de bienvenida */
+/* Pantalla de bienvenida: overlay a pantalla completa */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999; /* por encima del header sticky */
+  display: grid;
+  place-items: center;
+  background: #000; /* fondo de seguridad mientras carga la imagen */
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 1700ms ease-out;
+}
+
+.welcome-overlay[hidden] {
+  display: none;
+}
+
+.welcome-overlay.is-fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.welcome-overlay .welcome-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* se ajusta al viewport */
+}
+
+/* ligera superposición para legibilidad del botón */
+.welcome-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.45));
+}
+
+.welcome-ui {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 16px;
+  place-items: center;
+}
+
+.welcome-btn {
+  appearance: none;
+  border: 2px solid var(--accent);
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--text);
+  font-weight: 700;
+  padding: 16px 36px;
+  font-size: 24px;
+  line-height: 1.2;
+  text-align: center;
+  max-width: 90vw;
+  white-space: normal;
+  font-family: Georgia, "Times New Roman", "Palatino Linotype", "Book Antiqua", Garamond, serif;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+}
+
+.welcome-btn:hover,
+.welcome-btn:focus {
+  outline: none;
+  transform: translateY(-1px);
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 0 4px rgba(151, 227, 141, 0.25);
+}
+
+.welcome-btn:active {
+  transform: translateY(0);
+  opacity: 0.95;
+}
+
+/* utilidades de accesibilidad */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-overlay { transition: none; }
+  .welcome-btn { transition: none; }
+}
+
 /* ===== Vista compacta de tarjetas ===== */
 .card .summary-line{
   margin-top: 6px;

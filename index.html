@@ -12,6 +12,27 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Pantalla de bienvenida (HTML): overlay a pantalla completa -->
+    <div
+      id="welcomeOverlay"
+      class="welcome-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcomeTitle"
+      hidden
+    >
+      <img
+        class="welcome-image"
+        src="img/Img_bienvenida3.png"
+        alt="Bienvenida al Jardín de Belén y Alonso"
+      />
+      <div class="welcome-ui">
+        <h2 id="welcomeTitle" class="visually-hidden">Pantalla de bienvenida</h2>
+        <button id="welcomeEnter" class="welcome-btn" type="button" aria-label="¡Bienvenidos al Jardín!">
+          ¡Bienvenidos al Jardín!
+        </button>
+      </div>
+    </div>
     <header class="container header-grid" id="top">
       <div class="header-main">
         <h1>
@@ -2638,5 +2659,84 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Pantalla de bienvenida (JS): controla visibilidad y cierre -->
+    <script>
+      (function () {
+        // Configuración básica
+        const OVERLAY_ID = 'welcomeOverlay';
+        const BTN_ID = 'welcomeEnter';
+        const STORAGE_KEY = 'welcomeSeen';
+        const AUTO_CLOSE_MS = 3000; // 3 s
+
+        const overlay = document.getElementById(OVERLAY_ID);
+        if (!overlay) return;
+
+        // Si ya se vio en esta sesión, no mostrar
+        const shouldShow = sessionStorage.getItem(STORAGE_KEY) !== '1';
+        if (!shouldShow) {
+          overlay.remove();
+          return;
+        }
+
+        // Mostrar overlay (está marcado como hidden en HTML)
+        overlay.removeAttribute('hidden');
+
+        // Función para cerrar con animación suave
+        const closeOverlay = () => {
+          if (!overlay || overlay.classList.contains('is-fading')) return;
+          sessionStorage.setItem(STORAGE_KEY, '1');
+          overlay.classList.add('is-fading');
+          const onEnd = () => {
+            overlay.setAttribute('hidden', '');
+            overlay.removeEventListener('transitionend', onEnd);
+            // Retira del DOM para no interferir
+            overlay.remove();
+          };
+          overlay.addEventListener('transitionend', onEnd);
+          // Respaldo por si no dispara transitionend (debe coincidir con CSS ~1000ms)
+          setTimeout(onEnd, 1200);
+          cleanup();
+        };
+
+        // Interacciones: clic/touch sobre el overlay o en el botón
+        const onOverlayClick = (e) => {
+          // Cierra tanto si se pulsa en el botón como en cualquier parte
+          closeOverlay();
+        };
+
+        const btn = document.getElementById(BTN_ID);
+        const onBtnKeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+            closeOverlay();
+          }
+        };
+
+        // Limpia listeners cuando cierra
+        const cleanup = () => {
+          overlay.removeEventListener('click', onOverlayClick);
+          overlay.removeEventListener('touchstart', onOverlayClick);
+          if (btn) {
+            btn.removeEventListener('keydown', onBtnKeydown);
+          }
+        };
+
+        // Listeners principales
+        overlay.addEventListener('click', onOverlayClick, { passive: true });
+        overlay.addEventListener('touchstart', onOverlayClick, { passive: true });
+        if (btn) {
+          btn.addEventListener('keydown', onBtnKeydown);
+        }
+
+        // Auto-cierre tras cierto tiempo
+        const timer = setTimeout(closeOverlay, AUTO_CLOSE_MS);
+        const cancelTimer = () => clearTimeout(timer);
+        overlay.addEventListener('click', cancelTimer, { passive: true });
+        overlay.addEventListener('touchstart', cancelTimer, { passive: true });
+        if (btn) {
+          btn.addEventListener('click', cancelTimer, { passive: true });
+        }
+      })();
+    </script>
   </body>
 </html>
