@@ -1215,6 +1215,32 @@ html.light .bubble-btn:hover {
 html:not(.light) .leaves-btn .icon-leafwind { color: #fff; }
 html.light .leaves-btn .icon-leafwind { color: #2a2a2a; }
 
+/* ==== Briznas de luz (canvas) ==== */
+.floating-sparks{
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* no bloquea interacción */
+  z-index: 0;           /* misma capa que hojas */
+  display: block;
+  width: 100vw;         /* asegura tamaño de viewport para clientWidth */
+  height: 100vh;
+}
+
+/* Icono chispa para el botón */
+.icon-spark{
+  display: block;
+  width: 18px; height: 18px;
+  color: var(--accent);
+  transition: transform .2s ease;
+}
+.bubble-btn:hover .icon-spark{ transform: scale(1.1); }
+html:not(.light) .sparks-btn .icon-spark{ color: #fff; }
+html.light .sparks-btn .icon-spark{ color: #2a2a2a; }
+
+@media (prefers-reduced-motion: reduce){
+  .floating-sparks{ display:none; }
+}
+
 /* Responsive: mantiene los dos botones en fila */
 @media (max-width: 520px) {
   .header-grid {

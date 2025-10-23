@@ -1517,3 +1517,168 @@ Historial: ${p.historial}
     layer.appendChild(leaf);
   }
 })();
+
+/* ============================================================
+   Briznas de luz (canvas) - luciérnagas doradas
+   - Capa Canvas fija con composición aditiva
+   - Coexiste con hojas flotantes
+   - Encendido por defecto en primera carga (persistencia localStorage)
+   ============================================================ */
+(function () {
+  const CANVAS_ID = "floating-sparks";
+  const BTN_ID = "sparksToggle";
+  const STORAGE_KEY = "sparks_on"; // '1' encendido, '0' apagado
+
+  const canvas = document.getElementById(CANVAS_ID);
+  const btn = document.getElementById(BTN_ID);
+  if (!canvas || !btn) return;
+
+  // Respeto a usuarios con reducción de movimiento
+  const mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const ctx = canvas.getContext("2d", { alpha: true });
+  let dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+  let raf = null;
+  let running = false;
+  let width = 0, height = 0;
+  let sparks = [];
+
+  const GOLD_CORE = "#FFD86B";   // centro cálido
+  const GOLD_HALO = "#FFEA9A";   // halo dorado suave
+
+  function resize() {
+    // Usa viewport completo; establece tamaño CSS y buffer interno con DPR
+    const w = Math.max(window.innerWidth, document.documentElement.clientWidth || 0);
+    const h = Math.max(window.innerHeight, document.documentElement.clientHeight || 0);
+    dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    // Escala el contexto: a partir de aquí dibujamos en unidades CSS px
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    width = w; height = h;
+  }
+
+  function makeSparks() {
+    const isMobile = Math.min(window.innerWidth, window.innerHeight) < 760;
+    const baseCount = mqReduce.matches ? 8 : (isMobile ? 24 : 42);
+    const maxCount = 64;
+    const N = Math.min(baseCount, maxCount);
+    const arr = new Array(N).fill(0).map(() => newSpark());
+    sparks = arr;
+  }
+
+  function rand(min, max) { return min + Math.random() * (max - min); }
+
+  function newSpark() {
+    // Tamaños variados 2–8px, con destellos ocasionales hasta 12px
+    const bigChance = Math.random() < 0.15;
+    const r = bigChance ? rand(8, 12) : rand(2, 8);
+    const speed = mqReduce.matches ? 0 : rand(0.1, 0.5);
+    return {
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r,
+      baseR: r,
+      vx: rand(-0.15, 0.15),
+      vy: rand(-speed, -speed * 0.2), // deriva ligeramente ascendente
+      t: Math.random() * Math.PI * 2,  // fase para twinkle
+      tw: rand(0.5, 1.25),             // velocidad del parpadeo
+      life: rand(6, 14),               // vida para reciclaje suave (s)
+      born: performance.now() / 1000,
+    };
+  }
+
+  function drawSpark(s) {
+    // Parpadeo orgánico: modulamos radio y alfa con seno
+    s.t += 0.02 * s.tw;
+    const twinkle = mqReduce.matches ? 0.2 : (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(s.t)));
+    const r = s.baseR * (0.85 + 0.3 * twinkle);
+
+    const gx = s.x;
+    const gy = s.y;
+    const gr = Math.max(1, r);
+
+    const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+    g.addColorStop(0, GOLD_CORE);
+    g.addColorStop(0.45, GOLD_HALO);
+    g.addColorStop(1, "rgba(255, 234, 154, 0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function step(nowMs) {
+    const now = nowMs / 1000;
+    // Limpiar ignorando transformaciones actuales
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+    ctx.globalCompositeOperation = "lighter";
+
+    for (let i = 0; i < sparks.length; i++) {
+      const s = sparks[i];
+      drawSpark(s);
+
+      if (!mqReduce.matches) {
+        s.x += s.vx;
+        s.y += s.vy;
+      }
+
+      // Reciclado cuando sale o expira su vida
+      const age = now - s.born;
+      if (s.x < -20 || s.x > width + 20 || s.y < -20 || s.y > height + 20 || age > s.life) {
+        sparks[i] = newSpark();
+        sparks[i].born = now;
+      }
+    }
+
+    raf = running ? requestAnimationFrame(step) : null;
+  }
+
+  function start() {
+    if (running) return;
+    resize();
+    makeSparks();
+    running = true;
+    raf = requestAnimationFrame(step);
+  }
+
+  function stop() {
+    running = false;
+    if (raf) cancelAnimationFrame(raf);
+    raf = null;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Redimensionado y visibilidad
+  window.addEventListener("resize", () => {
+    if (!running) return;
+    resize();
+    makeSparks();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stop();
+    } else if (btn.classList.contains("is-on")) {
+      start();
+    }
+  });
+
+  // Toggle y persistencia (encendido por defecto)
+  function apply(state) {
+    canvas.style.display = state ? "" : "none";
+    btn.classList.toggle("is-on", state);
+    btn.setAttribute("aria-pressed", String(state));
+    localStorage.setItem(STORAGE_KEY, state ? "1" : "0");
+    state ? start() : stop();
+  }
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const initialOn = saved !== "0"; // por defecto encendido
+  apply(initialOn);
+
+  btn.addEventListener("click", () => apply(!btn.classList.contains("is-on")));
+})();

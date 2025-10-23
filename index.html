@@ -72,7 +72,7 @@
         >
           <span class="icon-bird" aria-hidden="true"></span>
         </button>
-        <button
+        <!-- <button
           id="leavesToggle"
           class="bubble-btn leaves-btn"
           aria-label="Hojas flotantes"
@@ -80,11 +80,27 @@
           title="Hojas flotantes"
         >
           <span class="icon-leafwind" aria-hidden="true"></span>
+        </button> -->
+
+        <!-- Botón: Briznas de luz (coexiste con hojas) -->
+        <button
+          id="sparksToggle"
+          class="bubble-btn sparks-btn"
+          aria-label="Briznas de luz"
+          aria-pressed="true"
+          title="Briznas de luz"
+        >
+          <!-- Icono chispa -->
+          <svg class="icon-spark" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M12 2l1.8 4.6 4.9.7-3.6 3.3.9 4.8L12 13.8 8 15.4l.9-4.8L5.3 7.3l4.9-.7L12 2z"/>
+          </svg>
         </button>
       </div>
     </header>
     <!-- Hojas flotantes (capa visual) -->
     <div class="floating-leaves" aria-hidden="true"></div>
+    <!-- Briznas de luz (capa Canvas) -->
+    <canvas id="floating-sparks" class="floating-sparks" aria-hidden="true"></canvas>
 
     <main class="container">
       <!-- ===== RESUMEN DEL JARDÍN ===== -->
