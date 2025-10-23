@@ -1213,7 +1213,8 @@ Historial: ${p.historial}
   if (!btn || !layer) return;
 
   const saved = localStorage.getItem("leaves_on");
-  const on = saved !== "0";
+  // Apagadas por defecto: solo '1' las enciende
+  const on = saved === "1";
   function apply(state) {
     layer.style.display = state ? "" : "none";
     btn.classList.toggle("is-on", state);
@@ -1562,7 +1563,8 @@ Historial: ${p.historial}
 
   function makeSparks() {
     const isMobile = Math.min(window.innerWidth, window.innerHeight) < 760;
-    const baseCount = mqReduce.matches ? 8 : (isMobile ? 24 : 42);
+    // Aumento sutil de cantidad por defecto (manteniendo rendimiento)
+    const baseCount = mqReduce.matches ? 8 : (isMobile ? 30 : 50);
     const maxCount = 64;
     const N = Math.min(baseCount, maxCount);
     const arr = new Array(N).fill(0).map(() => newSpark());

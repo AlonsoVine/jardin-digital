@@ -1230,8 +1230,10 @@ html.light .leaves-btn .icon-leafwind { color: #2a2a2a; }
 .icon-spark{
   display: block;
   width: 18px; height: 18px;
-  color: var(--accent);
-  transition: transform .2s ease;
+  background-color: currentColor; /* permite recolorear por tema */
+  -webkit-mask: url("img/luciernagas.png") no-repeat center / contain;
+          mask: url("img/luciernagas.png") no-repeat center / contain;
+  transition: transform .2s ease, color .2s ease;
 }
 .bubble-btn:hover .icon-spark{ transform: scale(1.1); }
 html:not(.light) .sparks-btn .icon-spark{ color: #fff; }
