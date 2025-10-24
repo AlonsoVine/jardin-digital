@@ -101,6 +101,103 @@
     <canvas id="floating-sparks" class="floating-sparks" aria-hidden="true"></canvas>
 
     <main class="container">
+      <!-- ===== INTRODUCCIÓN ===== -->
+      <section id="intro" class="card intro is-expanded" aria-labelledby="intro-title">
+        <img
+          src="img/nuestra_imagen_0.jpg"
+          alt=""
+          class="thumb"
+        />
+        <div class="intro-right">
+          <div class="summary-line">
+            <strong id="intro-title">Bienvenido a nuestro jardín digital</strong>
+            <button
+              id="introToggle"
+              class="card-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="intro-content"
+              title="Plegar/desplegar introducción"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10l5 5 5-5z" fill="currentColor" />
+              </svg>
+            </button>
+          </div>
+
+          <div id="intro-content" class="intro-body">
+            <p>
+              El objetivo de esta página es documentar y cuidar nuestro jardín de forma rigurosa y agradable de consultar. Reúne un inventario vivo de plantas, sus necesidades de luz y riego, su estado de salud y un historial básico de cuidados. La información se presenta en tarjetas y un panel de resumen para facilitar una visión global y la toma de decisiones.
+            </p>
+            <p>
+              Aquí encontrarás una experiencia centrada en la claridad y el uso práctico: explora fichas organizadas, obtén un panorama inmediato en el panel de resumen y apóyate en utilidades como la exportación de datos o el paseo automático. Todo con un diseño cuidado, adaptable y accesible, pensado para consultar rápido y mantener la información al día con facilidad.
+            </p>
+            <ul class="bullets">
+              <li><img src="img/monstera-leaf-verde-borde-8px.svg" alt="" width="16" height="16" /> Estadísticas y resumen general del jardín.</li>
+              <li><img src="img/monstera-leaf-verde-borde-8px.svg" alt="" width="16" height="16" /> Fichas con datos clave y fotos.</li>
+              <li><img src="img/monstera-leaf-verde-borde-8px.svg" alt="" width="16" height="16" /> Herramientas rápidas: exportación y paseo automático.</li>
+            </ul>
+            <div class="cta">
+              <a class="repo-link" href="https://github.com/AlonsoVine/jardin-digital" target="_blank" rel="noopener noreferrer">Más info técnica en el repositorio</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <script>
+        (function () {
+          var toggle = document.getElementById('introToggle');
+          var section = document.getElementById('intro');
+          var content = document.getElementById('intro-content');
+          if (!toggle || !section || !content) return;
+          // Actualiza el contenido de introducción con la versión afinada
+          try {
+            var newIntroHtml = `
+              <p>
+                El objetivo de esta página es centralizar el registro y el seguimiento de nuestro jardín de forma rigurosa y agradable de consultar. Reúne un inventario vivo de plantas, con sus necesidades de luz y riego, su estado de salud y un historial básico de cuidados. La información se organiza en fichas y en un panel de resumen para ofrecer una visión global y facilitar el cuidado.
+              </p>
+              <p>
+                La experiencia está pensada para ser clara y práctica: navega por las fichas, obtén de un vistazo el estado general y utiliza herramientas como la exportación de datos y el paseo automático. Todo con un diseño cuidado, adaptable y accesible para consultar rápido y mantener la información al día.
+              </p>
+              <ul class="bullets">
+                <li><img src="img/monstera-leaf-verde-borde-8px.svg" alt="" width="16" height="16" /> <a href="#dashboard" class="intro-link" data-target="dashboard">Estadísticas y resumen general del jardín.</a></li>
+                <li><img src="img/monstera-leaf-verde-borde-8px.svg" alt="" width="16" height="16" /> <a href="#searchBar" class="intro-link" data-target="searchBar">Fichas con datos clave y fotos.</a></li>
+                <li><img src="img/monstera-leaf-verde-borde-8px.svg" alt="" width="16" height="16" /> <a href="#dlToggle" class="intro-link" data-target="dlToggle">Herramientas rápidas: exportación y paseo automático.</a></li>
+              </ul>
+              <div class="cta">
+                <a class="repo-link" href="https://github.com/AlonsoVine/jardin-digital" target="_blank" rel="noopener noreferrer">Más info técnica en el repositorio</a>
+              </div>
+            `;
+            content.innerHTML = newIntroHtml;
+            // Smooth scroll de los enlaces de la lista
+            var links = content.querySelectorAll('.intro-link');
+            links.forEach(function(a){
+              a.addEventListener('click', function(e){
+                e.preventDefault();
+                var id = a.getAttribute('data-target');
+                var el = document.getElementById(id);
+                if (el && el.scrollIntoView) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  // Enfoca tras el scroll para accesibilidad (ligero delay)
+                  setTimeout(function(){
+                    if (typeof el.focus === 'function') { try { el.focus({ preventScroll: true }); } catch(_){} }
+                  }, 450);
+                } else if (id) {
+                  location.hash = '#' + id;
+                }
+              });
+            });
+          } catch (e) {}
+          toggle.addEventListener('click', function () {
+            var expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', String(!expanded));
+            section.classList.toggle('is-collapsed', expanded);
+            section.classList.toggle('is-expanded', !expanded);
+            content.hidden = expanded;
+          });
+          // CTA eliminado a petición: el resumen está justo debajo
+        })();
+      </script>
       <!-- ===== RESUMEN DEL JARDÍN ===== -->
       <section id="dashboard" class="dash card">
         <div class="dash-left">
