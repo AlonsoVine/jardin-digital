@@ -15,7 +15,7 @@
 body {
   margin: 0;
   background-color: #0b0c0c;
-  background-image: url("img/ChatGPT Image 13 oct 2025, 01_38_39.png");
+  background-image: url("img/ChatGPT Image 13 oct 2025, 01_38_39.0.png");
   background-repeat: repeat; /* 🔁 Repite el patrón infinitamente */
   background-size: contain; /* Ajusta la imagen completa sin recortarla */
   background-position: center top; /* Centrada y empieza desde arriba */
@@ -880,7 +880,7 @@ html.light {
 }
 
 html.light body {
-  background-image: url("img/monstera-day-soft-2.png");
+  background-image: url("img/monstera-day-soft-2.0.png");
   background-repeat: repeat; /* se repite verticalmente sin salto */
   background-size: contain; /* ajusta si la ves muy grande/pequeña */
   background-position: center top;
